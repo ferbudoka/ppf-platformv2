@@ -721,6 +721,65 @@ footer {
 
 /* ── BOUNCE ANIMATION ── */
 @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+
+/* ── FAQ ── */
+.faq { padding: 100px 0; background: var(--navy-800); }
+.faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 56px;
+}
+.faq-item {
+  background: var(--navy-700);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color .2s;
+}
+.faq-item:hover { border-color: rgba(0,194,194,.3); }
+.faq-q {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 24px;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  line-height: 1.4;
+}
+.faq-q svg {
+  flex-shrink: 0;
+  width: 18px; height: 18px;
+  stroke: var(--teal);
+  transition: transform .3s var(--ease-spring);
+}
+.faq-item.open .faq-q svg { transform: rotate(45deg); }
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .35s ease, padding .35s ease;
+  padding: 0 24px;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--muted);
+}
+.faq-item.open .faq-a {
+  max-height: 300px;
+  padding: 0 24px 20px;
+}
+.faq-a a { color: var(--teal); text-decoration: none; }
+.faq-a a:hover { text-decoration: underline; }
+@media (max-width: 768px) {
+  .faq-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
@@ -734,6 +793,7 @@ footer {
     <a href="#mission">Mission</a>
     <a href="#how">How It Works</a>
     <a href="#features">Features</a>
+    <a href="#faq">FAQ</a>
   </div>
   <a href="project-support-finder.html" class="nav-cta">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
@@ -1000,6 +1060,82 @@ footer {
   </div>
 </section>
 
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="section-inner">
+    <div class="section-tag reveal" style="justify-content:center;">FAQ</div>
+    <h2 class="section-title reveal reveal-delay-1" style="text-align:center;">Common Questions</h2>
+
+    <div class="faq-grid">
+
+      <div class="faq-item">
+        <button class="faq-q">
+          What is the PPF Navigator?
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a">The PPF Navigator is a tool developed by the Global Infrastructure Facility (GIF) to help governments, project sponsors, and advisors find the right Project Preparation Facility (PPF) for their infrastructure projects in emerging markets. It consolidates data from dozens of facilities into a single searchable, filterable platform.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          Who is the platform designed for?
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a">The platform is designed for government officials, project developers, private sector sponsors, development finance institutions, and infrastructure advisors who need to identify and access project preparation support across emerging markets.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          How do I use the filters on the dashboard?
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a">Use the pill filters on the left panel to narrow results by Preparation Stage, Region, Support Type, Sector, and Financing Instrument. Filters apply instantly — the map, cards, and table all update together. Click "Reset All Filters" to start over.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          What do the map markers represent?
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a">Each marker represents the headquarters of a Project Preparation Facility. When multiple facilities share a location, a numbered cluster circle appears. Zoom in or click the cluster to expand and see individual markers. Hover over any marker to see a summary; click to open the full detail panel.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          What types of support are included?
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a">The database covers five support types: Grants, Technical Assistance, Equity, Loans, and Advisory services. Each facility may offer one or more types. Use the Support Type filter to match your specific needs.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          How do I contact a facility?
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a">Click on any facility card or map marker to open the full detail panel, then click the "Contact" button to reach the facility directly. You can also export the full list as a CSV from the <a href="facilities.html">Facilities page</a> for offline reference.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          Can I export the data?
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a">Yes. Visit the <a href="facilities.html">All Facilities</a> page and click "Export CSV" to download the full dataset. The export includes all columns: facility name, organisation, region, country, sector, support type, instrument, stage, and funding amount.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          How do I submit a new facility?
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a">Open the <a href="project-support-finder.html">Dashboard</a> and click "Submit Fund" in the top toolbar. Fill in the structured form with the facility's details. All submissions are reviewed by the GIF team within 5–7 business days before being added to the database.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
   <div class="section-inner">
@@ -1197,6 +1333,16 @@ if (regGrid) regionObserver.observe(regGrid);
   // Preload next videos
   setTimeout(() => { vids[1].load(); vids[2].load(); }, 1000);
 })();
+
+// FAQ ACCORDION
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  });
+});
 
 // SMOOTH ANCHOR LINKS
 document.querySelectorAll('a[href^="#"]').forEach(a => {
