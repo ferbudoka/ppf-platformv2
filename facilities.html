@@ -413,9 +413,12 @@ footer{
   </div>
 </footer>
 
+<script src="drupal-config.js"></script>
+<script src="drupal-api.js"></script>
 <script>
 /* ── DATA ── */
-const FACILITIES = [
+// Static fallback — used when Drupal is not configured or unreachable
+const STATIC_FACILITIES = [
   {id:1, name:"ADB Asia Pacific Project Preparation Facility (ADB AP3F)", org:"Asian Development Bank (ADB)", region:"Asia Pacific", country:"Multiple", support:["Advisory","Grant"], sector:"Energy", amount:"Varies", deadline:"Rolling", status:"Open", year:2014, climateMandate:"Included", geoScope:"One region", regionsCovered:"East Asia Pacific; Europe and Central Asia; South Asia"},
   {id:2, name:"Africa50 — Project Development", org:"Africa50", region:"Africa", country:"Multiple", support:["Advisory","Grant"], sector:"Infrastructure", amount:"Varies", deadline:"Rolling", status:"Open", year:2013, climateMandate:"Included", geoScope:"One region", regionsCovered:"Africa"},
   {id:3, name:"African Legal Support Facility", org:"African Legal Support Facility (ALSF)", region:"Africa", country:"Multiple", support:["Advisory","Grant","Equity"], sector:"Finance", amount:"Varies", deadline:"Rolling", status:"Open", year:2008, climateMandate:"Included", geoScope:"One region", regionsCovered:"Africa"},
@@ -433,6 +436,7 @@ const FACILITIES = [
 ];
 
 /* ── STATE ── */
+let FACILITIES = STATIC_FACILITIES;   // replaced on load if Drupal is live
 let sortCol = -1;
 let sortAsc = true;
 let filteredIds = FACILITIES.map(f => f.id);
@@ -611,7 +615,9 @@ function exportCSV() {
 }
 
 /* ── INIT ── */
-(function init() {
+(async function init() {
+  FACILITIES = await loadFacilities();
+  filteredIds = FACILITIES.map(f => f.id);
   renderTable(FACILITIES);
   document.getElementById('tableMeta').innerHTML =
     'Showing <strong>' + FACILITIES.length + '</strong> of <strong>' + FACILITIES.length + '</strong> facilities';

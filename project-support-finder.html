@@ -1258,8 +1258,14 @@ function submitFund(){
 }
 document.getElementById('submit-modal').addEventListener('click',function(e){ if(e.target===this) closeSubmitModal(); });
 
+</script>
+<!-- Drupal headless CMS integration (config must load before api) -->
+<script src="drupal-config.js"></script>
+<script src="drupal-api.js"></script>
+<script>
 
-const facilities = [
+// Static fallback data — used when Drupal is not configured or unreachable
+const STATIC_FACILITIES = [
   {
     id:1, icon:"🏗", name:"ADB Asia Pacific Project Preparation Facility (ADB AP3F)",
     org:"Asian Development Bank (ADB)", region:"Asia Pacific", country:"Multiple",
@@ -1573,6 +1579,9 @@ const facilities = [
     eligibility:["Western Balkans countries (Albania, BiH, Kosovo, Montenegro, North Macedonia, Serbia)","Public sector entities","EU accession-aligned projects","Transport, energy, environment, and social sectors"]
   }
 ];
+
+// ── DATA (Drupal or static fallback) ───────────────────
+let facilities = STATIC_FACILITIES;   // will be replaced on load if Drupal is live
 
 // ── STATE ──────────────────────────────────────────────
 let activeFilters = { stage:"all", region:"all", support:"all", sector:"all", instrument:"all" };
@@ -2216,7 +2225,10 @@ function updateFilterMeta(key, value) {
 document.addEventListener('keydown', e => { if(e.key==='Escape') closeDetail(); });
 
 // ── INIT ──────────────────────────────────────────────────
-window.addEventListener('DOMContentLoaded',()=>{
+window.addEventListener('DOMContentLoaded', async () => {
+  // Load facilities from Drupal (or fall back to static data)
+  facilities = await loadFacilities();
+
   initMap();
   // set default lang active
   document.getElementById('lang-en').classList.add('t-active');

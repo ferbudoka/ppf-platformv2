@@ -1,0 +1,2233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Preparation Facilities Navigator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+/* ── GIF-INSPIRED DARK (default) ── */
+/* Primary: Deep navy #003366 | Teal accent #00A6A6 | Gold #E8A020 | Warm orange #E05C1A */
+:root {
+  --ink:#00213d;          /* deep navy bg */
+  --surface:#002b50;      /* slightly lighter navy */
+  --panel:#003566;        /* GIF navy panel */
+  --card:#00407a;         /* card bg */
+  --border:rgba(255,255,255,0.1);
+  --border-active:rgba(0,166,166,0.5);
+  --text:#e8f0f8;
+  --muted:#8aadc8;
+  --accent:#00c2c2;       /* GIF teal */
+  --accent-2:#4dd9ac;     /* green-teal */
+  --accent-3:#f0b429;     /* GIF gold */
+  --accent-4:#e05c1a;     /* GIF orange */
+  --accent-5:#6eb5ff;     /* light blue */
+  --glow:rgba(0,194,194,0.15);
+  --shadow:rgba(0,0,0,0.55);
+  --nav-gold:#f0b429;
+}
+/* ── GIF-INSPIRED LIGHT ── */
+body.light {
+  --ink:#f2f6fa;
+  --surface:#ffffff;
+  --panel:#f7f9fc;
+  --card:#eaf0f8;
+  --border:rgba(0,51,102,0.1);
+  --border-active:rgba(0,153,153,0.4);
+  --text:#00101f;
+  --muted:#1e3a5f;
+  --accent:#006080;
+  --accent-2:#006b52;
+  --accent-3:#a86300;
+  --accent-4:#a83400;
+  --accent-5:#1a4d8c;
+  --glow:rgba(0,96,128,0.1);
+  --shadow:rgba(0,20,50,0.18);
+  --nav-gold:#a86300;
+}
+body.light .marker-inner{box-shadow:0 4px 14px rgba(0,0,0,.15),0 0 0 4px rgba(0,123,158,.1);}
+body.light .leaflet-popup-content-wrapper{background:var(--surface)!important;color:var(--text)!important;}
+body.light .fac-card:hover{box-shadow:0 10px 32px rgba(0,30,70,.12);}
+body.light .result-card:hover{box-shadow:-4px 0 16px rgba(0,123,158,.15);}
+body.light header::after{opacity:.6;}
+body.light ::-webkit-scrollbar-thumb{background:rgba(0,51,102,.15);}
+body.light .filter-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234a6fa0' d='M6 8L1 3h10z'/%3E%3C/svg%3E");}
+body.light .fac-card-desc{color:rgba(0,34,68,.6);}
+body.light .detail-desc{color:rgba(0,34,68,.75);}
+body.light .tag-region{background:rgba(0,123,158,.12);color:var(--accent);}
+body.light .tag-grant{background:rgba(0,143,111,.12);color:var(--accent-2);}
+body.light .tag-loan{background:rgba(196,125,0,.12);color:var(--accent-3);}
+body.light .tag-technical{background:rgba(37,99,168,.12);color:var(--accent-5);}
+body.light .tag-advisory{background:rgba(201,65,0,.12);color:var(--accent-4);}
+body.light .tag-blended{background:rgba(0,123,158,.12);color:var(--accent);}
+body.light .modal-info-box{background:rgba(0,123,158,.06);border-color:rgba(0,123,158,.2);}
+body.light .floating-toolbar{box-shadow:0 4px 24px rgba(0,30,70,.18);}
+body.light .facilities-section{background:var(--ink);}
+body.light .stat-num{color:var(--accent-3);}
+body.light .logo-text{color:var(--text);}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--ink);color:var(--text);min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;transition:background .3s,color .3s;}
+::-webkit-scrollbar{width:5px;height:5px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px;}
+
+/* FLOATING BOTTOM TOOLBAR */
+.map-overlay-bl{position:absolute;bottom:16px;left:16px;z-index:500;}
+.toolbar-btn{
+  display:flex;align-items:center;gap:7px;
+  padding:10px 17px;border-radius:30px;border:1px solid var(--border);
+  background:var(--panel);color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:14.4px;font-weight:500;
+  cursor:pointer;transition:all .2s;white-space:nowrap;
+  box-shadow:0 4px 16px var(--shadow);backdrop-filter:blur(12px);
+}
+.toolbar-btn:hover{background:var(--card);color:var(--accent);border-color:var(--accent);}
+.toolbar-btn.t-active{background:var(--accent);color:#002b50;font-weight:700;border-color:var(--accent);}
+
+/* HEADER HOME BUTTON */
+.btn-home-header{
+  display:flex;align-items:center;gap:7px;
+  padding:7px 16px 7px 12px;border-radius:8px;
+  background:transparent;border:1px solid rgba(255,255,255,.18);
+  color:var(--text);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;
+  text-decoration:none;cursor:pointer;transition:all .2s;letter-spacing:.2px;
+}
+.btn-home-header:hover{
+  border-color:var(--accent);color:var(--accent);background:rgba(0,194,194,.08);
+}
+.btn-home-header svg{flex-shrink:0;transition:transform .2s;}
+.btn-home-header:hover svg{transform:translateY(-1px);}
+
+/* SUBMIT MODAL */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.55);
+  backdrop-filter:blur(6px);z-index:3000;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .25s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:20px;width:580px;max-width:96vw;max-height:92vh;
+  overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 24px 80px var(--shadow);
+  transform:translateY(24px) scale(.96);
+  transition:transform .32s cubic-bezier(0.34,1.56,0.64,1),background .3s;
+}
+.modal-overlay.open .modal{transform:translateY(0) scale(1);}
+.modal-header{padding:24px 24px 0;display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0;}
+.modal-icon{font-size:36px;margin-bottom:8px;}
+.modal-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;line-height:1.2;}
+.modal-title span{color:var(--accent);}
+.modal-subtitle{font-size:13px;color:var(--muted);margin-top:5px;line-height:1.5;}
+.modal-close{background:var(--card);border:1px solid var(--border);border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:17px;flex-shrink:0;transition:all .2s;}
+.modal-close:hover{border-color:var(--accent);color:var(--accent);}
+#modal-form-view{display:flex;flex-direction:column;flex:1;overflow:hidden;min-height:0;}
+.modal-body{padding:20px 24px 8px;overflow-y:auto;flex:1;min-height:0;}
+.msec-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;margin-top:20px;display:flex;align-items:center;gap:8px;}
+.msec-title:first-child{margin-top:0;}
+.msec-title::after{content:'';flex:1;height:1px;background:var(--border);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.form-row.full{grid-template-columns:1fr;}
+.form-field{display:flex;flex-direction:column;gap:5px;}
+.form-label{font-size:11px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+.form-label .req{color:var(--accent-4);}
+.form-input,.form-select,.form-textarea{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s,box-shadow .2s;width:100%;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--border-active);box-shadow:0 0 0 3px var(--glow);}
+.form-input::placeholder,.form-textarea::placeholder{color:var(--muted);opacity:.7;}
+.form-textarea{resize:vertical;min-height:76px;}
+.form-select{appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
+.form-select option{background:var(--card);}
+.form-hint{font-size:11px;color:var(--muted);line-height:1.5;margin-top:3px;font-style:italic;}
+.modal-info-box{background:rgba(0,194,194,.07);border:1px solid rgba(0,194,194,.18);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--text);line-height:1.65;margin-top:16px;}
+body.light .modal-info-box{background:rgba(37,99,235,.05);border-color:rgba(37,99,235,.2);}
+.modal-info-box strong{color:var(--accent);}
+.modal-info-box ul{margin:6px 0 0 16px;}
+.modal-info-box ul li{margin-bottom:3px;}
+.modal-footer{padding:14px 24px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;flex-shrink:0;background:var(--panel);transition:background .3s;}
+.modal-footer .btn-primary{padding:10px 26px;font-size:14px;}
+.modal-footer .btn-ghost{padding:10px 18px;}
+.modal-success{display:none;flex-direction:column;align-items:center;justify-content:center;padding:48px 32px;text-align:center;}
+.modal-success.show{display:flex;}
+.success-icon{font-size:56px;margin-bottom:16px;animation:popIn .4s cubic-bezier(0.34,1.56,0.64,1);}
+@keyframes popIn{from{transform:scale(0);}to{transform:scale(1);}}
+.region-highlight-layer{pointer-events:none!important;}
+.success-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:8px;}
+.success-sub{color:var(--muted);font-size:14px;line-height:1.65;max-width:380px;}
+
+/* HEADER */
+header{display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:88px;background:var(--surface);border-bottom:1px solid var(--border);z-index:1000;position:sticky;top:0;}
+header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent-3),var(--accent),var(--accent-3),transparent);opacity:.7;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo img{background:#fff;border-radius:6px;padding:4px 10px;}
+body.light .logo img{background:none;padding:0;border-radius:0;}
+.logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),#006688);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 2px 12px rgba(0,194,194,.3);}
+.logo-text{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:#ffffff;letter-spacing:-.2px;}.logo-text span{color:var(--accent-3);font-weight:800;}
+.header-stats{display:flex;gap:32px;align-items:center;}
+.stat-item{display:flex;align-items:baseline;gap:6px;}
+.stat-num{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;color:var(--accent-3);line-height:1;letter-spacing:-.5px;}
+.stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;}
+.header-actions{display:flex;gap:10px;align-items:center;}
+.stat-divider{width:1px;height:36px;background:rgba(255,255,255,.12);}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text);padding:7px 16px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .2s;}
+.btn-ghost:hover{border-color:var(--accent-3);color:var(--accent-3);}
+.btn-submit-fund{background:linear-gradient(135deg,var(--accent-3),#d4880a)!important;border:none!important;color:#002244!important;font-weight:700!important;border-radius:8px!important;}
+.btn-primary{background:linear-gradient(135deg,#00a8a8,#0066cc);border:none;color:#fff;padding:7px 18px;border-radius:8px;font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+.btn-primary:hover{opacity:.85;transform:translateY(-1px);}
+
+/* TOP SECTION */
+.top-section{display:flex;height:calc(100vh - 88px);min-height:580px;}
+
+/* SIDEBAR */
+.sidebar{width:340px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
+.sidebar-header{padding:20px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.sidebar-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:14px;}
+.search-box{position:relative;}
+.search-box input{width:100%;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 16px 10px 38px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:all .2s;}
+.search-box input:focus{border-color:var(--border-active);box-shadow:0 0 0 3px var(--glow);}
+.search-box input::placeholder{color:var(--muted);}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;}
+.filters-section{padding:4px 20px 12px;border-bottom:1px solid var(--border);overflow-y:auto;flex-shrink:0;}
+.filter-group{margin-bottom:16px;}.filter-group:last-child{margin-bottom:0;}
+
+.pill-group{display:flex;flex-wrap:wrap;gap:6px;}
+.pill{padding:5px 12px;border-radius:20px;border:1px solid var(--pb,var(--border));background:transparent;color:var(--pc,var(--muted));font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .18s;white-space:nowrap;}
+.pill:hover{border-color:var(--pc,var(--accent));color:var(--pc,var(--accent));background:color-mix(in srgb,var(--pc,var(--accent)) 10%,transparent);}
+.pill.active{background:var(--pc,var(--accent));border-color:var(--pc,var(--accent));color:#001830;font-weight:600;}
+
+/* ── Stage pills — purple family ── */
+[data-filter="stage"][data-value="all"]             {--pc:#c4b5fd;--pb:rgba(196,181,253,.22);}
+[data-filter="stage"][data-value="Identification"]  {--pc:#a78bfa;--pb:rgba(167,139,250,.22);}
+[data-filter="stage"][data-value="Appraisal"]       {--pc:#8b5cf6;--pb:rgba(139,92,246,.22);}
+[data-filter="stage"][data-value="Design"]          {--pc:#7c3aed;--pb:rgba(124,58,237,.22);}
+[data-filter="stage"][data-value="Tendering"]       {--pc:#9333ea;--pb:rgba(147,51,234,.22);}
+[data-filter="stage"][data-value="Market Sounding"] {--pc:#d8b4fe;--pb:rgba(216,180,254,.22);}
+
+/* ── Region pills — teal family ── */
+[data-filter="region"][data-value="all"]            {--pc:#2dd4bf;--pb:rgba(45,212,191,.22);}
+[data-filter="region"][data-value="Africa"]         {--pc:#14b8a6;--pb:rgba(20,184,166,.22);}
+[data-filter="region"][data-value="Asia Pacific"]   {--pc:#0d9488;--pb:rgba(13,148,136,.22);}
+[data-filter="region"][data-value="Latin America"]  {--pc:#00c2c2;--pb:rgba(0,194,194,.22);}
+[data-filter="region"][data-value="Europe"]         {--pc:#06b6d4;--pb:rgba(6,182,212,.22);}
+[data-filter="region"][data-value="Global"]         {--pc:#67e8f9;--pb:rgba(103,232,249,.22);}
+
+/* ── Support pills — amber family ── */
+[data-filter="support"][data-value="all"]           {--pc:#fcd34d;--pb:rgba(252,211,77,.22);}
+[data-filter="support"][data-value="Advisory"]      {--pc:#f59e0b;--pb:rgba(245,158,11,.22);}
+[data-filter="support"][data-value="Reimbursable"]  {--pc:#d97706;--pb:rgba(217,119,6,.22);}
+[data-filter="support"][data-value="Grant"]         {--pc:#f0b429;--pb:rgba(240,180,41,.22);}
+[data-filter="support"][data-value="Equity"]        {--pc:#fb923c;--pb:rgba(251,146,60,.22);}
+
+/* ── Sector pills — blue family ── */
+[data-filter="sector"][data-value="all"]            {--pc:#93c5fd;--pb:rgba(147,197,253,.22);}
+[data-filter="sector"][data-value="Infrastructure"] {--pc:#60a5fa;--pb:rgba(96,165,250,.22);}
+[data-filter="sector"][data-value="Energy"]         {--pc:#3b82f6;--pb:rgba(59,130,246,.22);}
+[data-filter="sector"][data-value="Water"]          {--pc:#6eb5ff;--pb:rgba(110,181,255,.22);}
+[data-filter="sector"][data-value="Finance"]        {--pc:#2563a8;--pb:rgba(37,99,168,.22);}
+[data-filter="sector"][data-value="Health"]         {--pc:#38bdf8;--pb:rgba(56,189,248,.22);}
+.filter-select{width:100%;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;transition:border-color .2s;}
+.filter-select option{background:var(--card);}
+.coming-soon-filter{background:var(--card);border:1px dashed var(--border);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px;}
+.coming-soon-badge{margin-left:auto;font-size:9px;text-transform:uppercase;letter-spacing:.6px;background:rgba(99,179,237,.12);color:var(--accent);padding:2px 7px;border-radius:10px;border:1px solid rgba(99,179,237,.2);}
+.active-filters{display:flex;gap:6px;flex-wrap:wrap;padding:10px 20px;border-bottom:1px solid var(--border);}
+.active-filter-tag{display:flex;align-items:center;gap:5px;background:rgba(0,194,194,.1);border:1px solid rgba(0,194,194,.25);border-radius:20px;padding:3px 10px;font-size:11px;color:var(--accent);}
+.af-remove{cursor:pointer;opacity:.6;transition:opacity .15s;line-height:1;}.af-remove:hover{opacity:1;}
+.results-section{flex:1;overflow-y:auto;padding:12px 20px 20px;}
+.results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-top:4px;}
+.results-count{font-size:12px;color:var(--muted);}.results-count strong{color:var(--text);font-weight:500;}
+.sort-btn{background:none;border:none;color:var(--muted);font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;}.sort-btn:hover{color:var(--accent);}
+.result-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:8px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;animation:fadeSlideIn .3s ease both;}
+.result-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--type-color,var(--accent));border-radius:3px 0 0 3px;}
+.result-card:hover{border-color:rgba(0,194,194,.3);transform:translateX(3px);box-shadow:-4px 0 20px rgba(0,194,194,.1);}
+.result-card.active{border-color:var(--border-active);background:rgba(0,194,194,.06);}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;}
+.card-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;line-height:1.3;flex:1;padding-right:8px;}
+.card-amount{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-2);white-space:nowrap;}
+.card-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
+.tag{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:500;letter-spacing:.3px;}
+.tag-region{background:rgba(0,194,194,.15);color:var(--accent);}
+.tag-grant{background:rgba(77,217,172,.15);color:var(--accent-2);}
+.tag-loan{background:rgba(240,180,41,.15);color:var(--accent-3);}
+.tag-technical{background:rgba(110,181,255,.15);color:var(--accent-5);}
+.tag-advisory{background:rgba(224,92,26,.18);color:var(--accent-4);}
+.tag-blended{background:rgba(0,194,194,.15);color:var(--accent);}
+.card-description{font-size:11.5px;color:var(--muted);line-height:1.5;}
+.card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.card-org{font-size:11px;color:var(--muted);}
+.deadline-badge{font-size:10px;padding:3px 8px;border-radius:6px;background:rgba(240,180,41,.1);color:var(--accent-3);border:1px solid rgba(240,180,41,.25);}
+.empty-state{text-align:center;padding:40px 20px;color:var(--muted);}
+.empty-state .es-icon{font-size:32px;margin-bottom:10px;}
+.empty-state p{font-size:13px;line-height:1.5;}
+
+/* MAP */
+.map-container{flex:1;position:relative;overflow:hidden;}
+#map{width:100%;height:100%;}
+.map-overlay-tl{position:absolute;top:16px;left:16px;z-index:500;display:flex;flex-direction:column;gap:8px;}
+.map-overlay-tr{position:absolute;top:16px;right:16px;z-index:500;display:flex;gap:8px;}
+
+.map-chip{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-size:12px;color:var(--text);backdrop-filter:blur(10px);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap;}
+.map-chip:hover{border-color:var(--accent);}
+.map-view-toggle{background:var(--panel);border:1px solid var(--border);border-radius:10px;overflow:hidden;display:flex;}
+.view-btn{padding:8px 14px;border:none;background:transparent;color:var(--muted);font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s;border-right:1px solid var(--border);}
+.view-btn:last-child{border-right:none;}.view-btn.active{background:var(--accent);color:#002b50;font-weight:600;}
+
+
+/* DETAIL PANEL */
+.detail-overlay{
+  position:fixed;inset:0;z-index:2500;
+  background:rgba(0,10,25,.6);backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .25s;
+  padding:24px;
+}
+.detail-overlay.open{opacity:1;pointer-events:all;}
+.detail-panel{
+  width:540px;max-width:100%;max-height:90vh;
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:20px;z-index:2501;
+  transform:translateY(32px) scale(.97);
+  transition:transform .35s cubic-bezier(0.34,1.56,0.64,1);
+  overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 32px 80px rgba(0,0,0,.7);
+}
+.detail-overlay.open .detail-panel{transform:translateY(0) scale(1);}
+.detail-header{padding:20px 20px 0;display:flex;align-items:flex-start;justify-content:space-between;}
+.detail-close{background:var(--card);border:1px solid var(--border);border-radius:8px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:16px;flex-shrink:0;transition:all .2s;}
+.detail-close:hover{border-color:var(--accent);color:var(--accent);}
+.detail-body{padding:16px 20px 20px;overflow-y:auto;flex:1;}
+.detail-type-bar{display:flex;gap:6px;margin-bottom:16px;}
+.detail-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;line-height:1.25;margin-bottom:6px;}
+.detail-org{font-size:13px;color:var(--muted);margin-bottom:16px;}
+.detail-highlight{background:var(--card);border-radius:10px;padding:14px;margin-bottom:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.highlight-item .h-label{font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:3px;}
+.highlight-item .h-value{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;}
+.detail-desc{font-size:13px;color:rgba(232,234,240,.8);line-height:1.65;margin-bottom:16px;}
+.detail-eligibility h4{font-family:'Syne',sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:10px;}
+.elig-item{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text);padding:6px 0;border-bottom:1px solid var(--border);}
+.elig-item:last-child{border-bottom:none;}
+.elig-check{color:var(--accent-2);}
+.detail-actions{display:flex;gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border);}
+.detail-actions .btn-primary{flex:1;text-align:center;}
+
+/* Leaflet */
+.custom-marker{display:flex;align-items:center;justify-content:center;transform:scale(var(--marker-scale,1));transition:transform .25s ease;}
+@keyframes markerPop{0%{transform:scale(0) translateY(8px);opacity:0;}70%{transform:scale(calc(var(--marker-scale,1)*1.2)) translateY(-2px);}100%{transform:scale(var(--marker-scale,1)) translateY(0);opacity:1;}}
+.custom-marker.spreading{animation:markerPop .45s cubic-bezier(0.34,1.56,0.64,1) both;}
+.cluster-marker{width:44px;height:44px;border-radius:50%;border:3px solid;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:17px;font-weight:800;cursor:pointer;transform:scale(var(--marker-scale,1));transition:transform .25s ease;box-shadow:0 4px 20px rgba(0,0,0,.4),0 0 0 5px rgba(255,255,255,.15);}
+.cluster-marker:hover{filter:brightness(1.12);}
+.cluster-tooltip{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:10px 13px;min-width:180px;box-shadow:0 8px 32px rgba(0,0,0,.4);pointer-events:none;}
+.cluster-tooltip-item{font-size:12px;color:var(--text);padding:3px 0;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--border);}
+.cluster-tooltip-item:last-of-type{border-bottom:none;}
+.cluster-tooltip-hint{font-size:11px;color:var(--accent);font-weight:600;text-align:center;margin-top:8px;padding-top:6px;border-top:1px solid var(--border);}
+.leaflet-tooltip.cluster-tip{background:none;border:none;box-shadow:none;padding:0;}
+.leaflet-tooltip.cluster-tip::before{display:none;}
+.marker-inner{width:32px;height:32px;border-radius:50%;border:3px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:13px;box-shadow:0 4px 20px rgba(0,0,0,.5),0 0 0 5px rgba(99,179,237,.1);cursor:pointer;}
+.leaflet-popup-content-wrapper{background:var(--panel)!important;border:1px solid var(--border)!important;border-radius:12px!important;box-shadow:0 8px 40px rgba(0,0,0,.5)!important;color:var(--text)!important;padding:0!important;}
+.leaflet-popup-content{margin:0!important;}
+.leaflet-popup-tip-container{display:none!important;}
+.popup-content{padding:14px;min-width:220px;}
+.popup-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:4px;color:var(--text);}
+.popup-count{font-size:12px;color:var(--muted);margin-bottom:10px;}
+.popup-types{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
+.popup-view-btn{width:100%;background:rgba(0,194,194,.1);border:1px solid rgba(0,194,194,.3);border-radius:8px;padding:7px;color:var(--accent);font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;transition:all .2s;font-weight:500;}
+.popup-view-btn:hover{background:var(--accent);color:#003;}
+.leaflet-control-zoom{border:1px solid var(--border)!important;border-radius:10px!important;overflow:hidden;box-shadow:none!important;}
+.leaflet-control-zoom a{background:var(--panel)!important;color:var(--text)!important;border-bottom:1px solid var(--border)!important;width:32px!important;height:32px!important;line-height:32px!important;font-size:16px!important;}
+.leaflet-control-zoom a:hover{background:var(--card)!important;color:var(--accent)!important;}
+.leaflet-control-zoom-out{border-bottom:none!important;}
+
+
+.fac-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .22s;animation:fadeSlideIn .35s ease both;}
+.fac-card:hover{border-color:rgba(0,194,194,.35);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,15,40,.5);}
+.fac-card-stripe{height:3px;background:var(--stripe-color,var(--accent));}
+.fac-card-body{padding:16px;}
+.fac-card-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:8px;}
+.fac-card-icon{font-size:26px;flex-shrink:0;margin-top:2px;}
+.fac-card-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;line-height:1.35;flex:1;}
+.fac-card-org{font-size:11.5px;color:var(--muted);margin-bottom:10px;}
+.fac-card-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
+.fac-card-desc{font-size:12px;color:rgba(232,234,240,.6);line-height:1.6;}
+.fac-card-footer{padding:10px 16px 14px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);}
+.fac-card-region{font-size:11px;color:var(--muted);}
+.fac-card-deadline{font-size:11px;color:var(--accent-3);background:rgba(240,180,41,.1);border:1px solid rgba(240,180,41,.25);padding:3px 8px;border-radius:6px;}
+.fac-card-amount{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--accent-2);margin-bottom:4px;}
+
+/* TABLE */
+.facilities-table-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border);}
+.facilities-table{width:100%;border-collapse:collapse;font-size:13px;}
+.facilities-table th{text-align:left;padding:12px 16px;font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:500;border-bottom:1px solid var(--border);background:var(--panel);white-space:nowrap;}
+.facilities-table td{padding:13px 16px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.facilities-table tr{transition:background .15s;cursor:pointer;}
+.facilities-table tr:last-child td{border-bottom:none;}
+.facilities-table tr:hover td{background:rgba(255,255,255,.025);}
+.tbl-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;}
+.tbl-org{font-size:11px;color:var(--muted);margin-top:2px;}
+.tbl-amount{font-family:'Syne',sans-serif;font-weight:700;color:var(--accent-2);white-space:nowrap;}
+
+/* Instrument pill dot colors */
+
+
+/* Section header */
+.facilities-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:0; }
+.facilities-title { font-family:'Syne',sans-serif; font-size:20px; font-weight:800; }
+.facilities-title span { color:var(--accent); }
+.facilities-subtitle { color:var(--muted); font-size:13px; margin-top:4px; }
+.facilities-count-chip { background:rgba(0,194,194,.1); border:1px solid rgba(0,194,194,.25); border-radius:20px; padding:6px 14px; font-family:'Syne',sans-serif; font-size:13px; font-weight:700; color:var(--accent); }
+
+/* FACILITIES SECTION */
+.facilities-section{background:var(--ink);padding:40px 40px 80px;border-top:2px solid var(--border);}
+.tab-bar{display:flex;border-bottom:1px solid var(--border);margin-bottom:28px;}
+.tab{padding:16px 22px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;margin-bottom:-1px;}
+.tab:hover{color:var(--text);}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:500;}
+.facilities-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;}
+.fac-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .22s;animation:fadeSlideIn .35s ease both;}
+.fac-card:hover{border-color:rgba(0,194,194,.35);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,15,40,.5);}
+.fac-card-stripe{height:3px;background:var(--stripe-color,var(--accent));}
+.fac-card-body{padding:16px;}
+.fac-card-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:8px;}
+.fac-card-icon{font-size:26px;flex-shrink:0;margin-top:2px;}
+.fac-card-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;line-height:1.35;flex:1;}
+.fac-card-org{font-size:11.5px;color:var(--muted);margin-bottom:10px;}
+.fac-card-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
+.fac-card-desc{font-size:12px;color:rgba(232,234,240,.6);line-height:1.6;}
+.fac-card-footer{padding:10px 16px 14px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);}
+.fac-card-region{font-size:11px;color:var(--muted);}
+.fac-card-deadline{font-size:11px;color:var(--accent-3);background:rgba(240,180,41,.1);border:1px solid rgba(240,180,41,.25);padding:3px 8px;border-radius:6px;}
+.fac-card-amount{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--accent-2);margin-bottom:4px;}
+.facilities-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:0;}
+.facilities-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;}
+.facilities-title span{color:var(--accent);}
+.facilities-subtitle{color:var(--muted);font-size:13px;margin-top:4px;}
+.facilities-count-chip{background:rgba(0,194,194,.1);border:1px solid rgba(0,194,194,.25);border-radius:20px;padding:6px 14px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent);}
+
+/* COLLAPSIBLE FILTERS */
+.filter-group { margin-bottom:4px; }
+.filter-toggle {
+  display:flex; align-items:center; justify-content:space-between;
+  cursor:pointer; padding:9px 0 8px; border-bottom:1px solid var(--border);
+  user-select:none; transition:opacity .15s;
+}
+.filter-toggle:hover { opacity:.8; }
+.filter-toggle-left { display:flex; align-items:center; gap:7px; }
+.filter-toggle-icon { font-size:13px; line-height:1; }
+.filter-toggle-label {
+  font-size:11px; font-weight:600; text-transform:uppercase;
+  letter-spacing:.9px; color:var(--text);
+}
+.filter-toggle-meta {
+  font-size:10px; color:var(--accent); font-weight:600;
+  background:rgba(0,194,194,.12); border:1px solid rgba(0,194,194,.2);
+  border-radius:10px; padding:1px 7px; display:none;
+}
+.filter-toggle-meta.show { display:inline-block; }
+.filter-chevron {
+  color:var(--muted); font-size:10px; transition:transform .25s;
+  line-height:1; flex-shrink:0;
+}
+.filter-group.open .filter-chevron { transform:rotate(180deg); }
+.filter-body {
+  overflow:hidden;
+  max-height:0;
+  transition:max-height .3s cubic-bezier(0.4,0,0.2,1), opacity .25s;
+  opacity:0;
+}
+.filter-group.open .filter-body { max-height:200px; opacity:1; }
+.filter-body .pill-group { padding:10px 0 6px; }
+
+/* MAP SCROLL HINT */
+.map-scroll-hint {
+  position:absolute; inset:0; z-index:400;
+  display:flex; align-items:center; justify-content:center;
+  pointer-events:none; opacity:0; transition:opacity .3s;
+}
+.map-scroll-hint-badge {
+  background:rgba(0,19,31,.82); backdrop-filter:blur(8px);
+  border:1px solid rgba(0,194,194,.4); border-radius:40px;
+  padding:8px 18px; font-size:12px; font-weight:600;
+  color:var(--text); display:flex; align-items:center; gap:8px;
+  box-shadow:0 4px 20px rgba(0,0,0,.4);
+}
+.map-container.map-active .map-scroll-hint { opacity:0; pointer-events:none; }
+.map-container:not(.map-active):hover .map-scroll-hint { opacity:1; }
+.map-lock-icon { font-size:14px; }
+
+/* SIDEBAR FILTER HEADING */
+.sidebar-filter-heading {
+  display:flex; align-items:center; gap:8px;
+  font-family:'Syne',sans-serif; font-size:13px; font-weight:700;
+  text-transform:uppercase; letter-spacing:1.2px; color:var(--accent);
+}
+.sidebar-filter-heading svg { color:var(--accent); flex-shrink:0; }
+.reset-btn{padding:5px 13px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .18s;white-space:nowrap;}
+.reset-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+/* FIND SUPPORT label above search */
+.facilities-search-label {
+  font-family:'Syne',sans-serif; font-size:11px; font-weight:700;
+  text-transform:uppercase; letter-spacing:1px; color:var(--muted);
+  margin-bottom:6px;
+}
+.facilities-search-wrap { display:flex; flex-direction:column; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <img src="logo.png" alt="Global Infrastructure Facility" style="height:56px;width:auto;display:block;"/>
+  </div>
+  <div class="header-stats">
+    <div class="stat-item"><div class="stat-num" id="stat-countries">42</div><div class="stat-label" data-i18n="statCountries">Countries</div></div>
+    <div class="stat-divider"></div>
+    <div class="stat-item"><div class="stat-num" id="stat-funding">$9.4B</div><div class="stat-label" data-i18n="statFunding">Funds Available</div></div>
+    <div class="stat-divider"></div>
+    <div class="stat-item"><div class="stat-num" id="stat-types">5</div><div class="stat-label" data-i18n="statTypes">Support Types</div></div>
+  </div>
+  <div class="header-actions">
+    <button class="btn-ghost btn-submit-fund" onclick="openSubmitModal()" data-i18n="btnSubmit">📋 Submit Fund</button>
+    <a href="index.html" class="btn-home-header" title="Back to Home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </a>
+  </div>
+</header>
+
+
+<!-- ══ TOP: Sidebar + Leaflet Map ══ -->
+<div class="top-section">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-filter-heading">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+        Filter Facilities
+      </div>
+      <button onclick="resetFilters()" id="reset-filters-btn" class="reset-btn" style="display:none;">✕ Reset all</button>
+    </div>
+    <div class="filters-section">
+
+      <div class="filter-group open" data-group="stage">
+        <div class="filter-toggle" onclick="toggleFilter('stage')">
+          <div class="filter-toggle-left">
+            <span class="filter-toggle-icon">🔄</span>
+            <span class="filter-toggle-label">Preparation Stage</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span class="filter-toggle-meta" id="meta-stage"></span>
+            <span class="filter-chevron">▼</span>
+          </div>
+        </div>
+        <div class="filter-body">
+          <div class="pill-group">
+            <button class="pill active" data-filter="stage" data-value="all">All Stages</button>
+            <button class="pill" data-filter="stage" data-value="Identification">Identification</button>
+            <button class="pill" data-filter="stage" data-value="Appraisal">Appraisal & Structuring</button>
+            <button class="pill" data-filter="stage" data-value="Design">Design</button>
+            <button class="pill" data-filter="stage" data-value="Tendering">Tendering</button>
+            <button class="pill" data-filter="stage" data-value="Market Sounding">Market Sounding</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-group open" data-group="region">
+        <div class="filter-toggle" onclick="toggleFilter('region')">
+          <div class="filter-toggle-left">
+            <span class="filter-toggle-icon">🌍</span>
+            <span class="filter-toggle-label">Geographic Region</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span class="filter-toggle-meta" id="meta-region"></span>
+            <span class="filter-chevron">▼</span>
+          </div>
+        </div>
+        <div class="filter-body">
+          <div class="pill-group">
+            <button class="pill active" data-filter="region" data-value="all">All Regions</button>
+            <button class="pill" data-filter="region" data-value="Africa">Africa</button>
+            <button class="pill" data-filter="region" data-value="Asia Pacific">Asia Pacific</button>
+            <button class="pill" data-filter="region" data-value="Latin America">Latin America</button>
+            <button class="pill" data-filter="region" data-value="Europe">Europe</button>
+            <button class="pill" data-filter="region" data-value="Global">Global</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-group open" data-group="support">
+        <div class="filter-toggle" onclick="toggleFilter('support')">
+          <div class="filter-toggle-left">
+            <span class="filter-toggle-icon">💡</span>
+            <span class="filter-toggle-label">Type of Support</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span class="filter-toggle-meta" id="meta-support"></span>
+            <span class="filter-chevron">▼</span>
+          </div>
+        </div>
+        <div class="filter-body">
+          <div class="pill-group">
+            <button class="pill active" data-filter="support" data-value="all">All Types</button>
+            <button class="pill" data-filter="support" data-value="Advisory">In-kind Advisory</button>
+            <button class="pill" data-filter="support" data-value="Reimbursable">Reimbursable Grant</button>
+            <button class="pill" data-filter="support" data-value="Grant">Pure Grant</button>
+            <button class="pill" data-filter="support" data-value="Equity">Equity</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-group open" data-group="sector">
+        <div class="filter-toggle" onclick="toggleFilter('sector')">
+          <div class="filter-toggle-left">
+            <span class="filter-toggle-icon">🏗</span>
+            <span class="filter-toggle-label">Infrastructure Sector</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span class="filter-toggle-meta" id="meta-sector"></span>
+            <span class="filter-chevron">▼</span>
+          </div>
+        </div>
+        <div class="filter-body">
+          <div class="pill-group">
+            <button class="pill active" data-filter="sector" data-value="all">All Sectors</button>
+            <button class="pill" data-filter="sector" data-value="Infrastructure">Infrastructure</button>
+            <button class="pill" data-filter="sector" data-value="Energy">Energy</button>
+            <button class="pill" data-filter="sector" data-value="Water">Water</button>
+            <button class="pill" data-filter="sector" data-value="Finance">Finance</button>
+            <button class="pill" data-filter="sector" data-value="Health">Health</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="active-filters" id="active-filters" style="display:none"></div>
+    <div id="results-list" style="display:none"></div>
+    <div style="padding:16px 20px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;background:rgba(0,194,194,.05);">
+      <div style="font-size:20px;animation:bounce 2s ease-in-out infinite;">↓</div>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--text);">View Full Facilities List</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px;">Scroll down to browse, compare and filter all facilities</div>
+      </div>
+    </div>
+    <style>@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(5px);}}</style>
+  </div>
+
+  <div class="map-container">
+    <div id="map"></div>
+    <div class="map-scroll-hint" id="map-scroll-hint">
+      <div class="map-scroll-hint-badge">
+        <span class="map-lock-icon">🖱️</span> Click to interact with map
+      </div>
+    </div>
+
+    <div class="map-overlay-tr">
+      <div class="map-chip" id="fit-filter-btn" onclick="zoomToRegion()">🎯 Fit to Filter</div>
+      <div class="map-chip" id="layer-toggle" onclick="toggleLayer()">🛰 Satellite</div>
+    </div>
+
+    <div class="map-overlay-bl">
+      <button class="toolbar-btn" id="theme-btn" onclick="toggleTheme()">☀️ <span data-i18n="themeLight">Light mode</span></button>
+    </div>
+
+    </div><!-- close map-container -->
+  </div><!-- close top-section -->
+
+  <!-- DETAIL MODAL -->
+  <div class="detail-overlay" id="detail-overlay" onclick="handleOverlayClick(event)">
+    <div class="detail-panel" id="detail-panel">
+      <div class="detail-header">
+        <div>
+          <div class="detail-type-bar" id="detail-types"></div>
+          <div class="detail-title" id="detail-title"></div>
+          <div class="detail-org" id="detail-org"></div>
+        </div>
+        <div class="detail-close" onclick="closeDetail()">✕</div>
+      </div>
+      <div class="detail-body">
+        <div class="detail-highlight" id="detail-highlight"></div>
+        <div class="detail-desc" id="detail-desc"></div>
+        <div class="detail-eligibility"><h4>Eligibility Criteria</h4><div id="detail-elig"></div></div>
+        <div class="detail-actions">
+          <button class="btn-primary">Contact →</button>
+          <button class="btn-ghost">📌 Save</button>
+          <button class="btn-ghost">🔗 Share</button>
+        </div>
+      </div>
+    </div><!-- close detail-panel -->
+  </div><!-- close detail-overlay -->
+
+<!-- SVG MAP REMOVED -->
+<div class="worldmap-section" style="display:none">
+  <div class="section-header">
+    <div>
+      <div class="section-title">Global <span>Coverage Overview</span></div>
+      <div class="section-subtitle">Click any country or region stat to filter · Hover over dots for facility preview · Scroll down to browse all facilities</div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <button class="btn-ghost" onclick="resetSvgFilter()">🔄 Reset</button>
+    </div>
+  </div>
+
+  <div class="svg-map-wrapper">
+    <div class="svg-map-header">
+      <div>
+        <div class="svg-map-header-title">Facility Distribution by Geography</div>
+        <div class="svg-map-header-sub" id="svg-map-sub">Showing all 15 active facilities across 5 regions · Click countries or dots to explore</div>
+      </div>
+      <div class="svg-map-header-pills">
+        <span class="tag tag-grant">● Grants</span>
+        <span class="tag tag-loan">● Loans</span>
+        <span class="tag tag-technical">● Technical</span>
+        <span class="tag tag-advisory">● Advisory</span>
+        <span class="tag tag-blended">● Blended</span>
+      </div>
+    </div>
+
+    <div id="world-svg-container">
+      <div class="svg-tooltip" id="svg-tooltip">
+        <div class="svg-tooltip-title" id="tt-title"></div>
+        <div class="svg-tooltip-row"><span>Organisation</span><span id="tt-org"></span></div>
+        <div class="svg-tooltip-row"><span>Support</span><span id="tt-support"></span></div>
+        <div class="svg-tooltip-row"><span>Funding</span><span id="tt-amount"></span></div>
+        <div class="svg-tooltip-row"><span>Deadline</span><span id="tt-deadline"></span></div>
+      </div>
+
+      <svg viewBox="0 0 1010 510" xmlns="http://www.w3.org/2000/svg" id="world-map-svg">
+        <defs>
+          <radialGradient id="bg-grad" cx="50%" cy="38%" r="65%">
+            <stop offset="0%" stop-color="#131b2e"/>
+            <stop offset="100%" stop-color="#07090e"/>
+          </radialGradient>
+        </defs>
+        <rect width="1010" height="510" fill="url(#bg-grad)"/>
+        <!-- grid -->
+        <g stroke="rgba(99,179,237,0.04)" stroke-width="0.8">
+          <line x1="0" y1="85" x2="1010" y2="85"/><line x1="0" y1="170" x2="1010" y2="170"/>
+          <line x1="0" y1="255" x2="1010" y2="255"/><line x1="0" y1="340" x2="1010" y2="340"/>
+          <line x1="0" y1="425" x2="1010" y2="425"/>
+          <line x1="202" y1="0" x2="202" y2="510"/><line x1="404" y1="0" x2="404" y2="510"/>
+          <line x1="606" y1="0" x2="606" y2="510"/><line x1="808" y1="0" x2="808" y2="510"/>
+        </g>
+
+        <!-- NORTH AMERICA -->
+        <path class="svg-country" data-name="Canada" data-region="North America" d="M80,30 L240,28 L250,50 L255,72 L242,84 L222,78 L200,88 L178,80 L155,88 L132,80 L110,88 L96,80 L82,64 Z"/>
+        <path class="svg-country has-data" data-name="USA" data-region="North America" d="M82,88 L248,80 L255,96 L258,112 L248,128 L240,144 L222,149 L200,146 L175,150 L150,146 L125,150 L100,146 L83,138 L74,116 Z"/>
+        <path class="svg-country" data-name="Mexico" data-region="North America" d="M84,150 L200,146 L210,160 L205,175 L192,186 L165,190 L138,186 L118,180 L105,168 Z"/>
+
+        <!-- LATIN AMERICA -->
+        <path class="svg-country" data-name="Central America" data-region="Latin America" d="M118,190 L190,186 L196,202 L190,215 L165,218 L138,214 Z"/>
+        <path class="svg-country has-data" data-name="Colombia" data-region="Latin America" d="M138,218 L192,214 L198,230 L192,245 L168,248 L140,242 Z"/>
+        <path class="svg-country has-data" data-name="Brazil" data-region="Latin America" d="M155,248 L252,225 L272,242 L278,265 L272,295 L258,318 L236,325 L210,320 L185,312 L162,298 L148,272 Z"/>
+        <path class="svg-country has-data" data-name="Peru" data-region="Latin America" d="M130,248 L155,244 L162,260 L158,280 L142,288 L126,280 Z"/>
+        <path class="svg-country" data-name="Chile" data-region="Latin America" d="M138,288 L155,282 L158,318 L148,388 L132,370 Z"/>
+        <path class="svg-country" data-name="Argentina" data-region="Latin America" d="M148,318 L214,316 L218,345 L208,372 L188,385 L165,382 L148,365 Z"/>
+
+        <!-- EUROPE -->
+        <path class="svg-country has-data" data-name="UK &amp; Ireland" data-region="Europe" d="M342,52 L368,48 L374,65 L362,76 L344,72 Z"/>
+        <path class="svg-country has-data" data-name="France" data-region="Europe" d="M348,76 L396,72 L402,90 L392,108 L365,112 Z"/>
+        <path class="svg-country has-data" data-name="Germany" data-region="Europe" d="M388,58 L435,54 L440,72 L432,90 L400,92 Z"/>
+        <path class="svg-country" data-name="Spain &amp; Portugal" data-region="Europe" d="M330,108 L392,104 L396,122 L380,136 L345,138 Z"/>
+        <path class="svg-country" data-name="Italy" data-region="Europe" d="M388,108 L415,104 L420,122 L416,142 L402,155 L388,142 Z"/>
+        <path class="svg-country has-data" data-name="Ukraine" data-region="Europe" d="M428,64 L495,58 L502,78 L495,98 L458,102 Z"/>
+        <path class="svg-country" data-name="Poland" data-region="Europe" d="M416,55 L458,50 L462,68 L450,82 L418,80 Z"/>
+        <path class="svg-country" data-name="Scandinavia" data-region="Europe" d="M384,18 L440,14 L448,36 L432,48 L388,45 Z"/>
+
+        <!-- MIDDLE EAST -->
+        <path class="svg-country has-data" data-name="Saudi Arabia" data-region="Middle East" d="M484,128 L552,124 L560,148 L552,168 L525,175 L496,170 Z"/>
+        <path class="svg-country has-data" data-name="UAE &amp; Gulf" data-region="Middle East" d="M550,148 L578,144 L582,162 L562,168 Z"/>
+        <path class="svg-country" data-name="Iran" data-region="Middle East" d="M502,100 L560,96 L565,115 L555,128 L525,130 Z"/>
+        <path class="svg-country" data-name="Turkey" data-region="Middle East" d="M446,88 L506,84 L510,100 L500,112 L448,110 Z"/>
+        <path class="svg-country" data-name="Iraq &amp; Syria" data-region="Middle East" d="M480,112 L520,108 L525,126 L510,132 Z"/>
+
+        <!-- AFRICA -->
+        <path class="svg-country" data-name="Morocco &amp; Algeria" data-region="Africa" d="M330,138 L388,134 L392,158 L375,170 L332,165 Z"/>
+        <path class="svg-country" data-name="Libya &amp; Egypt" data-region="Africa" d="M388,134 L462,128 L468,152 L455,165 L388,162 Z"/>
+        <path class="svg-country has-data" data-name="West Africa" data-region="Africa" d="M330,170 L395,165 L400,190 L388,210 L358,215 L332,210 Z"/>
+        <path class="svg-country has-data" data-name="Nigeria" data-region="Africa" d="M390,185 L428,180 L435,202 L422,220 L392,222 Z"/>
+        <path class="svg-country" data-name="Central Africa" data-region="Africa" d="M400,220 L462,215 L468,248 L452,265 L412,268 Z"/>
+        <path class="svg-country has-data" data-name="Ethiopia &amp; Horn" data-region="Africa" d="M462,182 L505,178 L512,200 L500,215 Z"/>
+        <path class="svg-country has-data" data-name="Kenya &amp; Tanzania" data-region="Africa" d="M462,215 L508,210 L515,240 L500,258 L462,255 Z"/>
+        <path class="svg-country" data-name="Southern Africa" data-region="Africa" d="M408,268 L468,262 L475,295 L460,318 L430,322 Z"/>
+        <path class="svg-country has-data" data-name="South Africa" data-region="Africa" d="M418,322 L468,318 L472,345 L455,358 L425,360 Z"/>
+
+        <!-- ASIA PACIFIC -->
+        <path class="svg-country has-data" data-name="India" data-region="Asia Pacific" d="M572,118 L638,112 L645,138 L638,170 L618,192 L592,198 L565,185 Z"/>
+        <path class="svg-country has-data" data-name="China" data-region="Asia Pacific" d="M618,65 L748,58 L758,85 L752,118 L722,128 L678,130 L635,120 Z"/>
+        <path class="svg-country" data-name="Pakistan &amp; Afghanistan" data-region="Asia Pacific" d="M558,105 L615,100 L618,118 L604,132 Z"/>
+        <path class="svg-country" data-name="Central Asia" data-region="Asia Pacific" d="M532,72 L618,64 L620,100 L558,105 Z"/>
+        <path class="svg-country has-data" data-name="Bangladesh &amp; Myanmar" data-region="Asia Pacific" d="M635,130 L670,125 L675,148 L655,160 Z"/>
+        <path class="svg-country has-data" data-name="Vietnam &amp; Thailand" data-region="Asia Pacific" d="M668,138 L702,132 L708,162 L695,180 Z"/>
+        <path class="svg-country" data-name="Japan &amp; Korea" data-region="Asia Pacific" d="M772,78 L808,72 L815,95 L800,108 Z"/>
+        <path class="svg-country has-data" data-name="Philippines" data-region="Asia Pacific" d="M735,158 L762,152 L770,175 L752,188 Z"/>
+        <path class="svg-country has-data" data-name="Indonesia" data-region="Asia Pacific" d="M695,208 L775,200 L785,222 L772,238 L735,240 Z"/>
+        <path class="svg-country" data-name="Australia" data-region="Asia Pacific" d="M725,272 L828,265 L840,295 L828,328 L795,338 L752,332 L728,308 Z"/>
+        <path class="svg-country" data-name="New Zealand" data-region="Asia Pacific" d="M858,330 L875,318 L882,340 L865,352 Z"/>
+
+        <!-- Facility dots rendered by JS -->
+        <g id="svg-facility-dots"></g>
+
+        <!-- Region labels -->
+        <text x="162" y="168" fill="rgba(99,179,237,0.25)" font-size="9" font-family="sans-serif" text-anchor="middle" font-weight="600" letter-spacing="1.5">NORTH AMERICA</text>
+        <text x="192" y="295" fill="rgba(99,179,237,0.25)" font-size="9" font-family="sans-serif" text-anchor="middle" font-weight="600" letter-spacing="1.5">LATIN AMERICA</text>
+        <text x="408" y="44" fill="rgba(99,179,237,0.25)" font-size="9" font-family="sans-serif" text-anchor="middle" font-weight="600" letter-spacing="1.5">EUROPE</text>
+        <text x="520" y="142" fill="rgba(99,179,237,0.25)" font-size="9" font-family="sans-serif" text-anchor="middle" font-weight="600" letter-spacing="1.5">MIDDLE EAST</text>
+        <text x="412" y="245" fill="rgba(99,179,237,0.25)" font-size="9" font-family="sans-serif" text-anchor="middle" font-weight="600" letter-spacing="1.5">AFRICA</text>
+        <text x="695" y="148" fill="rgba(99,179,237,0.25)" font-size="9" font-family="sans-serif" text-anchor="middle" font-weight="600" letter-spacing="1.5">ASIA PACIFIC</text>
+      </svg>
+    </div>
+
+    <div class="region-stats">
+      <div class="region-stat" data-rstat="Africa" onclick="clickRegionStat('Africa',this)">
+        <div class="rs-name">🌍 Africa</div><div class="rs-count">5</div><div class="rs-amount">$1.8B</div>
+      </div>
+      <div class="region-stat" data-rstat="Asia Pacific" onclick="clickRegionStat('Asia Pacific',this)">
+        <div class="rs-name">🌏 Asia Pacific</div><div class="rs-count">4</div><div class="rs-amount">$3.2B</div>
+      </div>
+      <div class="region-stat" data-rstat="Latin America" onclick="clickRegionStat('Latin America',this)">
+        <div class="rs-name">🌎 Latin America</div><div class="rs-count">3</div><div class="rs-amount">$820M</div>
+      </div>
+      <div class="region-stat" data-rstat="Europe" onclick="clickRegionStat('Europe',this)">
+        <div class="rs-name">🏛 Europe</div><div class="rs-count">2</div><div class="rs-amount">$450M</div>
+      </div>
+      <div class="region-stat" data-rstat="Middle East" onclick="clickRegionStat('Middle East',this)">
+        <div class="rs-name">🕌 Middle East</div><div class="rs-count">1</div><div class="rs-amount">$1.5B</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- ══ FACILITIES SECTION ══ -->
+<div class="facilities-section">
+  <div class="facilities-header">
+    <div>
+      <div class="facilities-title">All <span>Facilities</span></div>
+      <div class="facilities-subtitle">Browse, filter, and compare available project preparation support</div>
+    </div>
+    <div class="facilities-search-wrap">
+      <div class="facilities-search-label">🔍 Find Support</div>
+      <div class="search-box" style="width:300px;">
+        <span class="search-icon" style="font-size:13px;">🔍</span>
+        <input type="text" id="search-input" placeholder="Search facilities, organisations…"/>
+      </div>
+    </div>
+    <div id="facilities-count-chip" class="facilities-count-chip">15 facilities</div>
+  </div>
+  <div class="tab-bar">
+    <div class="tab active" onclick="switchTab('grid',this)">⊞ Grid View</div>
+    <div class="tab" onclick="switchTab('table',this)">☰ Table View</div>
+  </div>
+  <div id="grid-view"><div class="facilities-grid" id="facilities-grid"></div></div>
+  <div id="table-view" style="display:none">
+    <div class="facilities-table-wrap">
+      <table class="facilities-table">
+        <thead><tr><th>#</th><th>Facility</th><th>Region</th><th>Sector</th><th>Support Instruments</th><th>Climate</th><th>Geo Scope</th><th>Status</th></tr></thead>
+        <tbody id="facilities-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- FLOATING TOOLBAR -->
+
+<!-- SUBMIT FUND MODAL -->
+<div class="modal-overlay" id="submit-modal">
+  <div class="modal">
+    <div id="modal-form-view">
+      <div class="modal-header">
+        <div>
+          <div class="modal-icon">📋</div>
+          <div class="modal-title" data-i18n="modalTitle">Submit a <span>Fund</span></div>
+          <div class="modal-subtitle" data-i18n="modalSubtitle">Share a project preparation facility with the global community. All submissions are reviewed within 5–7 business days.</div>
+        </div>
+        <div class="modal-close" onclick="closeSubmitModal()">✕</div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-info-box">
+          <strong>📌 Submission Guidelines:</strong>
+          <ul>
+            <li>Provide accurate, verifiable information from official sources</li>
+            <li>Only submit facilities that are currently active or open for applications</li>
+            <li>Include links to official mandate documents or calls for proposals</li>
+          </ul>
+        </div>
+
+        <div class="msec-title">Facility Identity</div>
+        <div class="form-row full">
+          <div class="form-field">
+            <label class="form-label">Facility / Fund Name <span class="req">*</span></label>
+            <input class="form-input" id="f-name" placeholder="e.g. ADB Asia Pacific Project Preparation Facility"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Managing Organisation <span class="req">*</span></label>
+            <input class="form-input" id="f-org" placeholder="e.g. Asian Development Bank"/>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Year Established</label>
+            <input class="form-input" id="f-year" type="number" placeholder="e.g. 2014" min="1960" max="2030"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Official Website <span class="req">*</span></label>
+            <input class="form-input" id="f-url" placeholder="https://"/>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Primary Sector</label>
+            <select class="form-select" id="f-sector">
+              <option value="">Select sector…</option>
+              <option>Infrastructure</option><option>Energy</option>
+              <option>Water</option><option>Finance</option>
+              <option>Health</option><option>Cross-sectoral</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="msec-title">Support Instruments</div>
+        <div class="form-row" style="grid-template-columns:1fr 1fr;">
+          <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;">
+            <input type="checkbox" id="fi-inkind" style="accent-color:var(--accent);width:15px;height:15px;cursor:pointer;">
+            <label for="fi-inkind" style="font-size:12px;cursor:pointer;color:var(--text);">In-kind Technical Advisory</label>
+          </div>
+          <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;">
+            <input type="checkbox" id="fi-grant" style="accent-color:#4dd9ac;width:15px;height:15px;cursor:pointer;">
+            <label for="fi-grant" style="font-size:12px;cursor:pointer;color:var(--text);">Pure Grants</label>
+          </div>
+          <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;">
+            <input type="checkbox" id="fi-reimb" style="accent-color:#f0b429;width:15px;height:15px;cursor:pointer;">
+            <label for="fi-reimb" style="font-size:12px;cursor:pointer;color:var(--text);">Reimbursable Grants</label>
+          </div>
+          <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;">
+            <input type="checkbox" id="fi-equity" style="accent-color:#e05c1a;width:15px;height:15px;cursor:pointer;">
+            <label for="fi-equity" style="font-size:12px;cursor:pointer;color:var(--text);">Early-stage Equity</label>
+          </div>
+        </div>
+
+        <div class="msec-title">Preparation Stages Covered</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
+            <input type="checkbox" id="ps-id" style="accent-color:var(--accent);width:14px;height:14px;cursor:pointer;">
+            <label for="ps-id" style="font-size:11.5px;cursor:pointer;color:var(--text);">2. Identification &amp; Screening</label>
+          </div>
+          <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
+            <input type="checkbox" id="ps-prefeas" style="accent-color:var(--accent);width:14px;height:14px;cursor:pointer;">
+            <label for="ps-prefeas" style="font-size:11.5px;cursor:pointer;color:var(--text);">2.1 Pre-feasibility</label>
+          </div>
+          <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
+            <input type="checkbox" id="ps-appr" style="accent-color:var(--accent);width:14px;height:14px;cursor:pointer;">
+            <label for="ps-appr" style="font-size:11.5px;cursor:pointer;color:var(--text);">3. Appraisal &amp; Structuring</label>
+          </div>
+          <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
+            <input type="checkbox" id="ps-feas" style="accent-color:var(--accent);width:14px;height:14px;cursor:pointer;">
+            <label for="ps-feas" style="font-size:11.5px;cursor:pointer;color:var(--text);">3.1 Detailed Feasibility</label>
+          </div>
+          <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
+            <input type="checkbox" id="ps-design" style="accent-color:var(--accent);width:14px;height:14px;cursor:pointer;">
+            <label for="ps-design" style="font-size:11.5px;cursor:pointer;color:var(--text);">3.2 Full Design</label>
+          </div>
+          <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
+            <input type="checkbox" id="ps-contract" style="accent-color:var(--accent);width:14px;height:14px;cursor:pointer;">
+            <label for="ps-contract" style="font-size:11.5px;cursor:pointer;color:var(--text);">4. Contract Drafting</label>
+          </div>
+          <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
+            <input type="checkbox" id="ps-tender" style="accent-color:var(--accent);width:14px;height:14px;cursor:pointer;">
+            <label for="ps-tender" style="font-size:11.5px;cursor:pointer;color:var(--text);">4.2 Tendering</label>
+          </div>
+          <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
+            <input type="checkbox" id="ps-market" style="accent-color:var(--accent);width:14px;height:14px;cursor:pointer;">
+            <label for="ps-market" style="font-size:11.5px;cursor:pointer;color:var(--text);">4.3 Market Sounding</label>
+          </div>
+        </div>
+
+        <div class="msec-title">Geographic Coverage</div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Geographic Scope <span class="req">*</span></label>
+            <select class="form-select" id="f-geoscope">
+              <option value="">Select scope…</option>
+              <option>Global</option><option>Multi-regions</option>
+              <option>One region</option><option>Multi-country</option>
+              <option>National</option><option>Subnational</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="form-label">All EMDEs / LMICs?</label>
+            <select class="form-select" id="f-emdes">
+              <option value="">Select…</option>
+              <option>Yes</option><option>No</option>
+              <option>Mostly</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="form-field">
+            <label class="form-label">Regions Covered</label>
+            <input class="form-input" id="f-regions" placeholder="e.g. Africa; East Asia Pacific; South Asia"/>
+          </div>
+        </div>
+
+        <div class="msec-title">Climate &amp; Thematic Focus</div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Climate Mandate</label>
+            <select class="form-select" id="f-climate">
+              <option value="">Select…</option>
+              <option>Only</option><option>Mostly</option>
+              <option>Included</option><option>Not specified</option><option>No</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="form-label">PCM Mandate</label>
+            <select class="form-select" id="f-pcm">
+              <option value="">Select…</option>
+              <option>Yes 100%</option><option>Yes strong focus</option>
+              <option>Yes included</option><option>No</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="form-field">
+            <label class="form-label">Thematic / Vertical Focus</label>
+            <input class="form-input" id="f-thematic" placeholder="e.g. Green infrastructure, Urban, Energy, Regional infrastructure"/>
+          </div>
+        </div>
+
+        <div class="msec-title">Description &amp; Eligibility</div>
+        <div class="form-row full">
+          <div class="form-field">
+            <label class="form-label">Facility Description <span class="req">*</span></label>
+            <textarea class="form-textarea" id="f-desc" placeholder="Describe the facility's mandate, objectives, and preparation activities supported (feasibility studies, structuring, advisory, etc.)…" style="min-height:80px;"></textarea>
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="form-field">
+            <label class="form-label">Eligibility Criteria</label>
+            <textarea class="form-textarea" id="f-elig" placeholder="Who can apply — government agencies, private sector, specific country groupings, co-financing requirements…"></textarea>
+          </div>
+        </div>
+
+        <div class="msec-title">Your Contact</div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Your Name <span class="req">*</span></label>
+            <input class="form-input" id="f-contact" placeholder="Full name"/>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Email Address <span class="req">*</span></label>
+            <input class="form-input" id="f-email" type="email" placeholder="you@organisation.org"/>
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="form-field">
+            <label class="form-label">Supporting Links / Documents</label>
+            <textarea class="form-textarea" id="f-notes" placeholder="Links to mandate documents, calls for proposals, annual reports…" style="min-height:52px;"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-ghost" onclick="closeSubmitModal()" data-i18n="btnCancel">Cancel</button>
+        <button class="btn-primary" onclick="submitFund()" data-i18n="btnSubmitFund">📤 Submit Fund</button>
+      </div>
+    </div>
+    <div class="modal-success" id="modal-success-view">
+      <div class="success-icon">✅</div>
+      <div class="success-title" data-i18n="successTitle">Submission Received!</div>
+      <div class="success-sub" data-i18n="successSub">Thank you for contributing to the Project Preparation Facilities Navigator. Our editorial team will review your submission within 5–7 business days. You'll receive a confirmation email shortly.</div>
+      <div style="margin-top:24px;display:flex;gap:10px;">
+        <button class="btn-primary" onclick="closeSubmitModal()" data-i18n="btnDone">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── I18N ─────────────────────────────────────────────────
+const i18n = {
+  en: {
+    appTitle:'Project Preparation Facilities <span>Navigator</span>',
+    statFacilities:'Facilities', statCountries:'Countries', statFunding:'Available', statTypes:'Support Types',
+    btnSubmit:'📋 Submit Fund', themeDark:'Dark mode', themeLight:'Light mode',
+    findSupport:'Find Support', searchPlaceholder:'Search facilities, organisations…',
+    labelRegion:'🌍 Region', labelSupport:'💡 Support Available', labelSector:'🏭 Sector', labelInstrument:'💰 Financing Instrument',
+    allRegions:'All', allTypes:'All Types', allInstruments:'All Instruments', allSectors:'All Sectors',
+    facilitiesFound:'facilities found', facilityFound:'facility found',
+    facilitiesTitle:'All <span>Facilities</span>', facilitiesSubtitle:'Browse, filter, and compare available project preparation support',
+    gridView:'⊞ Grid View', tableView:'☰ Table View', sortLabel:'Sort ↕',
+    supportType:'Support Type', grants:'Grants', concessionalLoans:'Concessional Loans',
+    technicalAssistance:'Technical Assistance', advisoryServices:'Advisory Services', blendedFinance:'Blended Finance',
+    fitFilter:'🎯 Fit to Filter', satellite:'🛰 Satellite', streetMap:'🗺 Street',
+    modalTitle:'Submit a <span>Fund</span>',
+    modalSubtitle:'Share a project preparation facility with the global community. All submissions are reviewed within 5–7 business days.',
+    infoTitle:'📌 Submission Guidelines:',
+    info1:'Provide accurate, verifiable information from official sources',
+    info2:'Include the official fund name exactly as published by the institution',
+    info3:'Attach or link supporting documentation (mandate, guidelines, call for proposals)',
+    info4:'Only submit funds that are currently active or open for applications',
+    info5:'Duplicate submissions will be merged with existing records',
+    sec1:'Fund Information', sec2:'Financing Details', sec3:'Description & Eligibility', sec4:'Your Contact',
+    'f-name':'Fund / Facility Name','f-org':'Managing Organisation','f-website':'Official Website / URL',
+    'f-region':'Region','f-sector':'Primary Sector','f-type':'Support / Instrument Type',
+    'f-amount':'Total Envelope / Amount','f-min':'Minimum Project Size','f-deadline':'Application Deadline',
+    'f-desc':'Fund Description','f-desc-hint':'Minimum 80 words recommended. Clear descriptions improve discoverability.',
+    'f-elig':'Eligibility Criteria','f-contact':'Your Name','f-email':'Email Address','f-notes':'Additional Notes or Document Links',
+    selectRegion:'Select region…', selectSector:'Select sector…', selectType:'Select type…',
+    btnCancel:'Cancel', btnSubmitFund:'📤 Submit Fund', btnDone:'Done',
+    successTitle:'Submission Received!',
+    successSub:"Thank you for contributing to the Project Preparation Facilities Navigator. Our editorial team will review your submission within 5–7 business days. You'll receive a confirmation email shortly.",
+  },
+  es: {
+    appTitle:'Preparación de Proyectos <span>Navigator</span>',
+    statFacilities:'Instalaciones', statCountries:'Países', statFunding:'Disponible', statTypes:'Tipos de Apoyo',
+    btnSubmit:'📋 Enviar Fondo', themeDark:'Modo oscuro', themeLight:'Modo claro',
+    findSupport:'Buscar Apoyo', searchPlaceholder:'Buscar instalaciones, organizaciones…',
+    labelRegion:'🌍 Región', labelSupport:'💡 Apoyo Disponible', labelSector:'🏭 Sector', labelInstrument:'💰 Instrumento de Financiación',
+    allRegions:'Todos', allTypes:'Todos los Tipos', allInstruments:'Todos los Instrumentos', allSectors:'Todos los Sectores',
+    facilitiesFound:'instalaciones encontradas', facilityFound:'instalación encontrada',
+    facilitiesTitle:'Todas las <span>Instalaciones</span>', facilitiesSubtitle:'Explore, filtre y compare el apoyo disponible para la preparación de proyectos',
+    gridView:'⊞ Cuadrícula', tableView:'☰ Tabla', sortLabel:'Ordenar ↕',
+    supportType:'Tipo de Apoyo', grants:'Subvenciones', concessionalLoans:'Préstamos Concesionales',
+    technicalAssistance:'Asistencia Técnica', advisoryServices:'Servicios de Asesoría', blendedFinance:'Finanzas Mixtas',
+    fitFilter:'🎯 Ajustar al Filtro', satellite:'🛰 Satélite', streetMap:'🗺 Mapa',
+    modalTitle:'Enviar un <span>Fondo</span>',
+    modalSubtitle:'Comparta una instalación de preparación de proyectos con la comunidad global. Todas las presentaciones son revisadas en 5–7 días hábiles.',
+    infoTitle:'📌 Directrices de Envío:',
+    info1:'Proporcione información precisa y verificable de fuentes oficiales',
+    info2:'Incluya el nombre oficial del fondo tal como lo publica la institución',
+    info3:'Adjunte o enlace documentación de respaldo (mandato, directrices, convocatoria)',
+    info4:'Solo envíe fondos que estén actualmente activos o abiertos para solicitudes',
+    info5:'Los envíos duplicados se fusionarán con los registros existentes',
+    sec1:'Información del Fondo', sec2:'Detalles de Financiación', sec3:'Descripción y Elegibilidad', sec4:'Su Contacto',
+    'f-name':'Nombre del Fondo','f-org':'Organización Gestora','f-website':'Sitio Web Oficial / URL',
+    'f-region':'Región','f-sector':'Sector Principal','f-type':'Tipo de Apoyo / Instrumento',
+    'f-amount':'Monto Total','f-min':'Tamaño Mínimo del Proyecto','f-deadline':'Fecha Límite',
+    'f-desc':'Descripción del Fondo','f-desc-hint':'Se recomiendan al menos 80 palabras.',
+    'f-elig':'Criterios de Elegibilidad','f-contact':'Su Nombre','f-email':'Correo Electrónico','f-notes':'Notas Adicionales',
+    selectRegion:'Seleccionar región…', selectSector:'Seleccionar sector…', selectType:'Seleccionar tipo…',
+    btnCancel:'Cancelar', btnSubmitFund:'📤 Enviar Fondo', btnDone:'Listo',
+    successTitle:'¡Envío Recibido!',
+    successSub:'Gracias por contribuir al Navegador de Instalaciones. Nuestro equipo revisará su envío en 5–7 días hábiles.',
+  },
+  fr: {
+    appTitle:'Préparation de Projets <span>Navigator</span>',
+    statFacilities:'Installations', statCountries:'Pays', statFunding:'Disponible', statTypes:'Types de Soutien',
+    btnSubmit:'📋 Soumettre un Fonds', themeDark:'Mode sombre', themeLight:'Mode clair',
+    findSupport:'Trouver un Soutien', searchPlaceholder:'Rechercher installations, organisations…',
+    labelRegion:'🌍 Région', labelSupport:'💡 Soutien Disponible', labelSector:'🏭 Secteur', labelInstrument:'💰 Instrument de Financement',
+    allRegions:'Tous', allTypes:'Tous les Types', allInstruments:'Tous les Instruments', allSectors:'Tous les Secteurs',
+    facilitiesFound:'installations trouvées', facilityFound:'installation trouvée',
+    facilitiesTitle:'Toutes les <span>Installations</span>', facilitiesSubtitle:'Parcourez, filtrez et comparez le soutien disponible à la préparation de projets',
+    gridView:'⊞ Vue Grille', tableView:'☰ Vue Tableau', sortLabel:'Trier ↕',
+    supportType:'Type de Soutien', grants:'Subventions', concessionalLoans:'Prêts Concessionnels',
+    technicalAssistance:'Assistance Technique', advisoryServices:'Services Consultatifs', blendedFinance:'Finance Mixte',
+    fitFilter:'🎯 Ajuster au Filtre', satellite:'🛰 Satellite', streetMap:'🗺 Carte',
+    modalTitle:'Soumettre un <span>Fonds</span>',
+    modalSubtitle:'Partagez une installation avec la communauté mondiale. Toutes les soumissions sont examinées sous 5 à 7 jours ouvrables.',
+    infoTitle:'📌 Directives de Soumission :',
+    info1:'Fournissez des informations exactes et vérifiables provenant de sources officielles',
+    info2:"Incluez le nom officiel du fonds tel que publié par l'institution",
+    info3:'Joignez ou liez la documentation justificative (mandat, directives, appel à propositions)',
+    info4:'Ne soumettez que des fonds actuellement actifs ou ouverts aux candidatures',
+    info5:'Les soumissions en double seront fusionnées avec les enregistrements existants',
+    sec1:'Informations sur le Fonds', sec2:'Détails du Financement', sec3:'Description et Éligibilité', sec4:'Vos Coordonnées',
+    'f-name':'Nom du Fonds','f-org':'Organisation Gestionnaire','f-website':'Site Web Officiel / URL',
+    'f-region':'Région','f-sector':'Secteur Principal','f-type':'Type de Soutien / Instrument',
+    'f-amount':'Enveloppe Totale','f-min':'Taille Minimale du Projet','f-deadline':'Date Limite',
+    'f-desc':'Description du Fonds','f-desc-hint':'Un minimum de 80 mots est recommandé.',
+    'f-elig':"Critères d'Éligibilité",'f-contact':'Votre Nom','f-email':'Adresse Email','f-notes':'Notes Supplémentaires',
+    selectRegion:'Sélectionner une région…', selectSector:'Sélectionner un secteur…', selectType:'Sélectionner un type…',
+    btnCancel:'Annuler', btnSubmitFund:'📤 Soumettre le Fonds', btnDone:'Terminer',
+    successTitle:'Soumission Reçue !',
+    successSub:"Merci de contribuer au Navigateur des Installations. Notre équipe examinera votre soumission sous 5 à 7 jours ouvrables.",
+  }
+};
+
+let currentLang = 'en';
+let isLight = false;
+function t(k){ return i18n[currentLang][k] || i18n.en[k] || k; }
+
+function applyTranslations(){
+  // logo
+  document.querySelector('.logo-text').innerHTML = t('appTitle');
+  // header stats labels
+  document.querySelector('[data-i18n="statFacilities"]').textContent = t('statFacilities');
+  document.querySelector('[data-i18n="statCountries"]').textContent = t('statCountries');
+  document.querySelector('[data-i18n="statFunding"]').textContent = t('statFunding');
+  document.querySelector('[data-i18n="statTypes"]').textContent = t('statTypes');
+  // header btn
+  document.querySelector('[data-i18n="btnSubmit"]').innerHTML = t('btnSubmit');
+  // theme btn
+  const tbtn = document.getElementById('theme-btn');
+  if(tbtn) tbtn.innerHTML = isLight ? '🌙 '+t('themeDark') : '☀️ '+t('themeLight');
+  // sidebar
+  const st = document.querySelector('.sidebar-title');
+  if(st) st.textContent = t('findSupport');
+  const si = document.getElementById('search-input');
+  if(si) si.placeholder = t('searchPlaceholder');
+  // filter labels (4 of them)
+  const fl = document.querySelectorAll('.filter-label');
+  if(fl[0]) fl[0].textContent = t('labelRegion');
+  if(fl[1]) fl[1].textContent = t('labelSupport');
+  if(fl[2]) fl[2].textContent = t('labelSector');
+  if(fl[3]) fl[3].textContent = t('labelInstrument');
+  // all pills
+  const rar = document.querySelector('[data-filter="region"][data-value="all"]'); if(rar) rar.textContent = t('allRegions');
+  const sar = document.querySelector('[data-filter="support"][data-value="all"]'); if(sar) sar.textContent = t('allTypes');
+  const iar = document.querySelector('[data-filter="instrument"][data-value="all"]'); if(iar) iar.textContent = t('allInstruments');
+  const sfr = document.querySelector('[data-filter="sector"][data-value="all"]'); if(sfr) sfr.textContent = t('allSectors');
+  // sort btn
+  const sb = document.querySelector('.sort-btn'); if(sb) sb.textContent = t('sortLabel');
+  // legend
+  const lt = document.querySelector('.legend-title'); if(lt) lt.textContent = t('supportType');
+  const lis = document.querySelectorAll('.legend-item');
+  const lk=['grants','concessionalLoans','technicalAssistance','advisoryServices','blendedFinance'];
+  lis.forEach((li,i)=>{ const d=li.querySelector('.legend-dot'); if(d&&lk[i]){li.innerHTML=''; li.appendChild(d); li.append(' '+t(lk[i]));} });
+  // map chips
+  const ltog = document.getElementById('layer-toggle');
+  if(ltog) ltog.textContent = isSatellite ? t('streetMap') : t('satellite');
+  const ffb = document.getElementById('fit-filter-btn'); if(ffb) ffb.textContent = t('fitFilter');
+  // facilities section
+  const fth = document.querySelector('.facilities-title'); if(fth) fth.innerHTML = t('facilitiesTitle');
+  const fsh = document.querySelector('.facilities-subtitle'); if(fsh) fsh.textContent = t('facilitiesSubtitle');
+  const tabs = document.querySelectorAll('.tab');
+  if(tabs[0]) tabs[0].textContent = t('gridView');
+  if(tabs[1]) tabs[1].textContent = t('tableView');
+  // results count
+  const filtered=getFiltered();
+  const _rn=document.getElementById('result-num'); if(_rn) _rn.textContent=filtered.length;
+  document.getElementById('result-label').textContent=filtered.length===1?t('facilityFound'):t('facilitiesFound');
+  // modal i18n elements
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(i18n[currentLang][k]!==undefined) el.innerHTML=i18n[currentLang][k];
+  });
+}
+
+function setLang(lang){
+  currentLang=lang;
+  document.querySelectorAll('[id^="lang-"]').forEach(b=>b.classList.remove('t-active'));
+  document.getElementById('lang-'+lang).classList.add('t-active');
+  applyTranslations();
+  const f=getFiltered(); renderGrid(f); renderTable(f); updateResults(f); updateActiveFilters();
+}
+
+function toggleTheme(){
+  isLight=!isLight;
+  document.body.classList.toggle('light',isLight);
+  const tbtn=document.getElementById('theme-btn');
+  if(tbtn){ tbtn.innerHTML=isLight?'🌙 '+t('themeDark'):'☀️ '+t('themeLight'); tbtn.classList.toggle('t-active',isLight); }
+  if(map&&tileLayer){
+    map.removeLayer(tileLayer);
+    isSatellite=true;
+    tileLayer=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'© Esri',maxZoom:19}).addTo(map);
+    const ltog=document.getElementById('layer-toggle'); if(ltog) ltog.textContent=t('streetMap');
+    if(markersLayer) markersLayer.addTo(map);
+  }
+}
+
+// ── DYNAMIC HEADER STATS ──────────────────────────────────
+function updateHeaderStats(filtered){
+  const countries=new Set(filtered.map(f=>f.country==='Multiple'?f.region+'*':f.country));
+  document.getElementById('stat-countries').textContent=countries.size;
+  const monetary=filtered.map(f=>f.amount).filter(a=>a!=='Advisory'&&a!=='Ongoing');
+  document.getElementById('stat-funding').textContent=monetary.length?(monetary.length>1?monetary.length:monetary[0]):'—';
+  const types=new Set(filtered.flatMap(f=>f.support));
+  document.getElementById('stat-types').textContent=types.size;
+}
+
+// ── SUBMIT MODAL ──────────────────────────────────────────
+function openSubmitModal(){
+  document.getElementById('modal-form-view').style.display='';
+  document.getElementById('modal-success-view').classList.remove('show');
+  document.getElementById('submit-modal').classList.add('open');
+  var body=document.querySelector('#modal-form-view .modal-body');
+  if(body) body.scrollTop=0;
+}
+function closeSubmitModal(){ document.getElementById('submit-modal').classList.remove('open'); }
+function submitFund(){
+  const name=document.getElementById('f-name').value.trim();
+  const org=document.getElementById('f-org').value.trim();
+  const contact=document.getElementById('f-contact').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  if(!name||!org||!contact||!email){ alert('Please fill in all required fields marked with *.'); return; }
+  document.getElementById('modal-form-view').style.display='none';
+  document.getElementById('modal-success-view').classList.add('show');
+}
+document.getElementById('submit-modal').addEventListener('click',function(e){ if(e.target===this) closeSubmitModal(); });
+
+
+const facilities = [
+  {
+    id:1, icon:"🏗", name:"ADB Asia Pacific Project Preparation Facility (ADB AP3F)",
+    org:"Asian Development Bank (ADB)", region:"Asia Pacific", country:"Multiple",
+    lat:14.60, lng:121.02, support:["Advisory","Grant"], sector:"Energy",
+    amount:"Varies", deadline:"Rolling", status:"Open", color:"#00c2c2",
+    year:2014, inkind:"Y", finInstr:"Y", pureGrant:"Y", reimbursable:"N", equity:"N",
+    pcm:"Yes 100%",
+    prepStages:"Policy reforms and capacity building linked to potential or current projects; Due diligence; Early stage project preparation; Project preparation; Structuring; Project monitoring and restructuring",
+    s2:"N", s21:"N", s3:"Y", s31:"Y",
+    s32:"Y", s321:"Y", s322:"Y",
+    s4:"Y", s41:"Y", s42:"N", s43:"Y", s44:"N",
+    secScope:"All", secEnergy:"Y", secTransport:"Y",
+    secDigital:"Y", secWater:"Y", secWaste:"Y",
+    secUrban:"Y", secSocial:"Y", secUndefined:"",
+    secOther:"",
+    thematic:"",
+    climateMandate:"Included",
+    otherNonInfra:"Public sector management",
+    geoScope:"One region",
+    allEMDEs:"N",
+    regionsCovered:"East Asia Pacific; Europe and Central Asia; South Asia",
+    desc:"Provides technical advisory and grant support for infrastructure project preparation across Asia Pacific. Focuses on policy reforms, early-stage preparation, structuring, and transaction monitoring to bring projects to bankability.",
+    eligibility:["ADB developing member countries","Public sector or PPP entities","Infrastructure sector focus","Environmental and social safeguards compliance"]
+  },
+  {
+    id:2, icon:"🌍", name:"Africa50 — Project Development",
+    org:"Africa50", region:"Africa", country:"Multiple",
+    lat:33.59, lng:-7.62, support:["Advisory","Grant"], sector:"Infrastructure",
+    amount:"Varies", deadline:"Rolling", status:"Open", color:"#4dd9ac",
+    year:2013, inkind:"Y", finInstr:"N", pureGrant:"Y", reimbursable:"N", equity:"N",
+    pcm:"Yes 100%",
+    prepStages:"",
+    s2:"Y", s21:"Y", s3:"Y", s31:"Y",
+    s32:"Y", s321:"Y", s322:"Y",
+    s4:"Y", s41:"Y", s42:"Y", s43:"Y", s44:"Y",
+    thematic:"Climate-smart, connectivity and resilience",
+    climateMandate:"Included",
+    otherNonInfra:"NA",
+    geoScope:"One region",
+    allEMDEs:"N",
+    regionsCovered:"Africa",
+    desc:"Africa50 accelerates infrastructure development by bridging the gap between project identification and financial close, providing development capital and advisory support to advance bankable African infrastructure projects.",
+    eligibility:["African projects with regional impact","Public or private sector sponsors","Minimum project size applies","Strong commercial viability required"]
+  },
+  {
+    id:3, icon:"⚖️", name:"African Legal Support Facility",
+    org:"African Legal Support Facility (ALSF)", region:"Africa", country:"Multiple",
+    lat:5.36, lng:-4.01, support:["Advisory","Grant","Equity"], sector:"Finance",
+    amount:"Varies", deadline:"Rolling", status:"Open", color:"#f0b429",
+    year:2008, inkind:"Y", finInstr:"Y", pureGrant:"Y", reimbursable:"N", equity:"Y",
+    pcm:"No",
+    prepStages:"",
+    s2:"N", s21:"N", s3:"Partial", s31:"N",
+    s32:"Y", s321:"Y", s322:"Y",
+    s4:"Partial", s41:"Y", s42:"N", s43:"N", s44:"N",
+    secScope:"Multiple", secEnergy:"Y", secTransport:"Y",
+    secDigital:"Y", secWater:"N", secWaste:"N",
+    secUrban:"N", secSocial:"Y", secUndefined:"N",
+    secOther:"",
+    thematic:"",
+    climateMandate:"Included",
+    otherNonInfra:"FinTech",
+    geoScope:"One region",
+    allEMDEs:"N",
+    regionsCovered:"Africa",
+    desc:"Provides legal advisory services and capacity building to African governments to help them negotiate complex commercial transactions, including infrastructure contracts, resource agreements, and sovereign debt operations.",
+    eligibility:["African Union member states","Government ministries and state entities","Legal capacity gaps demonstrated","All infrastructure sectors considered"]
+  },
+  {
+    id:4, icon:"💧", name:"African Water Facility (AWF)",
+    org:"African Water Facility / African Development Bank", region:"Africa", country:"Multiple",
+    lat:5.35, lng:-4.00, support:["Advisory","Grant"], sector:"Water",
+    amount:"Varies", deadline:"Rolling", status:"Open", color:"#6eb5ff",
+    year:2004, inkind:"Y", finInstr:"N", pureGrant:"Y", reimbursable:"N", equity:"N",
+    pcm:"Yes included",
+    prepStages:"Technical and funding",
+    s2:"N", s21:"N", s3:"Y", s31:"Y",
+    s32:"Y", s321:"Y", s322:"Y",
+    s4:"Partial", s41:"Y", s42:"N", s43:"Y", s44:"N",
+    thematic:"Environment & Disaster Risk Management",
+    climateMandate:"Included",
+    otherNonInfra:"Agriculture, Rural Infrastructure, Environment",
+    geoScope:"One region",
+    allEMDEs:"N",
+    regionsCovered:"Africa",
+    desc:"Mobilises investments in the water sector across Africa by funding project preparation activities including feasibility studies, designs, and capacity building to develop bankable water and sanitation projects.",
+    eligibility:["African countries","Public water utilities and authorities","Water and sanitation sector focus","Government or regional body endorsement required"]
+  },
+  {
+    id:5, icon:"🌿", name:"Allied Climate Partners",
+    org:"Allied Climate Partners", region:"Global", country:"Multiple",
+    lat:40.71, lng:-74.01, support:["Advisory","Equity"], sector:"Energy",
+    amount:"Varies", deadline:"Rolling", status:"Open", color:"#4dd9ac",
+    year:2023, inkind:"Y", finInstr:"Y", pureGrant:"N", reimbursable:"N", equity:"Y",
+    pcm:"Yes strong",
+    prepStages:"",
+    s2:"", s21:"", s3:"", s31:"Y",
+    s32:"", s321:"Y", s322:"",
+    s4:"", s41:"", s42:"", s43:"", s44:"",
+    secScope:"All", secEnergy:"Y", secTransport:"Y",
+    secDigital:"Y", secWater:"Y", secWaste:"Y",
+    secUrban:"Y", secSocial:"Y", secUndefined:"N",
+    secOther:"",
+    thematic:"Legal",
+    climateMandate:"No",
+    otherNonInfra:"Extractives & natural resources (mining, petroleum, agriculture, forestry, fisheries, blue economy); Sovereign debt; Investment treaties",
+    geoScope:"Multi-regions",
+    allEMDEs:"N",
+    regionsCovered:"Southeast Asia; Africa; Caribbean; Central America",
+    desc:"Partners with climate-focused funds and investors to mobilise private capital for clean energy and climate infrastructure in emerging markets, providing equity and advisory at the early stages of project development.",
+    eligibility:["Private sector climate projects","Emerging market focus","Strong PCM potential","Climate impact metrics required"]
+  },
+  {
+    id:6, icon:"🌏", name:"ASEAN Catalytic Green Finance Facility (ACGFF)",
+    org:"Asian Development Bank / ASEAN", region:"Asia Pacific", country:"Multiple",
+    lat:-6.21, lng:106.85, support:["Advisory","Grant"], sector:"Energy",
+    amount:"Varies", deadline:"Rolling", status:"Open", color:"#00c2c2",
+    year:2019, inkind:"Y", finInstr:"Y", pureGrant:"Y", reimbursable:"N", equity:"N",
+    pcm:"Yes strong focus",
+    prepStages:"",
+    s2:"Y", s21:"Y", s3:"Y", s31:"Y",
+    s32:"Y", s321:"Y", s322:"Y",
+    s4:"Y", s41:"Y", s42:"Y", s43:"Y", s44:"Y",
+    thematic:"Regional infrastructure",
+    climateMandate:"Included",
+    otherNonInfra:"",
+    geoScope:"One region",
+    allEMDEs:"N",
+    regionsCovered:"Southeast Asia (ASEAN)",
+    desc:"Catalyses green infrastructure investment in ASEAN by blending concessional finance with private capital. Supports project preparation for renewable energy, green transport, and resilient urban infrastructure across Southeast Asia.",
+    eligibility:["ASEAN member countries","Green and climate-resilient projects","Private co-investment required","Environmental impact assessment required"]
+  },
+  {
+    id:7, icon:"🏙", name:"C40 Cities Finance Facility",
+    org:"C40 Cities / GIZ / BMUB", region:"Global", country:"Multiple",
+    lat:51.51, lng:-0.13, support:["Advisory"], sector:"Health",
+    amount:"Varies", deadline:"Rolling", status:"Open", color:"#6eb5ff",
+    year:2005, inkind:"Y", finInstr:"N", pureGrant:"N", reimbursable:"N", equity:"N",
+    pcm:"Yes included",
+    prepStages:"",
+    s2:"N", s21:"N", s3:"Partial", s31:"Y",
+    s32:"N", s321:"Y", s322:"N",
+    s4:"Partial", s41:"N", s42:"Y", s43:"Y", s44:"N",
+    secScope:"One", secEnergy:"N", secTransport:"N",
+    secDigital:"N", secWater:"Y", secWaste:"N",
+    secUrban:"Y", secSocial:"N", secUndefined:"N",
+    secOther:"Urban sanitation, Waste to energy",
+    thematic:"Water",
+    climateMandate:"Included",
+    otherNonInfra:"",
+    geoScope:"Global",
+    allEMDEs:"Yes",
+    regionsCovered:"Global",
+    desc:"Provides technical assistance and financial advisory to cities in developing countries to prepare bankable low-carbon infrastructure projects — helping city governments bridge the gap from concept to investment-ready projects.",
+    eligibility:["C40 or candidate cities in developing countries","City government or municipal entity","Low-carbon and resilient infrastructure focus","Commitment to climate action plans"]
+  },
+  {
+    id:8, icon:"⚡", name:"Energy Sector Management Assistance Program (ESMAP)",
+    org:"World Bank / ESMAP", region:"Global", country:"Multiple",
+    lat:38.90, lng:-77.05, support:["Advisory","Grant"], sector:"Energy",
+    amount:"Varies", deadline:"Rolling", status:"Open", color:"#f0b429",
+    year:1983, inkind:"Y", finInstr:"Y", pureGrant:"Y", reimbursable:"N", equity:"N",
+    pcm:"Yes included",
+    prepStages:"Technical and funding",
+    s2:"Y", s21:"Y", s3:"Y", s31:"Y",
+    s32:"Y", s321:"Y", s322:"Y",
+    s4:"N", s41:"N", s42:"N", s43:"N", s44:"N",
+    thematic:"NA",
+    climateMandate:"",
+    otherNonInfra:"Bulk storage / logistics",
+    geoScope:"Multi-regions",
+    allEMDEs:"Y",
+    regionsCovered:"",
+    desc:"Global knowledge and technical assistance program helping low- and middle-income countries increase know-how and institutional capacity to achieve environmentally sustainable energy solutions for poverty reduction and economic growth.",
+    eligibility:["Low and middle income countries","Government energy ministries and agencies","Renewable energy and efficiency focus","World Bank operational context"]
+  },
+  {
+    id:9, icon:"🌐", name:"Global Infrastructure Facility (GIF)",
+    org:"Global Infrastructure Facility", region:"Global", country:"Multiple",
+    lat:38.90, lng:-77.04, support:["Advisory","Grant","Reimbursable"], sector:"Infrastructure",
+    amount:"Varies", deadline:"Rolling", status:"Open", color:"#00c2c2",
+    year:2014, inkind:"Y", finInstr:"Y", pureGrant:"Y", reimbursable:"Y", equity:"N",
+    pcm:"Yes 100%",
+    prepStages:"Design; Preparation; Appraisal; Structuring; Transaction support products",
+    s2:"Y", s21:"Y", s3:"Y", s31:"Y",
+    s32:"Y", s321:"Y", s322:"Y",
+    s4:"Partial", s41:"Y", s42:"N", s43:"N", s44:"Y",
+    secScope:"", secEnergy:"", secTransport:"",
+    secDigital:"", secWater:"", secWaste:"",
+    secUrban:"", secSocial:"", secUndefined:"",
+    secOther:"",
+    thematic:"Climate",
+    climateMandate:"Only",
+    otherNonInfra:"",
+    geoScope:"Global",
+    allEMDEs:"",
+    regionsCovered:"All EMDEs",
+    desc:"A G20 platform that facilitates the preparation and structuring of complex infrastructure PPPs to enable private sector participation. Provides transaction advisory, preparation grants, and co-ordination across the MDB system.",
+    eligibility:["Emerging market and developing economy governments","Complex PPP infrastructure projects","Multi-MDB coordination required","Strong PCM potential demonstrated"]
+  },
+  {
+    id:10, icon:"🏦", name:"IDB Project Preparation and Execution Facility (PROPEF)",
+    org:"Inter-American Development Bank (IDB)", region:"Latin America", country:"Multiple",
+    lat:38.90, lng:-77.04, support:["Grant","Reimbursable"], sector:"Infrastructure",
+    amount:"Varies", deadline:"Rolling", status:"Open", color:"#4dd9ac",
+    year:2000, inkind:"N", finInstr:"Y", pureGrant:"N", reimbursable:"Y", equity:"N",
+    pcm:"Yes included",
+    prepStages:"",
+    s2:"Y", s21:"Y", s3:"Y", s31:"Y",
+    s32:"Y", s321:"Y", s322:"Y",
+    s4:"Y", s41:"Y", s42:"Y", s43:"Y", s44:"Y",
+    thematic:"Renewable energy, Energy Efficiency",
+    climateMandate:"Mostly",
+    otherNonInfra:"",
+    geoScope:"One region",
+    allEMDEs:"N",
+    regionsCovered:"Latin America and the Caribbean",
+    desc:"Supports Latin American and Caribbean countries in preparing and executing infrastructure projects through reimbursable technical cooperation, enabling governments to fund feasibility studies, designs, and transaction structuring.",
+    eligibility:["IDB borrowing member countries","Public sector entities","Infrastructure and social sector projects","Repayment capacity required for reimbursable component"]
+  },
+  {
+    id:11, icon:"🤝", name:"NEPAD Infrastructure Project Preparation Facility (IPPF)",
+    org:"NEPAD / African Development Bank", region:"Africa", country:"Multiple",
+    lat:-25.99, lng:28.12, support:["Advisory","Grant","Reimbursable"], sector:"Infrastructure",
+    amount:"Varies", deadline:"Rolling", status:"Open", color:"#4dd9ac",
+    year:2005, inkind:"Y", finInstr:"Y", pureGrant:"Y", reimbursable:"Y", equity:"N",
+    pcm:"Yes included",
+    prepStages:"",
+    s2:"Y", s21:"Y", s3:"Y", s31:"Y",
+    s32:"Y", s321:"Y", s322:"Y",
+    s4:"N", s41:"N", s42:"N", s43:"N", s44:"N",
+    secScope:"Multiple", secEnergy:"Y", secTransport:"Y",
+    secDigital:"", secWater:"Y", secWaste:"Y",
+    secUrban:"Y", secSocial:"", secUndefined:"",
+    secOther:"Sustainable cities, urban transport, green mobility",
+    thematic:"Green infrastructure",
+    climateMandate:"Only",
+    otherNonInfra:"Agriculture",
+    geoScope:"One region",
+    allEMDEs:"No",
+    regionsCovered:"Africa",
+    desc:"Supports the preparation of regional infrastructure projects in Africa under the NEPAD framework, providing grants for feasibility studies, detailed engineering designs, and transaction advisory to advance cross-border infrastructure.",
+    eligibility:["African Union member states","Regional integration projects","Multi-country infrastructure focus","NEPAD priority programme alignment"]
+  },
+  {
+    id:12, icon:"🔧", name:"PIDG Project Development (InfraCo)",
+    org:"Private Infrastructure Development Group (PIDG)", region:"Africa", country:"Multiple",
+    lat:51.50, lng:-0.09, support:["Advisory","Grant"], sector:"Infrastructure",
+    amount:"Varies", deadline:"Rolling", status:"Open", color:"#e05c1a",
+    year:2002, inkind:"Y", finInstr:"N", pureGrant:"Y", reimbursable:"N", equity:"N",
+    pcm:"Yes 100%",
+    prepStages:"",
+    s2:"Y", s21:"Y", s3:"Y", s31:"Y",
+    s32:"Y", s321:"Y", s322:"Y",
+    s4:"Y", s41:"Y", s42:"Y", s43:"Y", s44:"Y",
+    thematic:"Western Balkans",
+    climateMandate:"Included",
+    otherNonInfra:"Private sector development, human capital, environment and climate",
+    geoScope:"Multi-regions",
+    allEMDEs:"N",
+    regionsCovered:"Africa, Asia",
+    desc:"Develops early-stage infrastructure projects in the poorest developing countries by taking on high development risk, undertaking pre-feasibility and feasibility work, and structuring projects to attract private investment.",
+    eligibility:["Least developed and low-income countries","Private sector led infrastructure","High development impact required","Strong PCM potential required"]
+  },
+  {
+    id:13, icon:"☀️", name:"Sustainable Energy Fund for Africa (SEFA)",
+    org:"African Development Bank (AfDB)", region:"Africa", country:"Multiple",
+    lat:5.37, lng:-3.99, support:["Advisory","Grant"], sector:"Energy",
+    amount:"Varies", deadline:"Rolling", status:"Open", color:"#f0b429",
+    year:2011, inkind:"Y", finInstr:"Y", pureGrant:"Y", reimbursable:"N", equity:"N",
+    pcm:"Yes strong focus",
+    prepStages:"",
+    s2:"Y", s21:"Y", s3:"Y", s31:"Y",
+    s32:"Y", s321:"Y", s322:"Y",
+    s4:"Partial", s41:"N", s42:"N", s43:"Y", s44:"N",
+    secScope:"Multiple", secEnergy:"Y", secTransport:"Y",
+    secDigital:"N", secWater:"Y", secWaste:"Y",
+    secUrban:"Y", secSocial:"N", secUndefined:"N",
+    secOther:"",
+    thematic:"Urban",
+    climateMandate:"Included",
+    otherNonInfra:"Food systems, nature-based solutions, buildings",
+    geoScope:"One region",
+    allEMDEs:"N",
+    regionsCovered:"Africa",
+    desc:"Catalyses private sector investment in small and medium-scale renewable energy and energy efficiency projects in Sub-Saharan Africa through project preparation grants, technical assistance, and catalytic equity investments.",
+    eligibility:["Sub-Saharan Africa focus","Renewable energy and efficiency projects","Private sector participation required","Minimum project size applies"]
+  },
+  {
+    id:14, icon:"🏛", name:"Western Balkans Investment Framework Infrastructure Project Facility",
+    org:"European Commission / WBIF", region:"Europe", country:"Multiple",
+    lat:50.85, lng:4.35, support:["Advisory","Grant"], sector:"Infrastructure",
+    amount:"Varies", deadline:"Rolling", status:"Open", color:"#6eb5ff",
+    year:2009, inkind:"Y", finInstr:"Y", pureGrant:"Y", reimbursable:"N", equity:"N",
+    pcm:"Yes, included",
+    prepStages:"Technical and funding",
+    s2:"Y", s21:"Y", s3:"Y", s31:"Y",
+    s32:"Y", s321:"Y", s322:"Y",
+    s4:"Y", s41:"Y", s42:"Y", s43:"Y", s44:"Y",
+    secScope:"All", secEnergy:"Y", secTransport:"Y",
+    secDigital:"Y", secWater:"Y", secWaste:"Y",
+    secUrban:"Y", secSocial:"", secUndefined:"N",
+    secOther:"",
+    thematic:"Western Balkans",
+    climateMandate:"Included",
+    otherNonInfra:"Private sector development, human capital, environment and climate",
+    geoScope:"One region",
+    allEMDEs:"N",
+    regionsCovered:"Europe - Western Balkans",
+    desc:"Supports infrastructure development and socio-economic development in the Western Balkans through grants for project preparation, including feasibility studies, detailed designs, and technical assistance for EU accession-aligned investments.",
+    eligibility:["Western Balkans countries (Albania, BiH, Kosovo, Montenegro, North Macedonia, Serbia)","Public sector entities","EU accession-aligned projects","Transport, energy, environment, and social sectors"]
+  }
+];
+
+// ── STATE ──────────────────────────────────────────────
+let activeFilters = { stage:"all", region:"all", support:"all", sector:"all", instrument:"all" };
+let activeSearch = "";
+let map, markersLayer, tileLayer, isSatellite=true;
+
+// ── LEAFLET MAP ──────────────────────────────────────────
+function initMap() {
+  map = L.map('map', { center:[15,20], zoom:2, zoomControl:true, scrollWheelZoom:false });
+
+  // Enable scroll zoom only when user clicks into the map
+  const mapContainer = document.querySelector('.map-container');
+  map.getContainer().addEventListener('click', function() {
+    map.scrollWheelZoom.enable();
+    mapContainer.classList.add('map-active');
+  });
+  map.getContainer().addEventListener('mouseleave', function() {
+    map.scrollWheelZoom.disable();
+    mapContainer.classList.remove('map-active');
+  });
+
+  map.zoomControl.setPosition('bottomright');
+  tileLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'© Esri',maxZoom:19}).addTo(map);
+  markersLayer = L.layerGroup().addTo(map);
+
+  function updateMarkerScale() {
+    const z = map.getZoom();
+    const scale = Math.min(2.5, 1 + Math.max(0, z - 2) * 0.18);
+    map.getContainer().style.setProperty('--marker-scale', scale);
+  }
+  map.on('zoomend', ()=>{ updateMarkerScale(); if(!movingToFit && currentFiltered.length) renderMapMarkers(currentFiltered); });
+  updateMarkerScale();
+
+  applyFilters();
+}
+
+function getColor(support){ const c={Grant:"#4dd9ac",Loan:"#f0b429",Technical:"#6eb5ff",Advisory:"#e05c1a",Blended:"#00c2c2"}; return c[support[0]]||"#00c2c2"; }
+
+function createIcon(f,stacked=false) {
+  const color = getColor(f.support);
+  const ring = stacked ? `box-shadow:0 4px 20px rgba(0,0,0,.5),0 0 0 3px ${color},0 0 0 5px rgba(255,255,255,.25);` : '';
+  const cls = stacked ? 'custom-marker spreading' : 'custom-marker';
+  return L.divIcon({html:`<div class="${cls}"><div class="marker-inner" style="background:var(--surface);border-color:${color};${ring}">${f.icon}</div></div>`,className:'',iconSize:[32,32],iconAnchor:[16,16]});
+}
+
+function renderMarkers() {
+  const filtered = getFiltered();
+  markersLayer.clearLayers();
+  filtered.forEach(f=>{
+    const marker = L.marker([f.lat,f.lng],{icon:createIcon(f)});
+    marker.on('click',()=>{ highlightCard(f.id); openDetail(f); map.setView([f.lat,f.lng],5,{animate:true}); });
+    const popup=`<div class="popup-content"><div class="popup-name">${f.icon} ${f.name}</div><div class="popup-count">${f.org}</div><div class="popup-types">${f.support.map(s=>`<span class="tag tag-${s.toLowerCase()}">${s}</span>`).join('')}</div><div style="font-size:11px;color:#6b7280;margin-bottom:10px">Available: <strong style="color:#4dd9ac">${f.amount}</strong></div><button class="popup-view-btn" onclick="openDetailById(${f.id})">View Details →</button></div>`;
+    marker.bindPopup(popup,{offset:[0,-10]});
+    markersLayer.addLayer(marker);
+  });
+  updateResults(filtered);
+  renderGrid(filtered);
+  renderTable(filtered);
+}
+
+// ── SVG MAP ──────────────────────────────────────────────
+function initSvgMap() {
+  const dotsG = document.getElementById('svg-facility-dots');
+  facilities.forEach(f=>{
+    const color = getColor(f.support);
+    const g = document.createElementNS("http://www.w3.org/2000/svg","g");
+    g.style.cursor="pointer";
+    g.innerHTML=`<circle cx="${f.svgX}" cy="${f.svgY}" r="18" fill="${color}" opacity="0.08"/>
+<circle cx="${f.svgX}" cy="${f.svgY}" r="7" fill="${color}" opacity="0.9" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<text x="${f.svgX}" y="${f.svgY+1}" text-anchor="middle" dominant-baseline="middle" font-size="7">${f.icon}</text>`;
+    g.addEventListener('click',()=>{ openDetail(f); highlightCard(f.id); map.setView([f.lat,f.lng],5,{animate:true}); });
+    g.addEventListener('mouseenter',(e)=>showDotTooltip(e,f));
+    g.addEventListener('mouseleave',hideTooltip);
+    dotsG.appendChild(g);
+  });
+
+  const regionLookup={
+    'Canada':'North America','USA':'North America','Mexico':'North America','Central America':'Latin America',
+    'Colombia':'Latin America','Brazil':'Latin America','Peru':'Latin America','Chile':'Latin America','Argentina':'Latin America',
+    'UK & Ireland':'Europe','France':'Europe','Germany':'Europe','Spain & Portugal':'Europe','Italy':'Europe',
+    'Ukraine':'Europe','Poland':'Europe','Scandinavia':'Europe',
+    'Saudi Arabia':'Middle East','UAE & Gulf':'Middle East','Iran':'Middle East','Turkey':'Middle East','Iraq & Syria':'Middle East',
+    'Morocco & Algeria':'Africa','Libya & Egypt':'Africa','West Africa':'Africa','Nigeria':'Africa','Central Africa':'Africa',
+    'Ethiopia & Horn':'Africa','Kenya & Tanzania':'Africa','Southern Africa':'Africa','South Africa':'Africa',
+    'India':'Asia Pacific','China':'Asia Pacific','Pakistan & Afghanistan':'Asia Pacific','Central Asia':'Asia Pacific',
+    'Bangladesh & Myanmar':'Asia Pacific','Vietnam & Thailand':'Asia Pacific','Japan & Korea':'Asia Pacific',
+    'Philippines':'Asia Pacific','Indonesia':'Asia Pacific','Australia':'Asia Pacific','New Zealand':'Asia Pacific'
+  };
+
+  document.querySelectorAll('.svg-country').forEach(path=>{
+    path.addEventListener('click',function(){
+      const region = regionLookup[this.dataset.name];
+      document.querySelectorAll('.svg-country').forEach(p=>p.classList.remove('selected'));
+      this.classList.add('selected');
+      if(region){ clickRegionStat(region, document.querySelector(`[data-rstat="${region}"]`)); }
+    });
+    path.addEventListener('mouseenter',function(e){
+      const region=regionLookup[this.dataset.name]||this.dataset.name;
+      const regionFacs=facilities.filter(f=>f.region===region);
+      document.getElementById('tt-title').textContent=this.dataset.name;
+      document.getElementById('tt-org').textContent=region;
+      document.getElementById('tt-support').textContent=regionFacs.length+' facilit'+(regionFacs.length===1?'y':'ies');
+      document.getElementById('tt-amount').textContent=regionFacs.length>0?[...new Set(regionFacs.flatMap(f=>f.support))].join(', '):'—';
+      document.getElementById('tt-deadline').textContent=regionFacs.length>0?'Click to filter':'No facilities yet';
+      positionTooltip(e);
+    });
+    path.addEventListener('mouseleave',hideTooltip);
+    path.addEventListener('mousemove',(e)=>positionTooltip(e));
+  });
+}
+
+function showDotTooltip(e,f){
+  document.getElementById('tt-title').textContent=f.name;
+  document.getElementById('tt-org').textContent=f.org.split('(')[0].trim();
+  document.getElementById('tt-support').textContent=f.support.join(', ');
+  document.getElementById('tt-amount').textContent=f.amount;
+  document.getElementById('tt-deadline').textContent=f.deadline;
+  positionTooltip(e);
+}
+function positionTooltip(e){
+  const tt=document.getElementById('svg-tooltip');
+  const rect=document.getElementById('world-svg-container').getBoundingClientRect();
+  let lx=e.clientX-rect.left+14, ly=e.clientY-rect.top-10;
+  if(lx+210>rect.width) lx=e.clientX-rect.left-225;
+  tt.style.left=lx+'px'; tt.style.top=ly+'px';
+  tt.classList.add('show');
+}
+function hideTooltip(){ document.getElementById('svg-tooltip').classList.remove('show'); }
+
+function clickRegionStat(region, el) {
+  activeFilters.region = region;
+  document.querySelectorAll('.region-stat').forEach(s=>s.classList.remove('active'));
+  if(el) el.classList.add('active');
+  document.querySelectorAll('[data-filter="region"]').forEach(p=>p.classList.remove('active'));
+  const pill=document.querySelector(`[data-filter="region"][data-value="${region}"]`);
+  if(pill) pill.classList.add('active'); else { document.querySelector('[data-filter="region"][data-value="all"]').classList.remove('active'); }
+  applyFilters();
+  document.getElementById('svg-map-sub').textContent=`Showing ${getFiltered().length} facilities in ${region} · Click a dot to view details`;
+}
+
+function resetSvgFilter(){
+  document.querySelectorAll('.svg-country').forEach(p=>p.classList.remove('selected'));
+  document.querySelectorAll('.region-stat').forEach(s=>s.classList.remove('active'));
+  removeFilter('region');
+  document.getElementById('svg-map-sub').textContent='Showing all 15 active facilities across 5 regions · Click countries or dots to explore';
+}
+
+// ── FILTERING ────────────────────────────────────────────
+function getFiltered(){
+  return facilities.filter(f=>{
+    // Stage filter — maps to actual stage coverage fields
+    const stageMap = {
+      'Identification':  f.s2==='Y',
+      'Appraisal':       f.s3==='Y'||f.s3==='Partial',
+      'Design':          f.s32==='Y'||f.s321==='Y'||f.s322==='Y',
+      'Tendering':       f.s42==='Y',
+      'Market Sounding': f.s43==='Y',
+    };
+    const mt = activeFilters.stage==='all' || stageMap[activeFilters.stage] === true;
+    // Region filter — matches f.region; Global facilities appear in all region searches
+    const mr = activeFilters.region==='all' || f.region===activeFilters.region || f.region==='Global';
+    // Support filter — maps to dedicated Y/N instrument fields
+    const supportMap = {
+      'Advisory':     f.inkind==='Y',
+      'Grant':        f.pureGrant==='Y',
+      'Reimbursable': f.reimbursable==='Y',
+      'Equity':       f.equity==='Y',
+    };
+    const ms = activeFilters.support==='all' || supportMap[activeFilters.support] === true;
+    // Sector filter — matches f.sector exactly (Infrastructure, Energy, Water, Finance, Health)
+    const mx = activeFilters.sector==='all' || f.sector===activeFilters.sector;
+    const mi = true; // instrument filter removed
+    const mq=!activeSearch||f.name.toLowerCase().includes(activeSearch)||f.org.toLowerCase().includes(activeSearch)||f.country.toLowerCase().includes(activeSearch);
+    return mt&&mr&&ms&&mx&&mi&&mq;
+  });
+}
+let currentFiltered=[];
+let movingToFit=false;
+const CLUSTER_ZOOM=5;
+
+function groupByLocation(filtered){
+  const threshold=0.15, groups=[];
+  filtered.forEach(f=>{
+    let placed=false;
+    for(const g of groups){
+      if(Math.abs(f.lat-g.lat)<threshold&&Math.abs(f.lng-g.lng)<threshold){g.items.push(f);placed=true;break;}
+    }
+    if(!placed) groups.push({lat:f.lat,lng:f.lng,items:[f]});
+  });
+  return groups;
+}
+
+function addFundMarker(f,lat,lng,stacked){
+  const marker=L.marker([lat,lng],{icon:createIcon(f,stacked)});
+  marker.on('click',()=>{ highlightCard(f.id); openDetail(f); });
+  const tipHtml=`<div class="cluster-tooltip">
+    <div class="popup-name" style="margin-bottom:4px">${f.icon} ${f.name}</div>
+    <div class="popup-count">${f.org}</div>
+    <div class="popup-types" style="margin:6px 0">${f.support.map(s=>`<span class="tag tag-${s.toLowerCase()}">${s}</span>`).join('')}</div>
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted)">
+      <span>Available: <strong style="color:#4dd9ac">${f.amount}</strong></span>
+      <span>${f.region}</span>
+    </div>
+    <div class="cluster-tooltip-hint">🖱 Click for details</div>
+  </div>`;
+  marker.bindTooltip(tipHtml,{className:'cluster-tip',direction:'top',offset:[0,-8],opacity:1});
+  markersLayer.addLayer(marker);
+}
+
+function renderMapMarkers(filtered){
+  currentFiltered=filtered;
+  markersLayer.clearLayers();
+  const zoom=map?map.getZoom():2;
+  groupByLocation(filtered).forEach(g=>{
+    if(g.items.length===1){
+      addFundMarker(g.items[0],g.items[0].lat,g.items[0].lng,false);
+    } else if(zoom>=CLUSTER_ZOOM){
+      const pxPerDeg=(256*Math.pow(2,zoom))/360;
+      const radius=70/pxPerDeg;
+      g.items.forEach((f,i)=>{
+        const angle=(2*Math.PI*i)/g.items.length-Math.PI/2;
+        addFundMarker(f,g.lat+radius*Math.cos(angle),g.lng+radius*Math.sin(angle),true);
+      });
+    } else {
+      const color=getColor(g.items[0].support);
+      const icon=L.divIcon({
+        html:`<div class="cluster-marker" style="background:var(--surface);border-color:${color};color:${color}">${g.items.length}</div>`,
+        className:'',iconSize:[44,44],iconAnchor:[22,22]
+      });
+      const cm=L.marker([g.lat,g.lng],{icon});
+      cm.on('click',()=>map.setView([g.lat,g.lng],CLUSTER_ZOOM,{animate:true}));
+      const tipHtml=`<div class="cluster-tooltip">${g.items.map(f=>`<div class="cluster-tooltip-item">${f.icon} ${f.name}</div>`).join('')}<div class="cluster-tooltip-hint">🖱 Click to expand</div></div>`;
+      cm.bindTooltip(tipHtml,{className:'cluster-tip',direction:'top',offset:[0,-8],opacity:1});
+      markersLayer.addLayer(cm);
+    }
+  });
+}
+
+function resetFilters(){
+  activeFilters={stage:"all",region:"all",support:"all",sector:"all",instrument:"all"};
+  activeSearch="";
+  const si=document.getElementById('search-input'); if(si) si.value="";
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.pill[data-value="all"]').forEach(p=>p.classList.add('active'));
+  highlightRegionOnMap('all');
+  applyFilters();
+}
+function applyFilters(){
+  const filtered=getFiltered();
+  currentFiltered=filtered;
+  updateResults(filtered);
+  updateHeaderStats(filtered);
+  renderGrid(filtered);
+  renderTable(filtered);
+  updateActiveFilters();
+  const isFiltered=Object.values(activeFilters).some(v=>v!=='all')||!!activeSearch;
+  const rb=document.getElementById('reset-filters-btn'); if(rb) rb.style.display=isFiltered?'block':'none';
+  zoomToRegion();
+}
+
+// ── SIDEBAR ──────────────────────────────────────────────
+function updateResults(filtered){
+  const rn=document.getElementById('result-num'); if(rn) rn.textContent=filtered.length;
+  const rl=document.getElementById('result-label'); if(rl) rl.textContent=filtered.length===1?t('facilityFound'):t('facilitiesFound');
+  const list=document.getElementById('results-list');
+  if(!filtered.length){ list.innerHTML=`<div class="empty-state"><div class="es-icon">🔍</div><p>No facilities match your filters.</p></div>`; return; }
+  list.innerHTML=filtered.map((f,i)=>`<div class="result-card" id="card-${f.id}" style="--type-color:${getColor(f.support)};animation-delay:${i*.04}s" onclick="selectFacility(${f.id})">
+    <div class="card-top"><div class="card-title">${f.icon} ${f.name}</div><div class="card-amount">${f.amount}</div></div>
+    <div class="card-meta"><span class="tag tag-region">📍 ${f.region}</span>${f.support.map(s=>`<span class="tag tag-${s.toLowerCase()}">${s}</span>`).join('')}</div>
+    <div class="card-description">${f.desc.substring(0,90)}…</div>
+    <div class="card-footer"><div class="card-org">🏛 ${f.org.split('(')[0].trim()}</div><div class="deadline-badge">⏱ ${f.deadline}</div></div>
+  </div>`).join('');
+}
+
+function selectFacility(id){ const f=facilities.find(x=>x.id===id); if(!f) return; highlightCard(id); openDetail(f); map.setView([f.lat,f.lng],5,{animate:true}); }
+function highlightCard(id){ document.querySelectorAll('.result-card').forEach(c=>c.classList.remove('active')); const card=document.getElementById('card-'+id); if(card){card.classList.add('active');card.scrollIntoView({behavior:'smooth',block:'nearest'});} }
+
+// ── GRID ─────────────────────────────────────────────────
+function renderGrid(filtered){
+  const chip = document.getElementById('facilities-count-chip');
+  if(chip) chip.textContent = filtered.length + ' facilit' + (filtered.length===1?'y':'ies');
+  const regionColors = {Africa:'#f0b429','Asia Pacific':'#00c2c2','Latin America':'#4dd9ac',Europe:'#6eb5ff',Global:'rgba(255,255,255,.5)'};
+  const instrDefs = [
+    {key:'inkind',       label:'In-kind Advisory', color:'#00c2c2'},
+    {key:'pureGrant',    label:'Pure Grant',        color:'#4dd9ac'},
+    {key:'reimbursable', label:'Reimbursable',      color:'#f0b429'},
+    {key:'equity',       label:'Equity',            color:'#e05c1a'},
+  ];
+  document.getElementById('facilities-grid').innerHTML = filtered.map((f,i) => {
+    const stripeColor = regionColors[f.region] || '#6eb5ff';
+    const instrPills = instrDefs
+      .filter(d => f[d.key] === 'Y')
+      .map(d => '<span style="font-size:10px;padding:2px 8px;border-radius:20px;background:color-mix(in srgb,'+d.color+' 15%,transparent);border:1px solid color-mix(in srgb,'+d.color+' 40%,transparent);color:'+d.color+';font-weight:600;">'+d.label+'</span>')
+      .join('');
+    const climateBadge = f.climateMandate && f.climateMandate !== '—'
+      ? '<span class="tag" style="background:rgba(77,217,172,.12);color:#4dd9ac;border:1px solid rgba(77,217,172,.3);">🌱 '+f.climateMandate+'</span>'
+      : '';
+    const regionsText = f.regionsCovered || f.region;
+    const yearText = f.year ? 'Est. '+f.year : '';
+    return '<div class="fac-card" style="--stripe-color:'+stripeColor+';animation-delay:'+(i*.04)+'s" onclick="selectFacility('+f.id+')">'
+      + '<div class="fac-card-stripe"></div>'
+      + '<div class="fac-card-body">'
+      +   '<div class="fac-card-top">'
+      +     '<span class="fac-card-icon">'+f.icon+'</span>'
+      +     '<div style="flex:1;min-width:0;">'
+      +       '<div class="fac-card-name">'+f.name+'</div>'
+      +       '<div class="fac-card-org">🏛 '+f.org.split('(')[0].trim()+'</div>'
+      +     '</div>'
+      +   '</div>'
+      +   '<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;">'+instrPills+climateBadge+'</div>'
+      +   '<div class="fac-card-desc">'+f.desc.substring(0,110)+'…</div>'
+      + '</div>'
+      + '<div class="fac-card-footer">'
+      +   '<span class="fac-card-region">📍 '+regionsText+'</span>'
+      +   '<span style="font-size:11px;color:var(--muted);">'+yearText+'</span>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+}
+// ── TABLE ─────────────────────────────────────────────────
+function renderTable(filtered){
+  const instrDefs2=[{key:'inkind',label:'In-kind Adv.',color:'#00c2c2'},{key:'pureGrant',label:'Pure Grant',color:'#4dd9ac'},{key:'reimbursable',label:'Reimbursable',color:'#f0b429'},{key:'equity',label:'Equity',color:'#e05c1a'}];
+  document.getElementById('facilities-tbody').innerHTML=filtered.map((f,i)=>`
+    <tr onclick="selectFacility(${f.id})">
+      <td style="color:var(--muted);width:28px">${i+1}</td>
+      <td><div class="tbl-name">${f.icon} ${f.name}</div><div class="tbl-org">${f.org.split('(')[0].trim()}</div></td>
+      <td><span class="tag tag-region">${f.region}</span></td>
+      <td style="color:var(--muted);font-size:12px">${f.sector}</td>
+      <td style="white-space:nowrap">${instrDefs2.filter(d=>f[d.key]==='Y').map(d=>`<span style="font-size:10px;padding:1px 7px;border-radius:20px;display:inline-block;margin-right:3px;background:color-mix(in srgb,${d.color} 15%,transparent);color:${d.color};border:1px solid color-mix(in srgb,${d.color} 35%,transparent)">${d.label}</span>`).join('')}</td>
+      <td style="color:var(--muted);font-size:12px">${f.climateMandate||'—'}</td>
+      <td style="color:var(--muted);font-size:12px">${f.geoScope||'—'}</td>
+      <td><span style="color:var(--accent-2);font-size:12px;font-weight:600">● ${f.status}</span></td>
+    </tr>`).join('');
+}
+
+// ── DETAIL PANEL ──────────────────────────────────────────
+function openDetail(f){
+  document.getElementById('detail-title').textContent=f.name;
+  document.getElementById('detail-org').textContent=f.org+' · '+f.country;
+  document.getElementById('detail-types').innerHTML=f.support.map(s=>`<span class="tag tag-${s.toLowerCase()}">${s}</span>`).join('');
+
+  // Build instrument badges
+  const instruments = [
+    {label:'In-kind Advisory', val:f.inkind},
+    {label:'Pure Grant',        val:f.pureGrant},
+    {label:'Reimbursable Grant',val:f.reimbursable},
+    {label:'Equity',            val:f.equity},
+  ];
+  const instrHtml = instruments.map(i=>`
+    <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:3px 9px;border-radius:20px;margin:2px;
+      background:${i.val==='Y'?'rgba(0,194,194,.15)':'rgba(255,255,255,.05)'};
+      border:1px solid ${i.val==='Y'?'rgba(0,194,194,.35)':'rgba(255,255,255,.1)'};
+      color:${i.val==='Y'?'var(--accent)':'var(--muted)'}">
+      ${i.val==='Y'?'✓':'✗'} ${i.label}
+    </span>`).join('');
+
+  // Climate mandate badge colour
+  const cmColors = {'Only':'#00c2c2','Mostly':'#4dd9ac','Included':'#6eb5ff','Not specified':'#f0b429','No':'#e05c1a','':'#445566'};
+  const cmColor = cmColors[f.climateMandate||''] || '#6eb5ff';
+
+  document.getElementById('detail-highlight').innerHTML=`
+    <div class="highlight-item"><div class="h-label">Year Created</div><div class="h-value" style="font-size:14px">${f.year||'—'}</div></div>
+    <div class="highlight-item"><div class="h-label">Region</div><div class="h-value" style="font-size:13px">${f.region}</div></div>
+    <div class="highlight-item"><div class="h-label">PCM Mandate</div><div class="h-value" style="font-size:12px;color:var(--accent-2)">${f.pcm||'—'}</div></div>
+    <div class="highlight-item">
+      <div class="h-label">Climate Mandate</div>
+      <div class="h-value" style="font-size:12px;">
+        <span style="background:color-mix(in srgb,${cmColor} 15%,transparent);border:1px solid color-mix(in srgb,${cmColor} 40%,transparent);color:${cmColor};padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;">${f.climateMandate||'—'}</span>
+      </div>
+    </div>
+    ${f.thematic ? `<div class="highlight-item" style="grid-column:1/-1"><div class="h-label">Thematic / Vertical Focus</div><div class="h-value" style="font-size:12px;color:var(--text)">${f.thematic}</div></div>` : ''}
+    ${f.otherNonInfra && f.otherNonInfra!=='N' && f.otherNonInfra!=='NA' && f.otherNonInfra!=='Y' ? `<div class="highlight-item" style="grid-column:1/-1"><div class="h-label">Other Non-infrastructure Sectors</div><div class="h-value" style="font-size:11.5px;color:var(--muted);font-weight:400;line-height:1.5">${f.otherNonInfra}</div></div>` : ''}
+    ${f.geoScope ? `<div class="highlight-item"><div class="h-label">Geographic Scope</div><div class="h-value" style="font-size:12px;color:var(--accent-5)">${f.geoScope}</div></div>` : ''}
+    ${f.allEMDEs ? `<div class="highlight-item"><div class="h-label">All EMDEs / LMICs</div><div class="h-value" style="font-size:12px;color:${f.allEMDEs==='Yes'||f.allEMDEs==='Y'?'var(--accent-2)':'var(--muted)'}">${f.allEMDEs}</div></div>` : ''}
+    ${f.regionsCovered && f.regionsCovered!=='All EMDEs' ? `<div class="highlight-item" style="grid-column:1/-1"><div class="h-label">Regions Covered</div><div class="h-value" style="font-size:12px;color:var(--text);font-weight:400">${f.regionsCovered}</div></div>` : (f.regionsCovered==='All EMDEs'?`<div class="highlight-item" style="grid-column:1/-1"><div class="h-label">Regions Covered</div><div class="h-value" style="font-size:12px;color:var(--accent-2)">All EMDEs</div></div>`:'')}
+    <div style="grid-column:1/-1">
+      <div class="h-label" style="font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:8px;">Support Instruments</div>
+      <div>${instrHtml}</div>
+    </div>`;
+
+  document.getElementById('detail-desc').textContent=f.desc;
+
+  // ── Preparation stages matrix ─────────────────────────────
+  function stageCell(val, label) {
+    const v = (val||'').toUpperCase();
+    const isY = v === 'Y' || v === 'YES';
+    const isP = v === 'PARTIAL';
+    const bg  = isY ? 'rgba(0,194,194,.15)' : isP ? 'rgba(240,180,41,.12)' : 'rgba(255,255,255,.04)';
+    const bc  = isY ? 'rgba(0,194,194,.4)'  : isP ? 'rgba(240,180,41,.4)'  : 'rgba(255,255,255,.08)';
+    const col = isY ? '#00c2c2'             : isP ? '#f0b429'              : '#445566';
+    const ic  = isY ? '✓' : isP ? '~' : '—';
+    return `<div style="background:${bg};border:1px solid ${bc};border-radius:7px;padding:6px 4px;text-align:center;font-size:10px;color:${col};font-weight:700;line-height:1.3;display:flex;flex-direction:column;align-items:center;gap:2px;">
+      <span style="font-size:13px;">${ic}</span>
+      <span style="font-size:9px;color:inherit;opacity:.85;">${label}</span>
+    </div>`;
+  }
+
+  const stageMatrix = `
+  <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:600;margin-bottom:10px;">Preparation Stages Coverage</div>
+    <div style="font-size:9.5px;color:var(--muted);margin-bottom:8px;font-weight:500;">Stage 2 — Identification</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px;">
+      ${stageCell(f.s2,'2. ID & Screening')}
+      ${stageCell(f.s21,'2.1 Pre-feasibility')}
+    </div>
+    <div style="font-size:9.5px;color:var(--muted);margin-bottom:8px;font-weight:500;">Stage 3 — Appraisal & Design</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:6px;margin-bottom:12px;">
+      ${stageCell(f.s3,'3. Appraisal & Structuring')}
+      ${stageCell(f.s31,'3.1 Detailed Feasibility')}
+      ${stageCell(f.s32,'3.2 Full Design')}
+      ${stageCell(f.s321,'3.2.1 Early Stage Design')}
+      ${stageCell(f.s322,'3.2.2 Later Stage Design')}
+    </div>
+    <div style="font-size:9.5px;color:var(--muted);margin-bottom:8px;font-weight:500;">Stage 4 — Tendering & Close</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:6px;">
+      ${stageCell(f.s4,'4. Contract & Tendering')}
+      ${stageCell(f.s41,'4.1 Contract Drafting')}
+      ${stageCell(f.s42,'4.2 Tendering')}
+      ${stageCell(f.s43,'4.3 Market Sounding')}
+      ${stageCell(f.s44,'4.4 Commercial Close')}
+    </div>
+  </div>`;
+
+  // Eligibility items
+  let eligHtml = f.eligibility.map(e=>`<div class="elig-item"><span class="elig-check">✓</span>${e}</div>`).join('');
+  // ── Sector coverage matrix ───────────────────────────────
+  const sectors = [
+    {label:'Energy',     val:f.secEnergy},
+    {label:'Transport',  val:f.secTransport},
+    {label:'Digital',    val:f.secDigital},
+    {label:'Water',      val:f.secWater},
+    {label:'Waste',      val:f.secWaste},
+    {label:'Urban',      val:f.secUrban},
+    {label:'Social',     val:f.secSocial},
+    {label:'Undefined',  val:f.secUndefined},
+  ];
+
+  function sectorCell(val, label) {
+    const v = (val||'').toUpperCase();
+    const isY = v === 'Y' || v === 'YES';
+    const isP = v === 'PARTIAL' || v === 'NA';
+    const bg  = isY ? 'rgba(77,217,172,.14)' : isP ? 'rgba(110,181,255,.12)' : 'rgba(255,255,255,.04)';
+    const bc  = isY ? 'rgba(77,217,172,.4)'  : isP ? 'rgba(110,181,255,.35)' : 'rgba(255,255,255,.08)';
+    const col = isY ? '#4dd9ac'             : isP ? '#6eb5ff'               : '#445566';
+    const ic  = isY ? '✓' : isP ? '~' : (val==='' ? '' : '—');
+    return `<div style="background:${bg};border:1px solid ${bc};border-radius:7px;padding:6px 4px;text-align:center;font-size:10px;color:${col};font-weight:700;line-height:1.3;display:flex;flex-direction:column;align-items:center;gap:2px;">
+      <span style="font-size:12px;">${ic}</span>
+      <span style="font-size:9px;color:inherit;opacity:.85;">${label}</span>
+    </div>`;
+  }
+
+  let sectorMatrixHtml = '';
+  if (f.secScope) {
+    const scopeColor = f.secScope==='All' ? '#00c2c2' : f.secScope==='Multiple' ? '#f0b429' : '#6eb5ff';
+    sectorMatrixHtml = `
+    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:600;">Sectors Covered</div>
+        <span style="font-size:11px;padding:2px 10px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:${scopeColor};font-weight:700;">${f.secScope}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px;">
+        ${sectors.map(s=>sectorCell(s.val,s.label)).join('')}
+      </div>
+      ${f.secOther && f.secOther!=='N' && f.secOther!=='NA' ? `<div style="font-size:11px;color:var(--muted);padding:7px 10px;background:rgba(255,255,255,.04);border-radius:7px;border:1px solid rgba(255,255,255,.08);margin-top:4px;">📌 <em>${f.secOther}</em></div>` : ''}
+    </div>`;
+  }
+
+  document.getElementById('detail-elig').innerHTML = eligHtml + stageMatrix + sectorMatrixHtml;
+  document.getElementById('detail-overlay').classList.add('open');
+}
+function openDetailById(id){ const f=facilities.find(x=>x.id===id); if(f){openDetail(f);highlightCard(id);} }
+function closeDetail(){
+  document.getElementById('detail-overlay').classList.remove('open');
+  document.querySelectorAll('.result-card').forEach(c=>c.classList.remove('active'));
+}
+function handleOverlayClick(e){
+  if(e.target===document.getElementById('detail-overlay')) closeDetail();
+}
+
+// ── ACTIVE FILTERS ────────────────────────────────────────
+function updateActiveFilters(){
+  const c=document.getElementById('active-filters');
+  const tags=[];
+  if(activeFilters.stage!=="all") tags.push({label:"Stage: "+activeFilters.stage,key:"stage"});
+  if(activeFilters.region!=="all") tags.push({label:"Region: "+activeFilters.region,key:"region"});
+  if(activeFilters.support!=="all") tags.push({label:"Support: "+activeFilters.support,key:"support"});
+  if(activeFilters.sector!=="all") tags.push({label:"Sector: "+activeFilters.sector,key:"sector"});
+  if(activeFilters.instrument!=="all") tags.push({label:"Instrument: "+activeFilters.instrument,key:"instrument"});
+  if(activeSearch) tags.push({label:"Search: "+activeSearch,key:"search"});
+  if(!tags.length){c.style.display="none";return;}
+  c.style.display="flex";
+  c.innerHTML=tags.map(t=>`<div class="active-filter-tag">${t.label}<span class="af-remove" onclick="removeFilter('${t.key}')">✕</span></div>`).join('');
+}
+function removeFilter(key){
+  if(key==="stage"){activeFilters.stage="all";document.querySelectorAll('[data-filter="stage"]').forEach(p=>p.classList.remove('active'));document.querySelector('[data-filter="stage"][data-value="all"]').classList.add('active');updateFilterMeta('stage','all');}
+  else if(key==="region"){activeFilters.region="all";document.querySelectorAll('[data-filter="region"]').forEach(p=>p.classList.remove('active'));document.querySelector('[data-filter="region"][data-value="all"]').classList.add('active');updateFilterMeta('region','all');highlightRegionOnMap('all');}
+  else if(key==="support"){activeFilters.support="all";document.querySelectorAll('[data-filter="support"]').forEach(p=>p.classList.remove('active'));document.querySelector('[data-filter="support"][data-value="all"]').classList.add('active');updateFilterMeta('support','all');}
+  else if(key==="sector"){activeFilters.sector="all";document.querySelectorAll('[data-filter="sector"]').forEach(p=>p.classList.remove('active'));document.querySelector('[data-filter="sector"][data-value="all"]').classList.add('active');updateFilterMeta('sector','all');}
+  else if(key==="instrument"){activeFilters.instrument="all";document.querySelectorAll('[data-filter="instrument"]').forEach(p=>p.classList.remove('active'));document.querySelector('[data-filter="instrument"][data-value="all"]').classList.add('active');}
+  else if(key==="search"){activeSearch="";document.getElementById('search-input').value="";}
+  applyFilters();
+}
+
+// ── MAP CONTROLS ──────────────────────────────────────────
+function toggleLayer(){
+  isSatellite=!isSatellite; map.removeLayer(tileLayer);
+  if(isSatellite){
+    tileLayer=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'© Esri'}).addTo(map);
+    document.getElementById('layer-toggle').textContent=t('streetMap');
+  } else {
+    const url=isLight?'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png':'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+    tileLayer=L.tileLayer(url,{attribution:'© OpenStreetMap © CARTO'}).addTo(map);
+    document.getElementById('layer-toggle').textContent=t('satellite');
+  }
+  markersLayer.addTo(map);
+}
+function zoomToRegion(){
+  const f=currentFiltered.length?currentFiltered:getFiltered();
+  if(!f.length) return;
+  const render=()=>{ movingToFit=false; if(currentFiltered.length) renderMapMarkers(currentFiltered); };
+  movingToFit=true;
+  if(f.length===1){
+    map.setView([f[0].lat,f[0].lng],5,{animate:true});
+    map.once('moveend',render); return;
+  }
+  const lats=f.map(x=>x.lat),lngs=f.map(x=>x.lng);
+  const minLat=Math.min(...lats),maxLat=Math.max(...lats);
+  const minLng=Math.min(...lngs),maxLng=Math.max(...lngs);
+  const latPad=Math.max((maxLat-minLat)*0.12,1.5);
+  const lngPad=Math.max((maxLng-minLng)*0.12,1.5);
+  map.fitBounds([[minLat-latPad,minLng-lngPad],[maxLat+latPad,maxLng+lngPad]],{padding:[50,50],maxZoom:7,animate:true});
+  map.once('moveend',render);
+}
+function filterByLegend(type){
+  activeFilters.support=type;
+  document.querySelectorAll('[data-filter="support"]').forEach(p=>p.classList.remove('active'));
+  const p=document.querySelector(`[data-filter="support"][data-value="${type}"]`); if(p) p.classList.add('active');
+  applyFilters();
+}
+function switchTab(name,el){ document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); el.classList.add('active'); document.getElementById('grid-view').style.display=name==='grid'?'block':'none'; document.getElementById('table-view').style.display=name==='table'?'block':'none'; }
+
+// ── EVENT LISTENERS ────────────────────────────────────────
+// Region colors for map highlight
+// Region highlight config: stroke colour + tight geographic bounding box
+const REGION_CONFIG = {
+  'Africa':       { stroke:'#f0b429', bounds:[[-37,-18],[38,52]],  zoom:3 },
+  'Asia Pacific': { stroke:'#00c2c2', bounds:[[-50,58],[55,180]],  zoom:2 },
+  'Latin America':{ stroke:'#4dd9ac', bounds:[[-56,-82],[25,-34]], zoom:3 },
+  'Europe':       { stroke:'#6eb5ff', bounds:[[34,-12],[72,45]],   zoom:3 },
+  'Middle East':  { stroke:'#e05c1a', bounds:[[10,25],[43,65]],    zoom:4 },
+  'Global':       { stroke:'rgba(255,255,255,0.6)', bounds:[[-75,-170],[80,180]], zoom:2 },
+};
+
+function highlightRegionOnMap(region) {
+  if (!map) return;
+  // Clear previous highlight layers
+  if (window._regionLayers) {
+    window._regionLayers.forEach(l => { try { map.removeLayer(l); } catch(e){} });
+  }
+  window._regionLayers = [];
+
+  if (region === 'all') {
+    // Reset view to world
+    map.flyTo([15, 20], 2, { duration: 1 });
+    return;
+  }
+
+  const cfg = REGION_CONFIG[region];
+  if (!cfg) return;
+
+  const b = cfg.bounds;
+
+  // Outer glow: wider rectangle, very light fill
+  const glow = L.rectangle(b, {
+    color: cfg.stroke,
+    weight: 0,
+    fillColor: cfg.stroke,
+    fillOpacity: 0.07,
+    interactive: false,
+    className: 'region-highlight-layer'
+  }).addTo(map);
+
+  // Main border rectangle — solid, clean
+  const border = L.rectangle(b, {
+    color: cfg.stroke,
+    weight: 2.5,
+    opacity: 1,
+    fill: false,
+    dashArray: null,
+    interactive: false,
+    className: 'region-highlight-layer'
+  }).addTo(map);
+
+  // Corner accent marks at each corner for a refined look
+  const corners = [
+    [b[0][0], b[0][1]], [b[0][0], b[1][1]],
+    [b[1][0], b[0][1]], [b[1][0], b[1][1]]
+  ];
+  corners.forEach(([lat, lng]) => {
+    const cornerIcon = L.divIcon({
+      className: '',
+      html: `<div style="width:10px;height:10px;border:2.5px solid ${cfg.stroke};border-radius:2px;background:transparent;"></div>`,
+      iconSize: [10,10],
+      iconAnchor: [5,5]
+    });
+    const m = L.marker([lat, lng], { icon: cornerIcon, interactive: false, zIndexOffset: -1000 }).addTo(map);
+    window._regionLayers.push(m);
+  });
+
+  window._regionLayers.push(glow, border);
+
+  // Fly map to fit the region
+  map.flyToBounds(b, { padding: [40, 40], maxZoom: cfg.zoom, duration: 0.8 });
+}
+document.querySelectorAll('.pill[data-filter="region"]').forEach(p=>p.addEventListener('click',()=>{ document.querySelectorAll('[data-filter="region"]').forEach(x=>x.classList.remove('active')); p.classList.add('active'); activeFilters.region=p.dataset.value; updateFilterMeta('region',p.dataset.value); highlightRegionOnMap(p.dataset.value); applyFilters(); }));
+document.querySelectorAll('.pill[data-filter="support"]').forEach(p=>p.addEventListener('click',()=>{ document.querySelectorAll('[data-filter="support"]').forEach(x=>x.classList.remove('active')); p.classList.add('active'); activeFilters.support=p.dataset.value; updateFilterMeta('support',p.dataset.value); applyFilters(); }));
+document.querySelectorAll('.pill[data-filter="sector"]').forEach(p=>p.addEventListener('click',()=>{ document.querySelectorAll('[data-filter="sector"]').forEach(x=>x.classList.remove('active')); p.classList.add('active'); activeFilters.sector=p.dataset.value; updateFilterMeta('sector',p.dataset.value); applyFilters(); }));
+document.querySelectorAll('.pill[data-filter="stage"]').forEach(p=>p.addEventListener('click',()=>{ document.querySelectorAll('[data-filter="stage"]').forEach(x=>x.classList.remove('active')); p.classList.add('active'); activeFilters.stage=p.dataset.value; updateFilterMeta('stage',p.dataset.value); applyFilters(); }));
+document.getElementById('search-input').addEventListener('input',e=>{ activeSearch=e.target.value.toLowerCase(); applyFilters(); });
+
+
+// ── COLLAPSIBLE FILTERS ────────────────────────────────────
+function toggleFilter(group) {
+  const el = document.querySelector(`.filter-group[data-group="${group}"]`);
+  if (el) el.classList.toggle('open');
+}
+function updateFilterMeta(key, value) {
+  const meta = document.getElementById('meta-' + key);
+  if (!meta) return;
+  if (value === 'all') {
+    meta.textContent = '';
+    meta.classList.remove('show');
+  } else {
+    // Find the active pill label
+    const pill = document.querySelector(`[data-filter="${key}"][data-value="${value}"]`);
+    meta.textContent = pill ? pill.textContent : value;
+    meta.classList.add('show');
+  }
+}
+// Close detail on Escape
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeDetail(); });
+
+// ── INIT ──────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded',()=>{
+  initMap();
+  // set default lang active
+  document.getElementById('lang-en').classList.add('t-active');
+  // initial render
+  const filtered = getFiltered();
+  updateResults(filtered);
+  updateHeaderStats(filtered);
+  renderGrid(filtered);
+  renderTable(filtered);
+  applyTranslations();
+});
+</script>
+</body>
+</html>
