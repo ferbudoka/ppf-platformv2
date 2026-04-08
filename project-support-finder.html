@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 /* ── GIF-INSPIRED DARK (default) ── */
 /* Primary: Deep navy #003366 | Teal accent #00A6A6 | Gold #E8A020 | Warm orange #E05C1A */
@@ -174,6 +175,7 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
 .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text);padding:7px 16px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .2s;}
 .btn-ghost:hover{border-color:var(--accent-3);color:var(--accent-3);}
 .btn-submit-fund{background:linear-gradient(135deg,var(--accent-3),#d4880a)!important;border:none!important;color:#002244!important;font-weight:700!important;border-radius:8px!important;}
+.btn-case-study{background:linear-gradient(135deg,#6eb5ff,#3a7fd5)!important;border:none!important;color:#001830!important;font-weight:700!important;border-radius:8px!important;}
 .btn-primary{background:linear-gradient(135deg,#00a8a8,#0066cc);border:none;color:#fff;padding:7px 18px;border-radius:8px;font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
 .btn-primary:hover{opacity:.85;transform:translateY(-1px);}
 
@@ -197,13 +199,23 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
 .pill:hover{border-color:var(--pc,var(--accent));color:var(--pc,var(--accent));background:color-mix(in srgb,var(--pc,var(--accent)) 10%,transparent);}
 .pill.active{background:var(--pc,var(--accent));border-color:var(--pc,var(--accent));color:#001830;font-weight:600;}
 
-/* ── Stage pills — purple family ── */
-[data-filter="stage"][data-value="all"]             {--pc:#c4b5fd;--pb:rgba(196,181,253,.22);}
-[data-filter="stage"][data-value="Identification"]  {--pc:#a78bfa;--pb:rgba(167,139,250,.22);}
-[data-filter="stage"][data-value="Appraisal"]       {--pc:#8b5cf6;--pb:rgba(139,92,246,.22);}
-[data-filter="stage"][data-value="Design"]          {--pc:#7c3aed;--pb:rgba(124,58,237,.22);}
-[data-filter="stage"][data-value="Tendering"]       {--pc:#9333ea;--pb:rgba(147,51,234,.22);}
-[data-filter="stage"][data-value="Market Sounding"] {--pc:#d8b4fe;--pb:rgba(216,180,254,.22);}
+/* ── Stage pills — violet family (higher contrast) ── */
+[data-filter="stage"][data-value="all"]                        {--pc:#e0d4ff;--pb:rgba(224,212,255,.18);}
+[data-filter="stage"][data-value="Identification & Screening"] {--pc:#c4b5fd;--pb:rgba(196,181,253,.20);}
+[data-filter="stage"][data-value="Pre-Feasibility"]            {--pc:#a78bfa;--pb:rgba(167,139,250,.20);}
+[data-filter="stage"][data-value="Detailed Feasibility Study"] {--pc:#9d77f8;--pb:rgba(157,119,248,.20);}
+[data-filter="stage"][data-value="Appraisal & Structuring"]    {--pc:#8b5cf6;--pb:rgba(139,92,246,.20);}
+[data-filter="stage"][data-value="Bid Document Drafting"]      {--pc:#7c45e8;--pb:rgba(124,69,232,.20);}
+[data-filter="stage"][data-value="Tender Process"]             {--pc:#6d28d9;--pb:rgba(109,40,217,.20);}
+
+/* ── Eligible Applicant pills — rose/pink family ── */
+[data-filter="applicant"][data-value="all"]                    {--pc:#fda4af;--pb:rgba(253,164,175,.18);}
+[data-filter="applicant"][data-value="National Governments"]   {--pc:#fb7185;--pb:rgba(251,113,133,.20);}
+[data-filter="applicant"][data-value="Municipal Governments"]  {--pc:#f43f5e;--pb:rgba(244,63,94,.20);}
+[data-filter="applicant"][data-value="SOE"]                    {--pc:#e11d48;--pb:rgba(225,29,72,.20);}
+[data-filter="applicant"][data-value="Private Sector Sponsor"] {--pc:#fb923c;--pb:rgba(251,146,60,.20);}
+[data-filter="applicant"][data-value="MDB"]                    {--pc:#f97316;--pb:rgba(249,115,22,.20);}
+[data-filter="applicant"][data-value="Other"]                  {--pc:#ea580c;--pb:rgba(234,88,12,.20);}
 
 /* ── Region pills — teal family ── */
 [data-filter="region"][data-value="all"]            {--pc:#2dd4bf;--pb:rgba(45,212,191,.22);}
@@ -477,7 +489,7 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
 
 <header>
   <div class="logo">
-    <img src="logo.png" alt="Global Infrastructure Facility" style="height:56px;width:auto;display:block;"/>
+    <img src="Images/logo.png" alt="Global Infrastructure Facility" style="height:56px;width:auto;display:block;"/>
   </div>
   <div class="header-stats">
     <div class="stat-item"><div class="stat-num" id="stat-countries">42</div><div class="stat-label" data-i18n="statCountries">Countries</div></div>
@@ -487,7 +499,8 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
     <div class="stat-item"><div class="stat-num" id="stat-types">5</div><div class="stat-label" data-i18n="statTypes">Support Types</div></div>
   </div>
   <div class="header-actions">
-    <button class="btn-ghost btn-submit-fund" onclick="openSubmitModal()" data-i18n="btnSubmit">📋 Submit Fund</button>
+    <button class="btn-ghost btn-submit-fund" onclick="openSubmitModal()" data-i18n="btnSubmit">📋 Submit PPF</button>
+    <button class="btn-ghost btn-case-study" onclick="openCaseStudyModal()">📖 Submit Case Study</button>
     <a href="index.html" class="btn-home-header" title="Back to Home">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       Home
@@ -522,11 +535,12 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
         <div class="filter-body">
           <div class="pill-group">
             <button class="pill active" data-filter="stage" data-value="all">All Stages</button>
-            <button class="pill" data-filter="stage" data-value="Identification">Identification</button>
-            <button class="pill" data-filter="stage" data-value="Appraisal">Appraisal & Structuring</button>
-            <button class="pill" data-filter="stage" data-value="Design">Design</button>
-            <button class="pill" data-filter="stage" data-value="Tendering">Tendering</button>
-            <button class="pill" data-filter="stage" data-value="Market Sounding">Market Sounding</button>
+            <button class="pill" data-filter="stage" data-value="Identification & Screening">Identification & Screening</button>
+            <button class="pill" data-filter="stage" data-value="Pre-Feasibility">Pre-Feasibility</button>
+            <button class="pill" data-filter="stage" data-value="Detailed Feasibility Study">Detailed Feasibility Study</button>
+            <button class="pill" data-filter="stage" data-value="Appraisal & Structuring">Appraisal & Structuring</button>
+            <button class="pill" data-filter="stage" data-value="Bid Document Drafting">Bid Document Drafting</button>
+            <button class="pill" data-filter="stage" data-value="Tender Process">Tender Process</button>
           </div>
         </div>
       </div>
@@ -599,6 +613,30 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
         </div>
       </div>
 
+      <div class="filter-group open" data-group="applicant">
+        <div class="filter-toggle" onclick="toggleFilter('applicant')">
+          <div class="filter-toggle-left">
+            <span class="filter-toggle-icon">🏛</span>
+            <span class="filter-toggle-label">Eligible Applicants</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span class="filter-toggle-meta" id="meta-applicant"></span>
+            <span class="filter-chevron">▼</span>
+          </div>
+        </div>
+        <div class="filter-body">
+          <div class="pill-group">
+            <button class="pill active" data-filter="applicant" data-value="all">All Applicants</button>
+            <button class="pill" data-filter="applicant" data-value="National Governments">National Governments</button>
+            <button class="pill" data-filter="applicant" data-value="Municipal Governments">Municipal Governments</button>
+            <button class="pill" data-filter="applicant" data-value="SOE">SOE</button>
+            <button class="pill" data-filter="applicant" data-value="Private Sector Sponsor">Private Sector Sponsor</button>
+            <button class="pill" data-filter="applicant" data-value="MDB">MDB</button>
+            <button class="pill" data-filter="applicant" data-value="Other">Other</button>
+          </div>
+        </div>
+      </div>
+
     </div>
     <div class="active-filters" id="active-filters" style="display:none"></div>
     <div id="results-list" style="display:none"></div>
@@ -651,6 +689,7 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
           <button class="btn-primary">Contact →</button>
           <button class="btn-ghost">📌 Save</button>
           <button class="btn-ghost">🔗 Share</button>
+          <button class="btn-ghost" id="pdf-download-btn" onclick="downloadFundPDF()">⬇ PDF</button>
         </div>
       </div>
     </div><!-- close detail-panel -->
@@ -839,7 +878,7 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
       <div class="modal-header">
         <div>
           <div class="modal-icon">📋</div>
-          <div class="modal-title" data-i18n="modalTitle">Submit a <span>Fund</span></div>
+          <div class="modal-title" data-i18n="modalTitle">Submit a <span>PPF</span></div>
           <div class="modal-subtitle" data-i18n="modalSubtitle">Share a project preparation facility with the global community. All submissions are reviewed within 5–7 business days.</div>
         </div>
         <div class="modal-close" onclick="closeSubmitModal()">✕</div>
@@ -887,6 +926,24 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
           </div>
         </div>
 
+        <div class="form-row full">
+          <div class="form-field">
+            <label class="form-label">Fund Size <span style="font-size:10px;color:var(--muted);font-weight:400;">(optional)</span></label>
+            <div style="display:flex;align-items:center;gap:0;">
+              <select class="form-select" id="f-currency" style="width:88px;border-radius:8px 0 0 8px;border-right:none;flex-shrink:0;">
+                <option value="USD">USD $</option>
+                <option value="EUR">EUR €</option>
+                <option value="GBP">GBP £</option>
+                <option value="JPY">JPY ¥</option>
+                <option value="CAD">CAD $</option>
+                <option value="AUD">AUD $</option>
+              </select>
+              <input class="form-input" id="f-fundsize" type="number" min="0" step="any" placeholder="e.g. 250000000" style="border-radius:0 8px 8px 0;flex:1;"/>
+            </div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px;">Total capitalisation or available envelope. Enter the full numeric value (e.g. 250000000 for $250M).</div>
+          </div>
+        </div>
+
         <div class="msec-title">Support Instruments</div>
         <div class="form-row" style="grid-template-columns:1fr 1fr;">
           <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;">
@@ -911,35 +968,27 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
           <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
             <input type="checkbox" id="ps-id" style="accent-color:var(--accent);width:14px;height:14px;cursor:pointer;">
-            <label for="ps-id" style="font-size:11.5px;cursor:pointer;color:var(--text);">2. Identification &amp; Screening</label>
+            <label for="ps-id" style="font-size:11.5px;cursor:pointer;color:var(--text);">1. Identification &amp; Screening</label>
           </div>
           <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
             <input type="checkbox" id="ps-prefeas" style="accent-color:var(--accent);width:14px;height:14px;cursor:pointer;">
-            <label for="ps-prefeas" style="font-size:11.5px;cursor:pointer;color:var(--text);">2.1 Pre-feasibility</label>
-          </div>
-          <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
-            <input type="checkbox" id="ps-appr" style="accent-color:var(--accent);width:14px;height:14px;cursor:pointer;">
-            <label for="ps-appr" style="font-size:11.5px;cursor:pointer;color:var(--text);">3. Appraisal &amp; Structuring</label>
+            <label for="ps-prefeas" style="font-size:11.5px;cursor:pointer;color:var(--text);">2. Pre-Feasibility</label>
           </div>
           <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
             <input type="checkbox" id="ps-feas" style="accent-color:var(--accent);width:14px;height:14px;cursor:pointer;">
-            <label for="ps-feas" style="font-size:11.5px;cursor:pointer;color:var(--text);">3.1 Detailed Feasibility</label>
+            <label for="ps-feas" style="font-size:11.5px;cursor:pointer;color:var(--text);">3. Detailed Feasibility Study</label>
           </div>
           <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
-            <input type="checkbox" id="ps-design" style="accent-color:var(--accent);width:14px;height:14px;cursor:pointer;">
-            <label for="ps-design" style="font-size:11.5px;cursor:pointer;color:var(--text);">3.2 Full Design</label>
+            <input type="checkbox" id="ps-appr" style="accent-color:var(--accent);width:14px;height:14px;cursor:pointer;">
+            <label for="ps-appr" style="font-size:11.5px;cursor:pointer;color:var(--text);">4. Appraisal &amp; Structuring</label>
           </div>
           <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
-            <input type="checkbox" id="ps-contract" style="accent-color:var(--accent);width:14px;height:14px;cursor:pointer;">
-            <label for="ps-contract" style="font-size:11.5px;cursor:pointer;color:var(--text);">4. Contract Drafting</label>
+            <input type="checkbox" id="ps-bid" style="accent-color:var(--accent);width:14px;height:14px;cursor:pointer;">
+            <label for="ps-bid" style="font-size:11.5px;cursor:pointer;color:var(--text);">5. Bid Document Drafting</label>
           </div>
           <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
             <input type="checkbox" id="ps-tender" style="accent-color:var(--accent);width:14px;height:14px;cursor:pointer;">
-            <label for="ps-tender" style="font-size:11.5px;cursor:pointer;color:var(--text);">4.2 Tendering</label>
-          </div>
-          <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
-            <input type="checkbox" id="ps-market" style="accent-color:var(--accent);width:14px;height:14px;cursor:pointer;">
-            <label for="ps-market" style="font-size:11.5px;cursor:pointer;color:var(--text);">4.3 Market Sounding</label>
+            <label for="ps-tender" style="font-size:11.5px;cursor:pointer;color:var(--text);">6. Tender Process</label>
           </div>
         </div>
 
@@ -996,6 +1045,28 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
           </div>
         </div>
 
+        <div class="msec-title">Eligible Applicants</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:4px;">
+          <label style="display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;cursor:pointer;">
+            <input type="checkbox" id="ea-national" style="accent-color:#fb7185;width:14px;height:14px;cursor:pointer;"> <span style="font-size:11.5px;color:var(--text);">1. National Governments</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;cursor:pointer;">
+            <input type="checkbox" id="ea-municipal" style="accent-color:#f43f5e;width:14px;height:14px;cursor:pointer;"> <span style="font-size:11.5px;color:var(--text);">2. Municipal Governments</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;cursor:pointer;">
+            <input type="checkbox" id="ea-soe" style="accent-color:#e11d48;width:14px;height:14px;cursor:pointer;"> <span style="font-size:11.5px;color:var(--text);">3. SOE</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;cursor:pointer;">
+            <input type="checkbox" id="ea-private" style="accent-color:#fb923c;width:14px;height:14px;cursor:pointer;"> <span style="font-size:11.5px;color:var(--text);">4. Private Sector Sponsor</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;cursor:pointer;">
+            <input type="checkbox" id="ea-mdb" style="accent-color:#f97316;width:14px;height:14px;cursor:pointer;"> <span style="font-size:11.5px;color:var(--text);">5. MDB</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;cursor:pointer;">
+            <input type="checkbox" id="ea-other" style="accent-color:#ea580c;width:14px;height:14px;cursor:pointer;"> <span style="font-size:11.5px;color:var(--text);">6. Other</span>
+          </label>
+        </div>
+
         <div class="msec-title">Description &amp; Eligibility</div>
         <div class="form-row full">
           <div class="form-field">
@@ -1030,7 +1101,7 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
       </div>
       <div class="modal-footer">
         <button class="btn-ghost" onclick="closeSubmitModal()" data-i18n="btnCancel">Cancel</button>
-        <button class="btn-primary" onclick="submitFund()" data-i18n="btnSubmitFund">📤 Submit Fund</button>
+        <button class="btn-primary" onclick="submitFund()" data-i18n="btnSubmitFund">📤 Submit PPF</button>
       </div>
     </div>
     <div class="modal-success" id="modal-success-view">
@@ -1044,13 +1115,256 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
   </div>
 </div>
 
+<!-- CASE STUDY MODAL -->
+<div class="modal-overlay" id="case-study-modal">
+  <div class="modal">
+    <div id="cs-form-view" style="display:flex;flex-direction:column;flex:1;overflow:hidden;min-height:0;">
+      <div class="modal-header">
+        <div>
+          <div class="modal-icon">📖</div>
+          <div class="modal-title">Submit a <span>Case Study</span></div>
+          <div class="modal-subtitle">Share how a project preparation facility helped move your infrastructure project forward. Published case studies help practitioners across emerging markets learn from real experience.</div>
+        </div>
+        <div class="modal-close" onclick="closeCaseStudyModal()">✕</div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-info-box">
+          <strong>📌 What makes a strong case study?</strong>
+          <ul>
+            <li>Describe a real project that received preparation support from a PPF</li>
+            <li>Include measurable outcomes — capital mobilised, financial close, beneficiaries reached</li>
+            <li>Be specific about the challenge faced and how support helped overcome it</li>
+            <li>Submissions may be featured on the GIF platform with your permission</li>
+          </ul>
+        </div>
+
+        <div class="msec-title">Project Information</div>
+        <div class="form-row full">
+          <div class="form-field">
+            <label class="form-label">Project Name <span class="req">*</span></label>
+            <input class="form-input" id="cs-project-name" placeholder="e.g. Nairobi Solar Mini-Grid Expansion"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Country <span class="req">*</span></label>
+            <input class="form-input" id="cs-country" placeholder="e.g. Kenya"/>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Primary Sector <span class="req">*</span></label>
+            <select class="form-select" id="cs-sector">
+              <option value="">Select sector…</option>
+              <option>Energy</option>
+              <option>Transport</option>
+              <option>Water & Sanitation</option>
+              <option>Digital Infrastructure</option>
+              <option>Urban</option>
+              <option>Health</option>
+              <option>Agriculture</option>
+              <option>Cross-sectoral</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Total Project Value <span style="font-size:10px;color:var(--muted);font-weight:400;">(optional)</span></label>
+            <div style="display:flex;align-items:center;gap:0;">
+              <select class="form-select" id="cs-currency" style="width:88px;border-radius:8px 0 0 8px;border-right:none;flex-shrink:0;">
+                <option value="USD">USD $</option>
+                <option value="EUR">EUR €</option>
+                <option value="GBP">GBP £</option>
+                <option value="JPY">JPY ¥</option>
+              </select>
+              <input class="form-input" id="cs-project-value" type="number" min="0" step="any" placeholder="e.g. 45000000" style="border-radius:0 8px 8px 0;flex:1;"/>
+            </div>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Year Support Received</label>
+            <input class="form-input" id="cs-year" type="number" placeholder="e.g. 2022" min="2000" max="2030"/>
+          </div>
+        </div>
+
+        <div class="msec-title">PPF Support Received</div>
+        <div class="form-row full">
+          <div class="form-field">
+            <label class="form-label">Facility / Fund that Provided Support <span class="req">*</span></label>
+            <input class="form-input" id="cs-facility" placeholder="e.g. SEFA – Sustainable Energy Fund for Africa"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Stage of Support <span class="req">*</span></label>
+            <select class="form-select" id="cs-stage">
+              <option value="">Select stage…</option>
+              <option>1. Identification &amp; Screening</option>
+              <option>2. Pre-Feasibility</option>
+              <option>3. Detailed Feasibility Study</option>
+              <option>4. Appraisal &amp; Structuring</option>
+              <option>5. Bid Document Drafting</option>
+              <option>6. Tender Process</option>
+              <option>Multiple Stages</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Type of Support Received</label>
+            <select class="form-select" id="cs-support-type">
+              <option value="">Select type…</option>
+              <option>In-kind Technical Advisory</option>
+              <option>Pure Grant</option>
+              <option>Reimbursable Grant</option>
+              <option>Early-stage Equity</option>
+              <option>Blended / Mixed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="msec-title">Eligible Applicant Type</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:4px;">
+          <label style="display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;cursor:pointer;">
+            <input type="checkbox" id="cs-ea-national" style="accent-color:#fb7185;width:14px;height:14px;cursor:pointer;"> <span style="font-size:11.5px;color:var(--text);">1. National Governments</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;cursor:pointer;">
+            <input type="checkbox" id="cs-ea-municipal" style="accent-color:#f43f5e;width:14px;height:14px;cursor:pointer;"> <span style="font-size:11.5px;color:var(--text);">2. Municipal Governments</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;cursor:pointer;">
+            <input type="checkbox" id="cs-ea-soe" style="accent-color:#e11d48;width:14px;height:14px;cursor:pointer;"> <span style="font-size:11.5px;color:var(--text);">3. SOE</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;cursor:pointer;">
+            <input type="checkbox" id="cs-ea-private" style="accent-color:#fb923c;width:14px;height:14px;cursor:pointer;"> <span style="font-size:11.5px;color:var(--text);">4. Private Sector Sponsor</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;cursor:pointer;">
+            <input type="checkbox" id="cs-ea-mdb" style="accent-color:#f97316;width:14px;height:14px;cursor:pointer;"> <span style="font-size:11.5px;color:var(--text);">5. MDB</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;cursor:pointer;">
+            <input type="checkbox" id="cs-ea-other" style="accent-color:#ea580c;width:14px;height:14px;cursor:pointer;"> <span style="font-size:11.5px;color:var(--text);">6. Other</span>
+          </label>
+        </div>
+
+        <div class="msec-title">Outcomes &amp; Impact</div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Did the Project Reach Financial Close?</label>
+            <select class="form-select" id="cs-financial-close">
+              <option value="">Select…</option>
+              <option>Yes — fully closed</option>
+              <option>Yes — partially closed</option>
+              <option>In progress</option>
+              <option>Not yet</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Private Capital Mobilised <span style="font-size:10px;color:var(--muted);font-weight:400;">(optional)</span></label>
+            <div style="display:flex;align-items:center;gap:0;">
+              <select class="form-select" id="cs-cap-currency" style="width:88px;border-radius:8px 0 0 8px;border-right:none;flex-shrink:0;">
+                <option value="USD">USD $</option>
+                <option value="EUR">EUR €</option>
+                <option value="GBP">GBP £</option>
+              </select>
+              <input class="form-input" id="cs-capital" type="number" min="0" step="any" placeholder="e.g. 120000000" style="border-radius:0 8px 8px 0;flex:1;"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Estimated Beneficiaries <span style="font-size:10px;color:var(--muted);font-weight:400;">(optional)</span></label>
+            <input class="form-input" id="cs-beneficiaries" type="number" min="0" placeholder="e.g. 250000"/>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Climate / Environmental Impact <span style="font-size:10px;color:var(--muted);font-weight:400;">(optional)</span></label>
+            <input class="form-input" id="cs-climate-impact" placeholder="e.g. 45,000 tCO₂e avoided annually"/>
+          </div>
+        </div>
+
+        <div class="msec-title">Case Study Narrative</div>
+        <div class="form-row full">
+          <div class="form-field">
+            <label class="form-label">The Challenge <span class="req">*</span></label>
+            <textarea class="form-textarea" id="cs-challenge" placeholder="What barriers or bottlenecks was the project facing before receiving preparation support? (e.g. lack of bankable feasibility study, difficulty structuring blended finance, weak environmental assessment…)" style="min-height:72px;"></textarea>
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="form-field">
+            <label class="form-label">How the PPF Helped <span class="req">*</span></label>
+            <textarea class="form-textarea" id="cs-how-helped" placeholder="Describe the specific activities supported (studies, advisory, capacity building, etc.) and how they addressed the challenge." style="min-height:72px;"></textarea>
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="form-field">
+            <label class="form-label">Key Outcomes &amp; Results <span class="req">*</span></label>
+            <textarea class="form-textarea" id="cs-outcomes" placeholder="What was achieved as a result of the support? Include quantitative results where possible (investment unlocked, jobs created, communities served, emissions reduced…)" style="min-height:72px;"></textarea>
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="form-field">
+            <label class="form-label">Lessons Learned <span style="font-size:10px;color:var(--muted);font-weight:400;">(optional)</span></label>
+            <textarea class="form-textarea" id="cs-lessons" placeholder="What would you do differently? What advice would you give to others seeking similar support?" style="min-height:52px;"></textarea>
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="form-field">
+            <label class="form-label">Supporting Documents or Links <span style="font-size:10px;color:var(--muted);font-weight:400;">(optional)</span></label>
+            <textarea class="form-textarea" id="cs-docs" placeholder="Links to project pages, reports, news coverage, or uploaded documents…" style="min-height:48px;"></textarea>
+          </div>
+        </div>
+
+        <div class="msec-title">Publication Consent</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:12px;">
+          <label style="display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;cursor:pointer;">
+            <input type="radio" name="cs-consent" value="full" style="accent-color:var(--accent);cursor:pointer;"> <span style="font-size:12px;color:var(--text);">Publish with my name</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;cursor:pointer;">
+            <input type="radio" name="cs-consent" value="anonymous" style="accent-color:var(--accent);cursor:pointer;"> <span style="font-size:12px;color:var(--text);">Publish anonymously</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;cursor:pointer;">
+            <input type="radio" name="cs-consent" value="internal" style="accent-color:var(--accent);cursor:pointer;"> <span style="font-size:12px;color:var(--text);">Internal use only</span>
+          </label>
+        </div>
+
+        <div class="msec-title">Your Contact</div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Your Name <span class="req">*</span></label>
+            <input class="form-input" id="cs-contact" placeholder="Full name"/>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Organisation <span class="req">*</span></label>
+            <input class="form-input" id="cs-org" placeholder="e.g. Ministry of Energy, Kenya"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Email Address <span class="req">*</span></label>
+            <input class="form-input" id="cs-email" type="email" placeholder="you@organisation.org"/>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Role / Title <span style="font-size:10px;color:var(--muted);font-weight:400;">(optional)</span></label>
+            <input class="form-input" id="cs-role" placeholder="e.g. Project Director"/>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-ghost" onclick="closeCaseStudyModal()">Cancel</button>
+        <button class="btn-primary" onclick="submitCaseStudy()" style="background:linear-gradient(135deg,#6eb5ff,#3a7fd5);">📖 Submit Case Study</button>
+      </div>
+    </div>
+    <div class="modal-success" id="cs-success-view">
+      <div class="success-icon">🎉</div>
+      <div class="success-title">Case Study Received!</div>
+      <div class="success-sub">Thank you for sharing your experience. Your case study will be reviewed by the GIF editorial team within 5–7 business days. If approved for publication, we will reach out to confirm details before featuring your work.</div>
+      <div style="margin-top:24px;display:flex;gap:10px;">
+        <button class="btn-primary" onclick="closeCaseStudyModal()">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 // ── I18N ─────────────────────────────────────────────────
 const i18n = {
   en: {
     appTitle:'Project Preparation Facilities <span>Navigator</span>',
     statFacilities:'Facilities', statCountries:'Countries', statFunding:'Available', statTypes:'Support Types',
-    btnSubmit:'📋 Submit Fund', themeDark:'Dark mode', themeLight:'Light mode',
+    btnSubmit:'📋 Submit PPF', themeDark:'Dark mode', themeLight:'Light mode',
     findSupport:'Find Support', searchPlaceholder:'Search facilities, organisations…',
     labelRegion:'🌍 Region', labelSupport:'💡 Support Available', labelSector:'🏭 Sector', labelInstrument:'💰 Financing Instrument',
     allRegions:'All', allTypes:'All Types', allInstruments:'All Instruments', allSectors:'All Sectors',
@@ -1060,7 +1374,7 @@ const i18n = {
     supportType:'Support Type', grants:'Grants', concessionalLoans:'Concessional Loans',
     technicalAssistance:'Technical Assistance', advisoryServices:'Advisory Services', blendedFinance:'Blended Finance',
     fitFilter:'🎯 Fit to Filter', satellite:'🛰 Satellite', streetMap:'🗺 Street',
-    modalTitle:'Submit a <span>Fund</span>',
+    modalTitle:'Submit a <span>PPF</span>',
     modalSubtitle:'Share a project preparation facility with the global community. All submissions are reviewed within 5–7 business days.',
     infoTitle:'📌 Submission Guidelines:',
     info1:'Provide accurate, verifiable information from official sources',
@@ -1075,7 +1389,7 @@ const i18n = {
     'f-desc':'Fund Description','f-desc-hint':'Minimum 80 words recommended. Clear descriptions improve discoverability.',
     'f-elig':'Eligibility Criteria','f-contact':'Your Name','f-email':'Email Address','f-notes':'Additional Notes or Document Links',
     selectRegion:'Select region…', selectSector:'Select sector…', selectType:'Select type…',
-    btnCancel:'Cancel', btnSubmitFund:'📤 Submit Fund', btnDone:'Done',
+    btnCancel:'Cancel', btnSubmitFund:'📤 Submit PPF', btnDone:'Done',
     successTitle:'Submission Received!',
     successSub:"Thank you for contributing to the Project Preparation Facilities Navigator. Our editorial team will review your submission within 5–7 business days. You'll receive a confirmation email shortly.",
   },
@@ -1092,7 +1406,7 @@ const i18n = {
     supportType:'Tipo de Apoyo', grants:'Subvenciones', concessionalLoans:'Préstamos Concesionales',
     technicalAssistance:'Asistencia Técnica', advisoryServices:'Servicios de Asesoría', blendedFinance:'Finanzas Mixtas',
     fitFilter:'🎯 Ajustar al Filtro', satellite:'🛰 Satélite', streetMap:'🗺 Mapa',
-    modalTitle:'Enviar un <span>Fondo</span>',
+    modalTitle:'Enviar un <span>PPF</span>',
     modalSubtitle:'Comparta una instalación de preparación de proyectos con la comunidad global. Todas las presentaciones son revisadas en 5–7 días hábiles.',
     infoTitle:'📌 Directrices de Envío:',
     info1:'Proporcione información precisa y verificable de fuentes oficiales',
@@ -1107,7 +1421,7 @@ const i18n = {
     'f-desc':'Descripción del Fondo','f-desc-hint':'Se recomiendan al menos 80 palabras.',
     'f-elig':'Criterios de Elegibilidad','f-contact':'Su Nombre','f-email':'Correo Electrónico','f-notes':'Notas Adicionales',
     selectRegion:'Seleccionar región…', selectSector:'Seleccionar sector…', selectType:'Seleccionar tipo…',
-    btnCancel:'Cancelar', btnSubmitFund:'📤 Enviar Fondo', btnDone:'Listo',
+    btnCancel:'Cancelar', btnSubmitFund:'📤 Enviar PPF', btnDone:'Listo',
     successTitle:'¡Envío Recibido!',
     successSub:'Gracias por contribuir al Navegador de Instalaciones. Nuestro equipo revisará su envío en 5–7 días hábiles.',
   },
@@ -1124,7 +1438,7 @@ const i18n = {
     supportType:'Type de Soutien', grants:'Subventions', concessionalLoans:'Prêts Concessionnels',
     technicalAssistance:'Assistance Technique', advisoryServices:'Services Consultatifs', blendedFinance:'Finance Mixte',
     fitFilter:'🎯 Ajuster au Filtre', satellite:'🛰 Satellite', streetMap:'🗺 Carte',
-    modalTitle:'Soumettre un <span>Fonds</span>',
+    modalTitle:'Soumettre un <span>PPF</span>',
     modalSubtitle:'Partagez une installation avec la communauté mondiale. Toutes les soumissions sont examinées sous 5 à 7 jours ouvrables.',
     infoTitle:'📌 Directives de Soumission :',
     info1:'Fournissez des informations exactes et vérifiables provenant de sources officielles',
@@ -1139,7 +1453,7 @@ const i18n = {
     'f-desc':'Description du Fonds','f-desc-hint':'Un minimum de 80 mots est recommandé.',
     'f-elig':"Critères d'Éligibilité",'f-contact':'Votre Nom','f-email':'Adresse Email','f-notes':'Notes Supplémentaires',
     selectRegion:'Sélectionner une région…', selectSector:'Sélectionner un secteur…', selectType:'Sélectionner un type…',
-    btnCancel:'Annuler', btnSubmitFund:'📤 Soumettre le Fonds', btnDone:'Terminer',
+    btnCancel:'Annuler', btnSubmitFund:'📤 Soumettre le PPF', btnDone:'Terminer',
     successTitle:'Soumission Reçue !',
     successSub:"Merci de contribuer au Navigateur des Installations. Notre équipe examinera votre soumission sous 5 à 7 jours ouvrables.",
   }
@@ -1257,6 +1571,36 @@ function submitFund(){
   document.getElementById('modal-success-view').classList.add('show');
 }
 document.getElementById('submit-modal').addEventListener('click',function(e){ if(e.target===this) closeSubmitModal(); });
+
+// ── CASE STUDY MODAL ──────────────────────────────────────
+function openCaseStudyModal(){
+  document.getElementById('cs-form-view').style.display='flex';
+  document.getElementById('cs-success-view').classList.remove('show');
+  document.getElementById('case-study-modal').classList.add('open');
+  const body = document.querySelector('#case-study-modal .modal-body');
+  if(body) body.scrollTop=0;
+}
+function closeCaseStudyModal(){ document.getElementById('case-study-modal').classList.remove('open'); }
+function submitCaseStudy(){
+  const projectName = document.getElementById('cs-project-name').value.trim();
+  const country     = document.getElementById('cs-country').value.trim();
+  const sector      = document.getElementById('cs-sector').value;
+  const facility    = document.getElementById('cs-facility').value.trim();
+  const stage       = document.getElementById('cs-stage').value;
+  const challenge   = document.getElementById('cs-challenge').value.trim();
+  const howHelped   = document.getElementById('cs-how-helped').value.trim();
+  const outcomes    = document.getElementById('cs-outcomes').value.trim();
+  const contact     = document.getElementById('cs-contact').value.trim();
+  const org         = document.getElementById('cs-org').value.trim();
+  const email       = document.getElementById('cs-email').value.trim();
+  if(!projectName||!country||!sector||!facility||!stage||!challenge||!howHelped||!outcomes||!contact||!org||!email){
+    alert('Please fill in all required fields marked with *.');
+    return;
+  }
+  document.getElementById('cs-form-view').style.display='none';
+  document.getElementById('cs-success-view').classList.add('show');
+}
+document.getElementById('case-study-modal').addEventListener('click',function(e){ if(e.target===this) closeCaseStudyModal(); });
 
 </script>
 <!-- Drupal headless CMS integration (config must load before api) -->
@@ -1584,7 +1928,7 @@ const STATIC_FACILITIES = [
 let facilities = STATIC_FACILITIES;   // will be replaced on load if Drupal is live
 
 // ── STATE ──────────────────────────────────────────────
-let activeFilters = { stage:"all", region:"all", support:"all", sector:"all", instrument:"all" };
+let activeFilters = { stage:"all", region:"all", support:"all", sector:"all", instrument:"all", applicant:"all" };
 let activeSearch = "";
 let map, markersLayer, tileLayer, isSatellite=true;
 
@@ -1754,8 +2098,10 @@ function getFiltered(){
     // Sector filter — matches f.sector exactly (Infrastructure, Energy, Water, Finance, Health)
     const mx = activeFilters.sector==='all' || f.sector===activeFilters.sector;
     const mi = true; // instrument filter removed
+    // Eligible applicant filter — matches against f.eligibility array or f.applicants field
+    const ma = activeFilters.applicant==='all' || (f.applicants && f.applicants.includes(activeFilters.applicant));
     const mq=!activeSearch||f.name.toLowerCase().includes(activeSearch)||f.org.toLowerCase().includes(activeSearch)||f.country.toLowerCase().includes(activeSearch);
-    return mt&&mr&&ms&&mx&&mi&&mq;
+    return mt&&mr&&ms&&mx&&mi&&ma&&mq;
   });
 }
 let currentFiltered=[];
@@ -1821,7 +2167,7 @@ function renderMapMarkers(filtered){
 }
 
 function resetFilters(){
-  activeFilters={stage:"all",region:"all",support:"all",sector:"all",instrument:"all"};
+  activeFilters={stage:"all",region:"all",support:"all",sector:"all",instrument:"all",applicant:"all"};
   activeSearch="";
   const si=document.getElementById('search-input'); if(si) si.value="";
   document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
@@ -1919,6 +2265,7 @@ function renderTable(filtered){
 
 // ── DETAIL PANEL ──────────────────────────────────────────
 function openDetail(f){
+  _currentDetailFund = f;
   document.getElementById('detail-title').textContent=f.name;
   document.getElementById('detail-org').textContent=f.org+' · '+f.country;
   document.getElementById('detail-types').innerHTML=f.support.map(s=>`<span class="tag tag-${s.toLowerCase()}">${s}</span>`).join('');
@@ -2057,6 +2404,395 @@ function closeDetail(){
   document.getElementById('detail-overlay').classList.remove('open');
   document.querySelectorAll('.result-card').forEach(c=>c.classList.remove('active'));
 }
+
+// ── PDF DOWNLOAD ───────────────────────────────────────────
+let _currentDetailFund = null;
+
+function _logoToDataURL(src) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.crossOrigin = 'Anonymous';
+    img.onload = () => {
+      const c = document.createElement('canvas');
+      c.width = img.naturalWidth; c.height = img.naturalHeight;
+      c.getContext('2d').drawImage(img, 0, 0);
+      resolve(c.toDataURL('image/png'));
+    };
+    img.onerror = () => resolve(null);
+    img.src = src;
+  });
+}
+
+async function downloadFundPDF() {
+  if (!_currentDetailFund) return;
+  const btn = document.getElementById('pdf-download-btn');
+  if (btn) { btn.textContent = '⏳ Generating…'; btn.disabled = true; }
+
+  const f = _currentDetailFund;
+  const logoData = await _logoToDataURL('Images/logo.png');
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+  const W = doc.internal.pageSize.getWidth();
+  const H = doc.internal.pageSize.getHeight();
+
+  // colour palette — light theme
+  const navy   = [0,   28,  60];
+  const teal   = [0,  160, 160];
+  const gold   = [200, 140,  20];
+  const white  = [255, 255, 255];
+  const muted  = [100, 120, 145];
+  const border = [210, 220, 232];
+  const card   = [245, 248, 252];
+  const text   = [20,  40,  70];
+
+  // helpers
+  const sectionLabel = (label, lineStart, y) => {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7.5);
+    doc.setTextColor(...navy);
+    doc.text(label, 30, y);
+    doc.setDrawColor(...border);
+    doc.setLineWidth(0.4);
+    doc.line(lineStart, y - 1, W - 30, y - 1);
+  };
+
+  const stageCell = (val, label, x, y, cw, ch) => {
+    const v      = (val || '').toUpperCase();
+    const isY    = v === 'Y' || v === 'YES';
+    const isP    = v === 'PARTIAL';
+    const isEmpty = val === '' || val == null;
+
+    // background + border
+    if (isY)         { doc.setFillColor(220, 248, 248); doc.setDrawColor(...teal);           doc.setLineWidth(0.8); }
+    else if (isP)    { doc.setFillColor(228, 238, 255); doc.setDrawColor(100, 150, 230);     doc.setLineWidth(0.6); }
+    else             { doc.setFillColor(248, 250, 253); doc.setDrawColor(...border);         doc.setLineWidth(0.3); }
+    doc.roundedRect(x, y, cw, ch, 3, 3, 'FD');
+
+    const cx  = x + cw / 2;       // horizontal centre
+    const ic  = isY ? '✓' : isP ? '~' : isEmpty ? '' : '—';
+    const icColor  = isY ? teal : isP ? [80, 130, 210] : [190, 205, 218];
+    const lblColor = isY ? [0, 120, 120] : muted;
+
+    // icon — upper half of cell
+    doc.setFont('helvetica', isY ? 'bold' : 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(...icColor);
+    doc.text(ic, cx, y + ch * 0.44, { align: 'center' });
+
+    // label — lower half, wrapped if needed
+    doc.setFontSize(6);
+    doc.setTextColor(...lblColor);
+    doc.setFont('helvetica', isY ? 'bold' : 'normal');
+    const ll = doc.splitTextToSize(label, cw - 6);
+    const lh = 7.5; // line height for 6pt
+    const startLY = y + ch * 0.62;
+    ll.slice(0, 2).forEach((line, li) => doc.text(line, cx, startLY + li * lh, { align: 'center' }));
+  };
+
+  const PAD = 30; // left/right margin
+  const CW  = W - PAD * 2; // content width = 535pt
+
+  // ── white background ──
+  doc.setFillColor(...white);
+  doc.rect(0, 0, W, H, 'F');
+
+  // ── navy top accent bar ──
+  doc.setFillColor(...navy);
+  doc.rect(0, 0, W, 6, 'F');
+
+  // ─────────────────────────────────────────────────────
+  // HEADER BLOCK
+  // ─────────────────────────────────────────────────────
+  // Measure name + org height first so we can size the header dynamically
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(13);
+  const nameLines = doc.splitTextToSize(f.name, CW - 150);
+  const nameH     = nameLines.length * 16;   // 16pt line height
+  const headerH   = Math.max(94, nameH + 62); // min 94pt
+
+  doc.setFillColor(...card);
+  doc.setDrawColor(...border);
+  doc.setLineWidth(0.5);
+  doc.roundedRect(PAD, 14, CW, headerH, 8, 8, 'FD');
+
+  // Logo (left column, vertically centred)
+  const logoW = 100, logoH = 36;
+  const logoX  = PAD + 12;
+  const logoY  = 14 + (headerH - logoH) / 2;
+  if (logoData) {
+    doc.addImage(logoData, 'PNG', logoX, logoY, logoW, logoH);
+  } else {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(...navy);
+    doc.text('GIF PPF', logoX + 4, logoY + 24);
+  }
+
+  // Vertical divider
+  const divX = PAD + 124;
+  doc.setDrawColor(...border);
+  doc.setLineWidth(0.5);
+  doc.line(divX, 22, divX, 14 + headerH - 8);
+
+  // Fund name
+  const textX = divX + 14;
+  const nameY  = 14 + 26;
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(13);
+  doc.setTextColor(...navy);
+  doc.text(nameLines, textX, nameY);
+
+  // Org · Country
+  const orgY = nameY + nameH + 2;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8);
+  doc.setTextColor(...muted);
+  doc.text(f.org + '  ·  ' + f.country, textX, orgY);
+
+  // Support type badges — centered in right column
+  const badgeAreaX = textX;
+  const badgeAreaW = W - PAD - 10 - badgeAreaX;
+  const badgeH2    = 14;
+  const badgeGap   = 5;
+  const badgePadX  = 10;
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(6.5);
+  const badgeSizes = f.support.map(s => ({ text: s, w: doc.getTextWidth(s) + badgePadX * 2 }));
+  const totalBW    = badgeSizes.reduce((a, b) => a + b.w + badgeGap, 0) - badgeGap;
+  let   bx         = badgeAreaX + (badgeAreaW - totalBW) / 2;
+  const badgeY     = orgY + 10;
+
+  badgeSizes.forEach(b => {
+    doc.setFillColor(...teal);
+    doc.setDrawColor(...teal);
+    doc.roundedRect(bx, badgeY, b.w, badgeH2, 3, 3, 'F');
+    doc.setTextColor(...white);
+    doc.text(b.text, bx + b.w / 2, badgeY + 9.5, { align: 'center' });
+    bx += b.w + badgeGap;
+  });
+
+  // ─────────────────────────────────────────────────────
+  // STATS ROW  (5 equal columns, flush under header)
+  // ─────────────────────────────────────────────────────
+  const statsY  = 14 + headerH + 6;
+  const statsH  = 46;
+  const statW   = CW / 5;
+  const statsData = [
+    { label: 'YEAR CREATED',    value: String(f.year || '—') },
+    { label: 'REGION',          value: f.region },
+    { label: 'FUNDING',         value: f.amount },
+    { label: 'STATUS',          value: f.status },
+    { label: 'CLIMATE MANDATE', value: f.climateMandate || 'Not specified' },
+  ];
+
+  statsData.forEach((s, i) => {
+    const sx = PAD + i * statW;
+    doc.setFillColor(i % 2 === 0 ? 242 : 248, i % 2 === 0 ? 246 : 251, i % 2 === 0 ? 253 : 255);
+    doc.setDrawColor(...border);
+    doc.rect(sx, statsY, statW, statsH, 'FD');
+
+    // label
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(6);
+    doc.setTextColor(...muted);
+    doc.text(s.label, sx + statW / 2, statsY + 13, { align: 'center' });
+
+    // dividing micro-rule
+    doc.setDrawColor(...border);
+    doc.setLineWidth(0.3);
+    doc.line(sx + 8, statsY + 17, sx + statW - 8, statsY + 17);
+
+    // value
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9.5);
+    doc.setTextColor(...navy);
+    const vl = doc.splitTextToSize(s.value, statW - 10);
+    doc.text(vl[0], sx + statW / 2, statsY + 32, { align: 'center' });
+  });
+
+  // ─────────────────────────────────────────────────────
+  // FLOWING CONTENT  starts below stats
+  // ─────────────────────────────────────────────────────
+  let y = statsY + statsH + 14;
+
+  // helper: section heading with rule
+  const sec = (label) => {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7);
+    doc.setTextColor(...navy);
+    const lw = doc.getTextWidth(label);
+    doc.text(label, PAD, y);
+    doc.setDrawColor(...border);
+    doc.setLineWidth(0.4);
+    doc.line(PAD + lw + 5, y - 1, W - PAD, y - 1);
+    y += 12;
+  };
+
+  // OVERVIEW
+  sec('OVERVIEW');
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8.5);
+  doc.setTextColor(...text);
+  const descLines = doc.splitTextToSize(f.desc || '', CW);
+  doc.text(descLines.slice(0, 5), PAD, y);
+  y += Math.min(descLines.length, 5) * 12 + 10;
+
+  // SUPPORT INSTRUMENTS
+  sec('SUPPORT INSTRUMENTS');
+  const instruments = [
+    { label: 'In-kind Advisory',   val: f.inkind },
+    { label: 'Pure Grant',         val: f.pureGrant },
+    { label: 'Reimbursable Grant', val: f.reimbursable },
+    { label: 'Equity',             val: f.equity },
+  ];
+  const icolW = CW / 4;
+  const instrH = 28;
+  instruments.forEach((ins, i) => {
+    const ix     = PAD + i * icolW;
+    const active = ins.val === 'Y';
+    doc.setFillColor(...(active ? [0, 195, 195] : [248, 251, 254]));
+    doc.setDrawColor(...(active ? teal : border));
+    doc.setLineWidth(active ? 1 : 0.4);
+    doc.roundedRect(ix + 2, y, icolW - 4, instrH, 4, 4, 'FD');
+    // icon
+    doc.setFontSize(9);
+    doc.setTextColor(...(active ? white : [200, 215, 228]));
+    doc.text(active ? '✓' : '—', ix + 2 + (icolW - 4) / 2, y + 12, { align: 'center' });
+    // label
+    doc.setFont('helvetica', active ? 'bold' : 'normal');
+    doc.setFontSize(7);
+    doc.setTextColor(...(active ? white : muted));
+    doc.text(ins.label, ix + 2 + (icolW - 4) / 2, y + 23, { align: 'center' });
+  });
+  y += instrH + 12;
+
+  // ELIGIBILITY
+  sec('ELIGIBILITY CRITERIA');
+  const rowH = 19;
+  (f.eligibility || []).forEach(e => {
+    if (y > H - 210) return;
+    doc.setFillColor(...card);
+    doc.setDrawColor(...border);
+    doc.setLineWidth(0.3);
+    doc.roundedRect(PAD, y, CW, rowH, 2, 2, 'FD');
+    doc.setFontSize(7);
+    doc.setTextColor(...teal);
+    doc.text('✓', PAD + 8, y + 12.5);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(...text);
+    doc.text(e, PAD + 20, y + 12.5);
+    y += rowH + 3;
+  });
+  y += 8;
+
+  // PREPARATION STAGES
+  sec('PREPARATION STAGES COVERAGE');
+
+  const stageGroups = [
+    {
+      title: 'Stage 2 — Identification',
+      desc:  'Early project identification, pipeline screening and preliminary feasibility assessments.',
+      cols:  2,
+      cells: [
+        { val: f.s2,  label: '2. ID & Screening' },
+        { val: f.s21, label: '2.1 Pre-feasibility' },
+      ]
+    },
+    {
+      title: 'Stage 3 — Appraisal & Design',
+      desc:  'Detailed appraisal, structuring and full design — from feasibility through to early and later-stage design.',
+      cols:  5,
+      cells: [
+        { val: f.s3,   label: '3. Appraisal & Structuring' },
+        { val: f.s31,  label: '3.1 Detailed Feasibility' },
+        { val: f.s32,  label: '3.2 Full Design' },
+        { val: f.s321, label: '3.2.1 Early Stage Design' },
+        { val: f.s322, label: '3.2.2 Later Stage Design' },
+      ]
+    },
+    {
+      title: 'Stage 4 — Tendering & Close',
+      desc:  'Contract drafting, market sounding, competitive tendering and support to commercial and financial close.',
+      cols:  5,
+      cells: [
+        { val: f.s4,  label: '4. Contract & Tendering' },
+        { val: f.s41, label: '4.1 Contract Drafting' },
+        { val: f.s42, label: '4.2 Tendering' },
+        { val: f.s43, label: '4.3 Market Sounding' },
+        { val: f.s44, label: '4.4 Commercial Close' },
+      ]
+    }
+  ];
+
+  const cellH = 34;
+  const cellGap = 4;
+
+  stageGroups.forEach(group => {
+    if (y > H - 100) return;
+
+    // group heading
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7.5);
+    doc.setTextColor(...navy);
+    doc.text(group.title, PAD, y);
+
+    // description — right of title, italic, muted
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(6.5);
+    doc.setTextColor(...muted);
+    const titleW = doc.getStringUnitWidth(group.title) * 7.5 / doc.internal.scaleFactor;
+    const descW  = CW - titleW - 16;
+    // place description right-aligned
+    const descLines2 = doc.splitTextToSize(group.desc, descW);
+    doc.text(descLines2[0], W - PAD, y, { align: 'right' });
+
+    y += 12;
+
+    // cells — evenly spaced across full content width
+    const totalGap = cellGap * (group.cols - 1);
+    const cw = (CW - totalGap) / group.cols;
+    group.cells.forEach((cell, i) => {
+      stageCell(cell.val, cell.label, PAD + i * (cw + cellGap), y, cw, cellH);
+    });
+    y += cellH + 10;
+  });
+
+  if (f.prepStages) {
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(6.5);
+    doc.setTextColor(...muted);
+    const ps = doc.splitTextToSize('Note: ' + f.prepStages, CW);
+    doc.text(ps.slice(0, 2), PAD, y);
+    y += 16;
+  }
+
+  // ─────────────────────────────────────────────────────
+  // FOOTER
+  // ─────────────────────────────────────────────────────
+  doc.setFillColor(242, 246, 252);
+  doc.rect(0, H - 32, W, 32, 'F');
+  doc.setDrawColor(...border);
+  doc.setLineWidth(0.4);
+  doc.line(0, H - 32, W, H - 32);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(6.5);
+  doc.setTextColor(...muted);
+  const dateStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  doc.text('Generated by PPF Navigator · Global Infrastructure Facility · ' + dateStr, PAD, H - 14);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(...teal);
+  doc.text('globalinfrafacility.org', W - PAD, H - 14, { align: 'right' });
+
+  // teal bottom strip
+  doc.setFillColor(...teal);
+  doc.rect(0, H - 4, W, 4, 'F');
+
+  if (btn) { btn.textContent = '⬇ PDF'; btn.disabled = false; }
+  doc.save(f.name.replace(/[^a-z0-9]/gi, '_') + '_PPF.pdf');
+}
 function handleOverlayClick(e){
   if(e.target===document.getElementById('detail-overlay')) closeDetail();
 }
@@ -2070,6 +2806,7 @@ function updateActiveFilters(){
   if(activeFilters.support!=="all") tags.push({label:"Support: "+activeFilters.support,key:"support"});
   if(activeFilters.sector!=="all") tags.push({label:"Sector: "+activeFilters.sector,key:"sector"});
   if(activeFilters.instrument!=="all") tags.push({label:"Instrument: "+activeFilters.instrument,key:"instrument"});
+  if(activeFilters.applicant!=="all") tags.push({label:"Applicant: "+activeFilters.applicant,key:"applicant"});
   if(activeSearch) tags.push({label:"Search: "+activeSearch,key:"search"});
   if(!tags.length){c.style.display="none";return;}
   c.style.display="flex";
@@ -2081,6 +2818,7 @@ function removeFilter(key){
   else if(key==="support"){activeFilters.support="all";document.querySelectorAll('[data-filter="support"]').forEach(p=>p.classList.remove('active'));document.querySelector('[data-filter="support"][data-value="all"]').classList.add('active');updateFilterMeta('support','all');}
   else if(key==="sector"){activeFilters.sector="all";document.querySelectorAll('[data-filter="sector"]').forEach(p=>p.classList.remove('active'));document.querySelector('[data-filter="sector"][data-value="all"]').classList.add('active');updateFilterMeta('sector','all');}
   else if(key==="instrument"){activeFilters.instrument="all";document.querySelectorAll('[data-filter="instrument"]').forEach(p=>p.classList.remove('active'));document.querySelector('[data-filter="instrument"][data-value="all"]').classList.add('active');}
+  else if(key==="applicant"){activeFilters.applicant="all";document.querySelectorAll('[data-filter="applicant"]').forEach(p=>p.classList.remove('active'));document.querySelector('[data-filter="applicant"][data-value="all"]').classList.add('active');updateFilterMeta('applicant','all');}
   else if(key==="search"){activeSearch="";document.getElementById('search-input').value="";}
   applyFilters();
 }

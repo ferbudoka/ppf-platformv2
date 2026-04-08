@@ -2,6 +2,93 @@
 
 A web-based tool of the **Global Infrastructure Facility (GIF)**, a G20 initiative supporting sustainable infrastructure in emerging markets. The PPF Navigator helps infrastructure professionals discover, filter, and connect with the right project preparation facility for their needs.
 
+**Created:** March 27, 2026
+
+---
+
+## Site Outline
+
+### 1. Home Page (`index.html`)
+**Navigation**
+- Logo (top left)
+- Links: Mission · How It Works · Features · FAQ
+- CTA button: Explore the Dashboard
+
+**Hero**
+- Looping video background (videos 2 → 3 → 1)
+- Headline + subheading
+- Primary CTA button
+- Scroll indicator
+
+**Mission**
+- Image (left) + text (right)
+- 3 pillars: Discover & Match · Navigate Eligibility · Accelerate Preparation
+
+**How It Works**
+- 5 filter dimensions explained: Preparation Stage · Support Instrument · Region · Sector · Project Size
+
+**Features**
+- 3 feature cards: built for infrastructure professionals
+
+**Bottom CTA**
+- Final call to action to open the dashboard
+
+**FAQ**
+- 8 collapsible questions about the platform
+
+**Footer**
+- Links: Dashboard · All Facilities · Mission · FAQ
+- Legal / copyright
+
+---
+
+### 2. Dashboard (`project-support-finder.html`)
+**Header**
+- Logo · Stats banner (Countries · Funds Available · Support Types)
+- Submit Fund button · Back to Home
+
+**Filters Panel (left sidebar)**
+- Search bar
+- Filter pills: Stage · Region · Support Type · Sector · Instrument
+- Reset All Filters button
+
+**Interactive Map (center)**
+- Satellite tile layer (Esri)
+- Fund markers with zoom-adaptive sizing
+- Cluster circles for co-located funds (click to expand)
+- Hover tooltips with fund info
+- Dark/Light mode toggle (bottom left)
+
+**Fund Cards Grid (right)**
+- Cards for each matching facility
+- Click to open detail panel
+
+**Fund Detail Panel**
+- Full fund info: name, org, description, eligibility, amount, sector, region
+- Contact button
+
+**Submit Fund Modal**
+- Multi-field form to propose a new facility
+- Success confirmation screen
+
+---
+
+### 3. Facilities Table (`facilities.html`)
+**Header**
+- Same banner as dashboard
+
+**Search + Export**
+- Live search by name/org
+- Export to CSV button
+
+**Full Data Table**
+- 14 facilities · 12 columns
+- Sortable columns (click header to sort ▲▼)
+- All facility data: name, org, type, sector, region, amount, status, etc.
+
+**Footer**
+- Same as home page
+
 ---
 
 ## What it is
@@ -16,46 +103,20 @@ Infrastructure projects in emerging markets often stall before reaching financia
 |------|-------------|
 | `index.html` | Landing page — introduces the platform, its mission, features, and filter framework |
 | `project-support-finder.html` | The main dashboard — interactive database with filtering, map, and facility profiles |
-
-Open `index.html` in a browser to start, then click **"Explore the Dashboard"** to access the full tool.
-
----
-
-## What it does
-
-### Landing Page (`index.html`)
-- Introduces the GIF mission and the $15T global infrastructure gap
-- Explains the three core value propositions: **Discover & Match**, **Navigate Eligibility**, and **Accelerate Preparation**
-- Showcases the five filter dimensions users can apply
-- Links through to the main dashboard
-
-### Dashboard (`project-support-finder.html`)
-The main application. Users can explore preparation facilities across five dimensions:
-
-| Dimension | Options |
-|-----------|---------|
-| **Preparation Stage** | Project Identification, Screening, Feasibility Assessment, Design & Structuring, Contract Drafting, Tendering |
-| **Support Instrument** | In-kind Technical Advisory, Pure Grants, Reimbursable Grants, Early-stage Equity |
-| **Geography** | Filter by region or country |
-| **Sector** | Energy, Transport, Digital, Water, Urban |
-| **Preferred Provider** | MDB, Independent, National |
-
-#### Key features
-- **Interactive Map Explorer** — Leaflet.js map with cluster, heat, and point views; colour-coded regional overlays
-- **Smart Filtering Engine** — combine multiple filters simultaneously; results update in real time across map, sidebar, grid, and table views
-- **Detailed Facility Profiles** — eligibility criteria, funding envelopes, deadlines, and sector focus in slide-up detail panels
-- **Multi-language Support** — full interface in English, Spanish, and French
-- **Submit New Facilities** — structured form to contribute facilities not yet in the database
-- **Light & Dark Modes** — toggle between dark cartographic and light analytical themes
+| `facilities.html` | Full data table of all facilities with search, sort, and CSV export |
+| `drupal-config.js` | Drupal headless CMS configuration (API endpoint settings) |
+| `drupal-api.js` | Drupal JSON:API integration layer |
+| `backup-clean/` | Clean backup of all pages as of March 27, 2026 |
 
 ---
 
-## Tech stack
+## Tech Stack
 
-- Pure HTML, CSS, and JavaScript — no build step or backend required
+- Pure HTML, CSS, and JavaScript — no build step required
 - [Leaflet.js](https://leafletjs.com/) for the interactive map
 - Google Fonts (Syne + DM Sans)
-- Pexels video and Unsplash images for hero visuals
+- Esri World Imagery for satellite map tiles
+- Drupal 10 (headless CMS via JSON:API) for content management
 
 ---
 
@@ -66,7 +127,13 @@ The main application. Users can explore preparation facilities across five dimen
 3. Use the filters to narrow down facilities by stage, instrument, geography, sector, or provider
 4. Click a facility card or map marker to view its full profile
 
-No installation, server, or internet connection is required beyond loading external fonts, map tiles, and hero media.
+---
+
+## CMS Integration (Drupal Headless)
+
+Fund and facility data is managed through a Drupal 10 backend. Editors can add, edit, or unpublish facilities via the Drupal admin without touching code. The frontend fetches data via Drupal's JSON:API at runtime.
+
+See setup instructions in the conversation history for full Pantheon + GitHub Pages deployment steps.
 
 ---
 
