@@ -166,7 +166,7 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;ba
 body.light .logo img{background:none;padding:0;border-radius:0;}
 .logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),#006688);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 2px 12px rgba(0,194,194,.3);}
 .logo-text{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:#ffffff;letter-spacing:-.2px;}.logo-text span{color:var(--accent-3);font-weight:800;}
-.header-stats{display:flex;gap:32px;align-items:center;}
+.header-stats{display:flex;gap:32px;align-items:center;position:absolute;left:50%;transform:translateX(-50%);}
 .stat-item{display:flex;align-items:baseline;gap:6px;}
 .stat-num{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;color:var(--accent-3);line-height:1;letter-spacing:-.5px;}
 .stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;}
@@ -334,6 +334,15 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
 .cluster-tooltip-item:last-of-type{border-bottom:none;}
 .cluster-tooltip-hint{font-size:11px;color:var(--accent);font-weight:600;text-align:center;margin-top:8px;padding-top:6px;border-top:1px solid var(--border);}
 .leaflet-tooltip.cluster-tip{background:none;border:none;box-shadow:none;padding:0;}
+/* Cluster grid cards */
+.cg-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 15px;cursor:pointer;transition:all .18s;display:flex;flex-direction:column;gap:7px;position:relative;overflow:hidden;}
+.cg-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px;background:var(--cg-color,var(--accent));}
+.cg-card:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.35);border-color:var(--accent);}
+.cg-icon{font-size:22px;line-height:1;}
+.cg-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;line-height:1.35;color:var(--text);}
+.cg-org{font-size:11.5px;color:var(--muted);line-height:1.3;}
+.cg-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:2px;}
+.cg-tag{font-size:10px;padding:2px 7px;border-radius:20px;border:1px solid;font-weight:600;}
 .leaflet-tooltip.cluster-tip::before{display:none;}
 .marker-inner{width:32px;height:32px;border-radius:50%;border:3px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:13px;box-shadow:0 4px 20px rgba(0,0,0,.5),0 0 0 5px rgba(99,179,237,.1);cursor:pointer;}
 .leaflet-popup-content-wrapper{background:var(--panel)!important;border:1px solid var(--border)!important;border-radius:12px!important;box-shadow:0 8px 40px rgba(0,0,0,.5)!important;color:var(--text)!important;padding:0!important;}
@@ -663,7 +672,18 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
       <div class="map-chip" id="layer-toggle" onclick="toggleLayer()">🛰 Satellite</div>
     </div>
 
-    <div class="map-overlay-bl">
+    <div class="map-overlay-bl" style="display:flex;flex-direction:column;gap:8px;align-items:flex-start;">
+      <div id="map-legend" style="background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:10px 14px;backdrop-filter:blur(12px);box-shadow:0 4px 20px rgba(0,0,0,.4);font-size:11.5px;font-family:'DM Sans',sans-serif;min-width:150px;">
+        <div style="font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:8px;">HQ Location</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div style="display:flex;align-items:center;gap:7px;"><span style="width:12px;height:12px;border-radius:50%;background:#60a5fa;flex-shrink:0;display:inline-block;box-shadow:0 0 6px #60a5fa88;"></span><span>North America</span></div>
+          <div style="display:flex;align-items:center;gap:7px;"><span style="width:12px;height:12px;border-radius:50%;background:#fb923c;flex-shrink:0;display:inline-block;box-shadow:0 0 6px #fb923c88;"></span><span>Latin America</span></div>
+          <div style="display:flex;align-items:center;gap:7px;"><span style="width:12px;height:12px;border-radius:50%;background:#f59e0b;flex-shrink:0;display:inline-block;box-shadow:0 0 6px #f59e0b88;"></span><span>Middle East</span></div>
+          <div style="display:flex;align-items:center;gap:7px;"><span style="width:12px;height:12px;border-radius:50%;background:#4ade80;flex-shrink:0;display:inline-block;box-shadow:0 0 6px #4ade8088;"></span><span>Africa</span></div>
+          <div style="display:flex;align-items:center;gap:7px;"><span style="width:12px;height:12px;border-radius:50%;background:#a78bfa;flex-shrink:0;display:inline-block;box-shadow:0 0 6px #a78bfa88;"></span><span>Europe</span></div>
+          <div style="display:flex;align-items:center;gap:7px;"><span style="width:12px;height:12px;border-radius:50%;background:#22d3ee;flex-shrink:0;display:inline-block;box-shadow:0 0 6px #22d3ee88;"></span><span>Asia & Pacific</span></div>
+        </div>
+      </div>
       <button class="toolbar-btn" id="theme-btn" onclick="toggleTheme()">☀️ <span data-i18n="themeLight">Light mode</span></button>
     </div>
 
@@ -870,6 +890,23 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
 </div>
 
 <!-- FLOATING TOOLBAR -->
+
+<!-- CLUSTER GRID MODAL -->
+<div class="modal-overlay" id="cluster-modal" onclick="if(event.target===this)closeClusterModal()">
+  <div id="cluster-modal-box" style="background:var(--panel);border:1px solid var(--border);border-radius:18px;width:min(92vw,860px);max-height:82vh;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.6);overflow:hidden;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px 16px;border-bottom:1px solid var(--border);flex-shrink:0;">
+      <div>
+        <div id="cluster-modal-title" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;"></div>
+        <div id="cluster-modal-sub" style="font-size:12.5px;color:var(--muted);margin-top:3px;"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <input id="cluster-search" type="text" placeholder="Search…" oninput="filterClusterGrid()" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:7px 12px;font-size:13px;color:var(--text);font-family:'DM Sans',sans-serif;width:180px;outline:none;">
+        <button onclick="closeClusterModal()" style="background:var(--card);border:1px solid var(--border);border-radius:8px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:18px;flex-shrink:0;transition:all .2s;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">×</button>
+      </div>
+    </div>
+    <div id="cluster-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;padding:20px;overflow-y:auto;"></div>
+  </div>
+</div>
 
 <!-- SUBMIT FUND MODAL -->
 <div class="modal-overlay" id="submit-modal">
@@ -1606,326 +1643,11 @@ document.getElementById('case-study-modal').addEventListener('click',function(e)
 <!-- Drupal headless CMS integration (config must load before api) -->
 <script src="drupal-config.js"></script>
 <script src="drupal-api.js"></script>
+<script src="ppf-data.js"></script>
 <script>
 
-// Static fallback data — used when Drupal is not configured or unreachable
-const STATIC_FACILITIES = [
-  {
-    id:1, icon:"🏗", name:"ADB Asia Pacific Project Preparation Facility (ADB AP3F)",
-    org:"Asian Development Bank (ADB)", region:"Asia Pacific", country:"Multiple",
-    lat:14.60, lng:121.02, support:["Advisory","Grant"], sector:"Energy",
-    amount:"Varies", deadline:"Rolling", status:"Open", color:"#00c2c2",
-    year:2014, inkind:"Y", finInstr:"Y", pureGrant:"Y", reimbursable:"N", equity:"N",
-    pcm:"Yes 100%",
-    prepStages:"Policy reforms and capacity building linked to potential or current projects; Due diligence; Early stage project preparation; Project preparation; Structuring; Project monitoring and restructuring",
-    s2:"N", s21:"N", s3:"Y", s31:"Y",
-    s32:"Y", s321:"Y", s322:"Y",
-    s4:"Y", s41:"Y", s42:"N", s43:"Y", s44:"N",
-    secScope:"All", secEnergy:"Y", secTransport:"Y",
-    secDigital:"Y", secWater:"Y", secWaste:"Y",
-    secUrban:"Y", secSocial:"Y", secUndefined:"",
-    secOther:"",
-    thematic:"",
-    climateMandate:"Included",
-    otherNonInfra:"Public sector management",
-    geoScope:"One region",
-    allEMDEs:"N",
-    regionsCovered:"East Asia Pacific; Europe and Central Asia; South Asia",
-    desc:"Provides technical advisory and grant support for infrastructure project preparation across Asia Pacific. Focuses on policy reforms, early-stage preparation, structuring, and transaction monitoring to bring projects to bankability.",
-    eligibility:["ADB developing member countries","Public sector or PPP entities","Infrastructure sector focus","Environmental and social safeguards compliance"]
-  },
-  {
-    id:2, icon:"🌍", name:"Africa50 — Project Development",
-    org:"Africa50", region:"Africa", country:"Multiple",
-    lat:33.59, lng:-7.62, support:["Advisory","Grant"], sector:"Infrastructure",
-    amount:"Varies", deadline:"Rolling", status:"Open", color:"#4dd9ac",
-    year:2013, inkind:"Y", finInstr:"N", pureGrant:"Y", reimbursable:"N", equity:"N",
-    pcm:"Yes 100%",
-    prepStages:"",
-    s2:"Y", s21:"Y", s3:"Y", s31:"Y",
-    s32:"Y", s321:"Y", s322:"Y",
-    s4:"Y", s41:"Y", s42:"Y", s43:"Y", s44:"Y",
-    thematic:"Climate-smart, connectivity and resilience",
-    climateMandate:"Included",
-    otherNonInfra:"NA",
-    geoScope:"One region",
-    allEMDEs:"N",
-    regionsCovered:"Africa",
-    desc:"Africa50 accelerates infrastructure development by bridging the gap between project identification and financial close, providing development capital and advisory support to advance bankable African infrastructure projects.",
-    eligibility:["African projects with regional impact","Public or private sector sponsors","Minimum project size applies","Strong commercial viability required"]
-  },
-  {
-    id:3, icon:"⚖️", name:"African Legal Support Facility",
-    org:"African Legal Support Facility (ALSF)", region:"Africa", country:"Multiple",
-    lat:5.36, lng:-4.01, support:["Advisory","Grant","Equity"], sector:"Finance",
-    amount:"Varies", deadline:"Rolling", status:"Open", color:"#f0b429",
-    year:2008, inkind:"Y", finInstr:"Y", pureGrant:"Y", reimbursable:"N", equity:"Y",
-    pcm:"No",
-    prepStages:"",
-    s2:"N", s21:"N", s3:"Partial", s31:"N",
-    s32:"Y", s321:"Y", s322:"Y",
-    s4:"Partial", s41:"Y", s42:"N", s43:"N", s44:"N",
-    secScope:"Multiple", secEnergy:"Y", secTransport:"Y",
-    secDigital:"Y", secWater:"N", secWaste:"N",
-    secUrban:"N", secSocial:"Y", secUndefined:"N",
-    secOther:"",
-    thematic:"",
-    climateMandate:"Included",
-    otherNonInfra:"FinTech",
-    geoScope:"One region",
-    allEMDEs:"N",
-    regionsCovered:"Africa",
-    desc:"Provides legal advisory services and capacity building to African governments to help them negotiate complex commercial transactions, including infrastructure contracts, resource agreements, and sovereign debt operations.",
-    eligibility:["African Union member states","Government ministries and state entities","Legal capacity gaps demonstrated","All infrastructure sectors considered"]
-  },
-  {
-    id:4, icon:"💧", name:"African Water Facility (AWF)",
-    org:"African Water Facility / African Development Bank", region:"Africa", country:"Multiple",
-    lat:5.35, lng:-4.00, support:["Advisory","Grant"], sector:"Water",
-    amount:"Varies", deadline:"Rolling", status:"Open", color:"#6eb5ff",
-    year:2004, inkind:"Y", finInstr:"N", pureGrant:"Y", reimbursable:"N", equity:"N",
-    pcm:"Yes included",
-    prepStages:"Technical and funding",
-    s2:"N", s21:"N", s3:"Y", s31:"Y",
-    s32:"Y", s321:"Y", s322:"Y",
-    s4:"Partial", s41:"Y", s42:"N", s43:"Y", s44:"N",
-    thematic:"Environment & Disaster Risk Management",
-    climateMandate:"Included",
-    otherNonInfra:"Agriculture, Rural Infrastructure, Environment",
-    geoScope:"One region",
-    allEMDEs:"N",
-    regionsCovered:"Africa",
-    desc:"Mobilises investments in the water sector across Africa by funding project preparation activities including feasibility studies, designs, and capacity building to develop bankable water and sanitation projects.",
-    eligibility:["African countries","Public water utilities and authorities","Water and sanitation sector focus","Government or regional body endorsement required"]
-  },
-  {
-    id:5, icon:"🌿", name:"Allied Climate Partners",
-    org:"Allied Climate Partners", region:"Global", country:"Multiple",
-    lat:40.71, lng:-74.01, support:["Advisory","Equity"], sector:"Energy",
-    amount:"Varies", deadline:"Rolling", status:"Open", color:"#4dd9ac",
-    year:2023, inkind:"Y", finInstr:"Y", pureGrant:"N", reimbursable:"N", equity:"Y",
-    pcm:"Yes strong",
-    prepStages:"",
-    s2:"", s21:"", s3:"", s31:"Y",
-    s32:"", s321:"Y", s322:"",
-    s4:"", s41:"", s42:"", s43:"", s44:"",
-    secScope:"All", secEnergy:"Y", secTransport:"Y",
-    secDigital:"Y", secWater:"Y", secWaste:"Y",
-    secUrban:"Y", secSocial:"Y", secUndefined:"N",
-    secOther:"",
-    thematic:"Legal",
-    climateMandate:"No",
-    otherNonInfra:"Extractives & natural resources (mining, petroleum, agriculture, forestry, fisheries, blue economy); Sovereign debt; Investment treaties",
-    geoScope:"Multi-regions",
-    allEMDEs:"N",
-    regionsCovered:"Southeast Asia; Africa; Caribbean; Central America",
-    desc:"Partners with climate-focused funds and investors to mobilise private capital for clean energy and climate infrastructure in emerging markets, providing equity and advisory at the early stages of project development.",
-    eligibility:["Private sector climate projects","Emerging market focus","Strong PCM potential","Climate impact metrics required"]
-  },
-  {
-    id:6, icon:"🌏", name:"ASEAN Catalytic Green Finance Facility (ACGFF)",
-    org:"Asian Development Bank / ASEAN", region:"Asia Pacific", country:"Multiple",
-    lat:-6.21, lng:106.85, support:["Advisory","Grant"], sector:"Energy",
-    amount:"Varies", deadline:"Rolling", status:"Open", color:"#00c2c2",
-    year:2019, inkind:"Y", finInstr:"Y", pureGrant:"Y", reimbursable:"N", equity:"N",
-    pcm:"Yes strong focus",
-    prepStages:"",
-    s2:"Y", s21:"Y", s3:"Y", s31:"Y",
-    s32:"Y", s321:"Y", s322:"Y",
-    s4:"Y", s41:"Y", s42:"Y", s43:"Y", s44:"Y",
-    thematic:"Regional infrastructure",
-    climateMandate:"Included",
-    otherNonInfra:"",
-    geoScope:"One region",
-    allEMDEs:"N",
-    regionsCovered:"Southeast Asia (ASEAN)",
-    desc:"Catalyses green infrastructure investment in ASEAN by blending concessional finance with private capital. Supports project preparation for renewable energy, green transport, and resilient urban infrastructure across Southeast Asia.",
-    eligibility:["ASEAN member countries","Green and climate-resilient projects","Private co-investment required","Environmental impact assessment required"]
-  },
-  {
-    id:7, icon:"🏙", name:"C40 Cities Finance Facility",
-    org:"C40 Cities / GIZ / BMUB", region:"Global", country:"Multiple",
-    lat:51.51, lng:-0.13, support:["Advisory"], sector:"Health",
-    amount:"Varies", deadline:"Rolling", status:"Open", color:"#6eb5ff",
-    year:2005, inkind:"Y", finInstr:"N", pureGrant:"N", reimbursable:"N", equity:"N",
-    pcm:"Yes included",
-    prepStages:"",
-    s2:"N", s21:"N", s3:"Partial", s31:"Y",
-    s32:"N", s321:"Y", s322:"N",
-    s4:"Partial", s41:"N", s42:"Y", s43:"Y", s44:"N",
-    secScope:"One", secEnergy:"N", secTransport:"N",
-    secDigital:"N", secWater:"Y", secWaste:"N",
-    secUrban:"Y", secSocial:"N", secUndefined:"N",
-    secOther:"Urban sanitation, Waste to energy",
-    thematic:"Water",
-    climateMandate:"Included",
-    otherNonInfra:"",
-    geoScope:"Global",
-    allEMDEs:"Yes",
-    regionsCovered:"Global",
-    desc:"Provides technical assistance and financial advisory to cities in developing countries to prepare bankable low-carbon infrastructure projects — helping city governments bridge the gap from concept to investment-ready projects.",
-    eligibility:["C40 or candidate cities in developing countries","City government or municipal entity","Low-carbon and resilient infrastructure focus","Commitment to climate action plans"]
-  },
-  {
-    id:8, icon:"⚡", name:"Energy Sector Management Assistance Program (ESMAP)",
-    org:"World Bank / ESMAP", region:"Global", country:"Multiple",
-    lat:38.90, lng:-77.05, support:["Advisory","Grant"], sector:"Energy",
-    amount:"Varies", deadline:"Rolling", status:"Open", color:"#f0b429",
-    year:1983, inkind:"Y", finInstr:"Y", pureGrant:"Y", reimbursable:"N", equity:"N",
-    pcm:"Yes included",
-    prepStages:"Technical and funding",
-    s2:"Y", s21:"Y", s3:"Y", s31:"Y",
-    s32:"Y", s321:"Y", s322:"Y",
-    s4:"N", s41:"N", s42:"N", s43:"N", s44:"N",
-    thematic:"NA",
-    climateMandate:"",
-    otherNonInfra:"Bulk storage / logistics",
-    geoScope:"Multi-regions",
-    allEMDEs:"Y",
-    regionsCovered:"",
-    desc:"Global knowledge and technical assistance program helping low- and middle-income countries increase know-how and institutional capacity to achieve environmentally sustainable energy solutions for poverty reduction and economic growth.",
-    eligibility:["Low and middle income countries","Government energy ministries and agencies","Renewable energy and efficiency focus","World Bank operational context"]
-  },
-  {
-    id:9, icon:"🌐", name:"Global Infrastructure Facility (GIF)",
-    org:"Global Infrastructure Facility", region:"Global", country:"Multiple",
-    lat:38.90, lng:-77.04, support:["Advisory","Grant","Reimbursable"], sector:"Infrastructure",
-    amount:"Varies", deadline:"Rolling", status:"Open", color:"#00c2c2",
-    year:2014, inkind:"Y", finInstr:"Y", pureGrant:"Y", reimbursable:"Y", equity:"N",
-    pcm:"Yes 100%",
-    prepStages:"Design; Preparation; Appraisal; Structuring; Transaction support products",
-    s2:"Y", s21:"Y", s3:"Y", s31:"Y",
-    s32:"Y", s321:"Y", s322:"Y",
-    s4:"Partial", s41:"Y", s42:"N", s43:"N", s44:"Y",
-    secScope:"", secEnergy:"", secTransport:"",
-    secDigital:"", secWater:"", secWaste:"",
-    secUrban:"", secSocial:"", secUndefined:"",
-    secOther:"",
-    thematic:"Climate",
-    climateMandate:"Only",
-    otherNonInfra:"",
-    geoScope:"Global",
-    allEMDEs:"",
-    regionsCovered:"All EMDEs",
-    desc:"A G20 platform that facilitates the preparation and structuring of complex infrastructure PPPs to enable private sector participation. Provides transaction advisory, preparation grants, and co-ordination across the MDB system.",
-    eligibility:["Emerging market and developing economy governments","Complex PPP infrastructure projects","Multi-MDB coordination required","Strong PCM potential demonstrated"]
-  },
-  {
-    id:10, icon:"🏦", name:"IDB Project Preparation and Execution Facility (PROPEF)",
-    org:"Inter-American Development Bank (IDB)", region:"Latin America", country:"Multiple",
-    lat:38.90, lng:-77.04, support:["Grant","Reimbursable"], sector:"Infrastructure",
-    amount:"Varies", deadline:"Rolling", status:"Open", color:"#4dd9ac",
-    year:2000, inkind:"N", finInstr:"Y", pureGrant:"N", reimbursable:"Y", equity:"N",
-    pcm:"Yes included",
-    prepStages:"",
-    s2:"Y", s21:"Y", s3:"Y", s31:"Y",
-    s32:"Y", s321:"Y", s322:"Y",
-    s4:"Y", s41:"Y", s42:"Y", s43:"Y", s44:"Y",
-    thematic:"Renewable energy, Energy Efficiency",
-    climateMandate:"Mostly",
-    otherNonInfra:"",
-    geoScope:"One region",
-    allEMDEs:"N",
-    regionsCovered:"Latin America and the Caribbean",
-    desc:"Supports Latin American and Caribbean countries in preparing and executing infrastructure projects through reimbursable technical cooperation, enabling governments to fund feasibility studies, designs, and transaction structuring.",
-    eligibility:["IDB borrowing member countries","Public sector entities","Infrastructure and social sector projects","Repayment capacity required for reimbursable component"]
-  },
-  {
-    id:11, icon:"🤝", name:"NEPAD Infrastructure Project Preparation Facility (IPPF)",
-    org:"NEPAD / African Development Bank", region:"Africa", country:"Multiple",
-    lat:-25.99, lng:28.12, support:["Advisory","Grant","Reimbursable"], sector:"Infrastructure",
-    amount:"Varies", deadline:"Rolling", status:"Open", color:"#4dd9ac",
-    year:2005, inkind:"Y", finInstr:"Y", pureGrant:"Y", reimbursable:"Y", equity:"N",
-    pcm:"Yes included",
-    prepStages:"",
-    s2:"Y", s21:"Y", s3:"Y", s31:"Y",
-    s32:"Y", s321:"Y", s322:"Y",
-    s4:"N", s41:"N", s42:"N", s43:"N", s44:"N",
-    secScope:"Multiple", secEnergy:"Y", secTransport:"Y",
-    secDigital:"", secWater:"Y", secWaste:"Y",
-    secUrban:"Y", secSocial:"", secUndefined:"",
-    secOther:"Sustainable cities, urban transport, green mobility",
-    thematic:"Green infrastructure",
-    climateMandate:"Only",
-    otherNonInfra:"Agriculture",
-    geoScope:"One region",
-    allEMDEs:"No",
-    regionsCovered:"Africa",
-    desc:"Supports the preparation of regional infrastructure projects in Africa under the NEPAD framework, providing grants for feasibility studies, detailed engineering designs, and transaction advisory to advance cross-border infrastructure.",
-    eligibility:["African Union member states","Regional integration projects","Multi-country infrastructure focus","NEPAD priority programme alignment"]
-  },
-  {
-    id:12, icon:"🔧", name:"PIDG Project Development (InfraCo)",
-    org:"Private Infrastructure Development Group (PIDG)", region:"Africa", country:"Multiple",
-    lat:51.50, lng:-0.09, support:["Advisory","Grant"], sector:"Infrastructure",
-    amount:"Varies", deadline:"Rolling", status:"Open", color:"#e05c1a",
-    year:2002, inkind:"Y", finInstr:"N", pureGrant:"Y", reimbursable:"N", equity:"N",
-    pcm:"Yes 100%",
-    prepStages:"",
-    s2:"Y", s21:"Y", s3:"Y", s31:"Y",
-    s32:"Y", s321:"Y", s322:"Y",
-    s4:"Y", s41:"Y", s42:"Y", s43:"Y", s44:"Y",
-    thematic:"Western Balkans",
-    climateMandate:"Included",
-    otherNonInfra:"Private sector development, human capital, environment and climate",
-    geoScope:"Multi-regions",
-    allEMDEs:"N",
-    regionsCovered:"Africa, Asia",
-    desc:"Develops early-stage infrastructure projects in the poorest developing countries by taking on high development risk, undertaking pre-feasibility and feasibility work, and structuring projects to attract private investment.",
-    eligibility:["Least developed and low-income countries","Private sector led infrastructure","High development impact required","Strong PCM potential required"]
-  },
-  {
-    id:13, icon:"☀️", name:"Sustainable Energy Fund for Africa (SEFA)",
-    org:"African Development Bank (AfDB)", region:"Africa", country:"Multiple",
-    lat:5.37, lng:-3.99, support:["Advisory","Grant"], sector:"Energy",
-    amount:"Varies", deadline:"Rolling", status:"Open", color:"#f0b429",
-    year:2011, inkind:"Y", finInstr:"Y", pureGrant:"Y", reimbursable:"N", equity:"N",
-    pcm:"Yes strong focus",
-    prepStages:"",
-    s2:"Y", s21:"Y", s3:"Y", s31:"Y",
-    s32:"Y", s321:"Y", s322:"Y",
-    s4:"Partial", s41:"N", s42:"N", s43:"Y", s44:"N",
-    secScope:"Multiple", secEnergy:"Y", secTransport:"Y",
-    secDigital:"N", secWater:"Y", secWaste:"Y",
-    secUrban:"Y", secSocial:"N", secUndefined:"N",
-    secOther:"",
-    thematic:"Urban",
-    climateMandate:"Included",
-    otherNonInfra:"Food systems, nature-based solutions, buildings",
-    geoScope:"One region",
-    allEMDEs:"N",
-    regionsCovered:"Africa",
-    desc:"Catalyses private sector investment in small and medium-scale renewable energy and energy efficiency projects in Sub-Saharan Africa through project preparation grants, technical assistance, and catalytic equity investments.",
-    eligibility:["Sub-Saharan Africa focus","Renewable energy and efficiency projects","Private sector participation required","Minimum project size applies"]
-  },
-  {
-    id:14, icon:"🏛", name:"Western Balkans Investment Framework Infrastructure Project Facility",
-    org:"European Commission / WBIF", region:"Europe", country:"Multiple",
-    lat:50.85, lng:4.35, support:["Advisory","Grant"], sector:"Infrastructure",
-    amount:"Varies", deadline:"Rolling", status:"Open", color:"#6eb5ff",
-    year:2009, inkind:"Y", finInstr:"Y", pureGrant:"Y", reimbursable:"N", equity:"N",
-    pcm:"Yes, included",
-    prepStages:"Technical and funding",
-    s2:"Y", s21:"Y", s3:"Y", s31:"Y",
-    s32:"Y", s321:"Y", s322:"Y",
-    s4:"Y", s41:"Y", s42:"Y", s43:"Y", s44:"Y",
-    secScope:"All", secEnergy:"Y", secTransport:"Y",
-    secDigital:"Y", secWater:"Y", secWaste:"Y",
-    secUrban:"Y", secSocial:"", secUndefined:"N",
-    secOther:"",
-    thematic:"Western Balkans",
-    climateMandate:"Included",
-    otherNonInfra:"Private sector development, human capital, environment and climate",
-    geoScope:"One region",
-    allEMDEs:"N",
-    regionsCovered:"Europe - Western Balkans",
-    desc:"Supports infrastructure development and socio-economic development in the Western Balkans through grants for project preparation, including feasibility studies, detailed designs, and technical assistance for EU accession-aligned investments.",
-    eligibility:["Western Balkans countries (Albania, BiH, Kosovo, Montenegro, North Macedonia, Serbia)","Public sector entities","EU accession-aligned projects","Transport, energy, environment, and social sectors"]
-  }
-];
-
 // ── DATA (Drupal or static fallback) ───────────────────
-let facilities = STATIC_FACILITIES;   // will be replaced on load if Drupal is live
+let facilities = window.PPF_STATIC_FACILITIES || [];   // will be replaced on load if Drupal is live
 
 // ── STATE ──────────────────────────────────────────────
 let activeFilters = { stage:"all", region:"all", support:"all", sector:"all", instrument:"all", applicant:"all" };
@@ -1962,10 +1684,19 @@ function initMap() {
   applyFilters();
 }
 
-function getColor(support){ const c={Grant:"#4dd9ac",Loan:"#f0b429",Technical:"#6eb5ff",Advisory:"#e05c1a",Blended:"#00c2c2"}; return c[support[0]]||"#00c2c2"; }
+// Color by HQ location (lat/lng), not operational region
+function getColor(f){
+  const lat=f.lat, lng=f.lng;
+  if (lng < -52 && lat > 30)                            return "#60a5fa"; // North America
+  if (lng < -30 && lat < 35)                            return "#fb923c"; // Latin America & Caribbean
+  if (lat > 10 && lat < 42 && lng > 32 && lng < 60)    return "#f59e0b"; // Middle East
+  if (lat < 38 && lat > -36 && lng > -20 && lng < 55)  return "#4ade80"; // Africa
+  if (lat > 35 && lat < 72 && lng > -25 && lng < 45)   return "#a78bfa"; // Europe
+  return "#22d3ee"; // Asia & Pacific
+}
 
 function createIcon(f,stacked=false) {
-  const color = getColor(f.support);
+  const color = getColor(f);
   const ring = stacked ? `box-shadow:0 4px 20px rgba(0,0,0,.5),0 0 0 3px ${color},0 0 0 5px rgba(255,255,255,.25);` : '';
   const cls = stacked ? 'custom-marker spreading' : 'custom-marker';
   return L.divIcon({html:`<div class="${cls}"><div class="marker-inner" style="background:var(--surface);border-color:${color};${ring}">${f.icon}</div></div>`,className:'',iconSize:[32,32],iconAnchor:[16,16]});
@@ -2152,14 +1883,14 @@ function renderMapMarkers(filtered){
         addFundMarker(f,g.lat+radius*Math.cos(angle),g.lng+radius*Math.sin(angle),true);
       });
     } else {
-      const color=getColor(g.items[0].support);
+      const color=getColor(g.items[0]);
       const icon=L.divIcon({
         html:`<div class="cluster-marker" style="background:var(--surface);border-color:${color};color:${color}">${g.items.length}</div>`,
         className:'',iconSize:[44,44],iconAnchor:[22,22]
       });
       const cm=L.marker([g.lat,g.lng],{icon});
-      cm.on('click',()=>map.setView([g.lat,g.lng],CLUSTER_ZOOM,{animate:true}));
-      const tipHtml=`<div class="cluster-tooltip">${g.items.map(f=>`<div class="cluster-tooltip-item">${f.icon} ${f.name}</div>`).join('')}<div class="cluster-tooltip-hint">🖱 Click to expand</div></div>`;
+      cm.on('click',()=>openClusterGrid(g.items));
+      const tipHtml=`<div class="cluster-tooltip">${g.items.slice(0,6).map(f=>`<div class="cluster-tooltip-item">${f.icon} ${f.name}</div>`).join('')}${g.items.length>6?`<div class="cluster-tooltip-item" style="color:var(--muted)">…and ${g.items.length-6} more</div>`:''}<div class="cluster-tooltip-hint">🖱 Click to view all</div></div>`;
       cm.bindTooltip(tipHtml,{className:'cluster-tip',direction:'top',offset:[0,-8],opacity:1});
       markersLayer.addLayer(cm);
     }
@@ -2261,6 +1992,99 @@ function renderTable(filtered){
       <td style="color:var(--muted);font-size:12px">${f.geoScope||'—'}</td>
       <td><span style="color:var(--accent-2);font-size:12px;font-weight:600">● ${f.status}</span></td>
     </tr>`).join('');
+}
+
+// ── CLUSTER GRID MODAL ─────────────────────────────────────
+let _clusterItems = [];
+
+function openClusterGrid(items) {
+  _clusterItems = items;
+  // Derive a location label from the first item's HQ coords
+  const f0 = items[0];
+  const locLabel = deriveLocationLabel(f0.lat, f0.lng);
+  document.getElementById('cluster-modal-title').textContent = locLabel;
+  document.getElementById('cluster-modal-sub').textContent = `${items.length} facilit${items.length===1?'y':'ies'} headquartered here`;
+  document.getElementById('cluster-search').value = '';
+  renderClusterGrid(items);
+  document.getElementById('cluster-modal').classList.add('open');
+}
+
+function deriveLocationLabel(lat, lng) {
+  // Match against known HQ cities in the dataset
+  const cities = [
+    {lat:38.90,lng:-77.04,name:"Washington D.C."},
+    {lat:5.35,lng:-4.00,name:"Abidjan"},
+    {lat:48.85,lng:2.35,name:"Paris"},
+    {lat:39.91,lng:116.39,name:"Beijing"},
+    {lat:14.60,lng:121.00,name:"Manila"},
+    {lat:51.51,lng:-0.13,name:"London"},
+    {lat:50.85,lng:4.35,name:"Brussels"},
+    {lat:52.37,lng:4.90,name:"Amsterdam"},
+    {lat:49.62,lng:6.13,name:"Luxembourg"},
+    {lat:-22.91,lng:-43.17,name:"Rio de Janeiro"},
+    {lat:-15.78,lng:-47.93,name:"Brasília"},
+    {lat:-12.05,lng:-77.04,name:"Lima"},
+    {lat:23.81,lng:90.41,name:"Dhaka"},
+    {lat:1.29,lng:103.85,name:"Singapore"},
+    {lat:31.23,lng:121.47,name:"Shanghai"},
+    {lat:35.69,lng:139.69,name:"Tokyo"},
+    {lat:21.39,lng:39.86,name:"Jeddah"},
+    {lat:-25.75,lng:28.19,name:"Pretoria"},
+    {lat:-1.29,lng:36.82,name:"Nairobi"},
+    {lat:9.07,lng:7.40,name:"Abuja"},
+    {lat:5.55,lng:-0.20,name:"Accra"},
+    {lat:18.00,lng:-75.00,name:"Caribbean"},
+    {lat:19.43,lng:-99.13,name:"Mexico City"},
+    {lat:28.61,lng:77.21,name:"New Delhi"},
+    {lat:-6.21,lng:106.85,name:"Jakarta"},
+    {lat:13.08,lng:80.27,name:"Chennai"},
+    {lat:13.75,lng:100.52,name:"Bangkok"},
+    {lat:50.45,lng:30.52,name:"Kyiv"},
+  ];
+  let best = null, bestDist = Infinity;
+  cities.forEach(c=>{
+    const d = Math.hypot(c.lat-lat, c.lng-lng);
+    if(d < bestDist){ bestDist=d; best=c; }
+  });
+  return (best && bestDist < 1) ? best.name : `${lat.toFixed(1)}°, ${lng.toFixed(1)}°`;
+}
+
+function renderClusterGrid(items) {
+  const grid = document.getElementById('cluster-grid');
+  grid.innerHTML = items.map(f => {
+    const color = getColor(f);
+    const tags = f.support.slice(0,3).map(s=>
+      `<span class="cg-tag" style="color:${color};border-color:${color}33;background:${color}18">${s}</span>`
+    ).join('');
+    return `<div class="cg-card" onclick="closeClusterModal();openDetailById(${f.id})" style="--cg-color:${color}">
+      <div style="display:flex;align-items:flex-start;gap:10px;">
+        <div class="cg-icon">${f.icon}</div>
+        <div style="flex:1;min-width:0;">
+          <div class="cg-name">${f.name}</div>
+          <div class="cg-org">${f.org||'—'}</div>
+        </div>
+        <div style="width:8px;height:8px;border-radius:50%;background:${color};flex-shrink:0;margin-top:5px;box-shadow:0 0 6px ${color}88;"></div>
+      </div>
+      ${tags?`<div class="cg-tags">${tags}</div>`:''}
+      <div style="font-size:11px;color:var(--muted);display:flex;gap:10px;margin-top:2px;">
+        <span>📍 ${f.region||'—'}</span>
+        ${f.amount&&f.amount!=='Varies'?`<span>💰 ${f.amount}</span>`:''}
+      </div>
+    </div>`;
+  }).join('');
+  if(items.length===0) grid.innerHTML='<div style="color:var(--muted);font-size:13px;padding:20px;grid-column:1/-1;text-align:center;">No facilities match your search.</div>';
+}
+
+function filterClusterGrid() {
+  const q = document.getElementById('cluster-search').value.toLowerCase();
+  const filtered = q ? _clusterItems.filter(f=>
+    f.name.toLowerCase().includes(q) || (f.org||'').toLowerCase().includes(q) || (f.sector||'').toLowerCase().includes(q)
+  ) : _clusterItems;
+  renderClusterGrid(filtered);
+}
+
+function closeClusterModal() {
+  document.getElementById('cluster-modal').classList.remove('open');
 }
 
 // ── DETAIL PANEL ──────────────────────────────────────────

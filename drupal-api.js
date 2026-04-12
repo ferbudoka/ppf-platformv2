@@ -125,18 +125,19 @@ const DrupalAPI = (() => {
  * Returns Drupal data or falls back to STATIC_FACILITIES if Drupal is unreachable.
  */
 async function loadFacilities() {
+  const staticData = window.PPF_STATIC_FACILITIES || [];
   // Skip Drupal fetch if base URL is still the placeholder
   if (DRUPAL_CONFIG.baseUrl === 'https://your-drupal-site.com') {
     console.info('[PPF] Drupal not configured — using static data.');
-    return typeof STATIC_FACILITIES !== 'undefined' ? STATIC_FACILITIES : [];
+    return staticData;
   }
   try {
     const data = await DrupalAPI.fetchFacilities();
     console.info(`[PPF] Loaded ${data.length} facilities from Drupal.`);
-    return data.length ? data : (typeof STATIC_FACILITIES !== 'undefined' ? STATIC_FACILITIES : []);
+    return data.length ? data : staticData;
   } catch (err) {
     console.warn('[PPF] Drupal fetch failed, falling back to static data.', err);
-    return typeof STATIC_FACILITIES !== 'undefined' ? STATIC_FACILITIES : [];
+    return staticData;
   }
 }
 

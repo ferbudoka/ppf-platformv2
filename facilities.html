@@ -7,55 +7,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
-/* ── ROOT TOKENS ── */
-:root {
-  --ink:#00213d;
-  --surface:#002b50;
-  --panel:#003566;
-  --card:#00407a;
-  --border:rgba(255,255,255,0.08);
-  --border-active:rgba(0,194,194,0.5);
-  --text:#e8f0f8;
-  --muted:#6b9ab8;
-  --accent:#00c2c2;
-  --accent-3:#f0b429;
-  --shadow:rgba(0,0,0,0.4);
-  --glow:rgba(0,194,194,0.15);
-  --teal:#00c2c2;
-  --gold:#f0b429;
-  --font-display:'Syne',sans-serif;
-  --font-body:'DM Sans',sans-serif;
-}
-
-/* ── RESET & BASE ── */
+:root{--ink:#00213d;--surface:#002b50;--panel:#003566;--card:#00407a;--border:rgba(255,255,255,0.08);--border-active:rgba(0,194,194,0.5);--text:#e8f0f8;--muted:#6b9ab8;--accent:#00c2c2;--accent-3:#f0b429;--shadow:rgba(0,0,0,0.4);--glow:rgba(0,194,194,0.15);--teal:#00c2c2;--gold:#f0b429;--font-display:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{
-  font-family:var(--font-body);
-  background:var(--ink);
-  color:var(--text);
-  overflow-x:hidden;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-}
-::-webkit-scrollbar{width:5px;height:5px;}
-::-webkit-scrollbar-track{background:transparent;}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px;}
+body{font-family:var(--font-body);background:var(--ink);color:var(--text);overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column;}
+::-webkit-scrollbar{width:5px;height:5px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px;}
 
-/* ── HEADER ── */
-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 28px;height:88px;
-  background:var(--surface);
-  border-bottom:1px solid var(--border);
-  z-index:1000;position:sticky;top:0;
-}
-header::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,var(--accent-3),var(--accent),var(--accent-3),transparent);
-  opacity:.7;
-}
+/* HEADER */
+header{display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:88px;background:var(--surface);border-bottom:1px solid var(--border);z-index:1000;position:sticky;top:0;}
+header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent-3),var(--accent),var(--accent-3),transparent);opacity:.7;}
 .logo{display:flex;align-items:center;gap:10px;}
 .logo img{background:#fff;border-radius:6px;padding:4px 10px;}
 .header-stats{display:flex;gap:32px;align-items:center;}
@@ -64,271 +24,183 @@ header::after{
 .stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;}
 .stat-divider{width:1px;height:36px;background:rgba(255,255,255,.12);}
 .header-actions{display:flex;gap:10px;align-items:center;}
-.btn-ghost{
-  background:transparent;border:1px solid var(--border);
-  color:var(--text);padding:7px 16px;border-radius:8px;
-  font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .2s;
-}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text);padding:7px 16px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .2s;}
 .btn-ghost:hover{border-color:var(--accent-3);color:var(--accent-3);}
-.btn-submit-fund{
-  background:linear-gradient(135deg,var(--accent-3),#d4880a)!important;
-  border:none!important;color:#002244!important;
-  font-weight:700!important;border-radius:8px!important;
-}
-.btn-home-header{
-  display:flex;align-items:center;gap:7px;
-  padding:7px 16px 7px 12px;border-radius:8px;
-  background:transparent;border:1px solid rgba(255,255,255,.18);
-  color:var(--text);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;
-  text-decoration:none;cursor:pointer;transition:all .2s;letter-spacing:.2px;
-}
+.btn-home-header{display:flex;align-items:center;gap:7px;padding:7px 16px 7px 12px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,.18);color:var(--text);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;text-decoration:none;cursor:pointer;transition:all .2s;letter-spacing:.2px;}
 .btn-home-header:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,194,194,.08);}
-.btn-home-header svg{flex-shrink:0;transition:transform .2s;}
-.btn-home-header:hover svg{transform:translateY(-1px);}
 
-/* ── MAIN CONTENT ── */
+/* MAIN */
 main{flex:1;padding:40px 28px 60px;}
-
-.page-header{margin-bottom:32px;}
-.page-title{
-  font-family:var(--font-display);font-size:28px;font-weight:800;
-  color:var(--text);letter-spacing:-.3px;margin-bottom:6px;
-}
+.page-header{margin-bottom:28px;}
+.page-title{font-family:var(--font-display);font-size:28px;font-weight:800;color:var(--text);letter-spacing:-.3px;margin-bottom:6px;}
 .page-title span{color:var(--accent);}
 .page-subtitle{font-size:14px;color:var(--muted);line-height:1.6;}
 
-/* ── TOOLBAR ── */
-.table-toolbar{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:16px;margin-bottom:16px;flex-wrap:wrap;
-}
-.search-wrap{position:relative;flex:1;min-width:220px;max-width:420px;}
-.search-wrap svg{
-  position:absolute;left:12px;top:50%;transform:translateY(-50%);
-  color:var(--muted);pointer-events:none;flex-shrink:0;
-}
-.search-wrap input{
-  width:100%;
-  background:var(--card);border:1px solid var(--border);border-radius:10px;
-  padding:10px 16px 10px 38px;
-  color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;
-  outline:none;transition:all .2s;
-}
+/* TOOLBAR */
+.table-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+.toolbar-left{display:flex;align-items:center;gap:10px;flex:1;flex-wrap:wrap;}
+.search-wrap{position:relative;min-width:240px;max-width:380px;flex:1;}
+.search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;}
+.search-wrap input{width:100%;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:9px 14px 9px 36px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:all .2s;}
 .search-wrap input:focus{border-color:var(--border-active);box-shadow:0 0 0 3px var(--glow);}
 .search-wrap input::placeholder{color:var(--muted);}
-
-.btn-export{
-  display:flex;align-items:center;gap:7px;
-  padding:9px 20px;border-radius:8px;border:none;
-  background:linear-gradient(135deg,var(--accent-3),#d4880a);
-  color:#002244;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;
-  cursor:pointer;transition:all .2s;white-space:nowrap;
-  box-shadow:0 4px 16px rgba(240,180,41,.25);
-}
+.filter-select{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 30px 8px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:12.5px;outline:none;cursor:pointer;transition:all .2s;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b9ab8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;}
+.filter-select:focus{border-color:var(--border-active);}
+.btn-export{display:flex;align-items:center;gap:7px;padding:9px 18px;border-radius:8px;border:none;background:linear-gradient(135deg,var(--accent-3),#d4880a);color:#002244;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;box-shadow:0 4px 16px rgba(240,180,41,.25);}
 .btn-export:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(240,180,41,.4);}
 
-/* ── TABLE WRAPPER ── */
-.table-wrap{
-  width:100%;overflow-x:auto;
-  border:1px solid var(--border);border-radius:12px;
-  background:var(--surface);
-  box-shadow:0 8px 32px var(--shadow);
-}
-
-/* ── TABLE ── */
-table{
-  width:100%;border-collapse:collapse;
-  font-size:13px;
-}
-thead tr{
-  background:var(--panel);
-  border-bottom:1px solid rgba(255,255,255,.12);
-}
-thead th{
-  padding:13px 14px;
-  text-align:left;
-  font-family:'Syne',sans-serif;font-size:10.5px;font-weight:700;
-  text-transform:uppercase;letter-spacing:.9px;
-  color:var(--muted);white-space:nowrap;
-  cursor:pointer;user-select:none;
-  position:relative;
-  transition:color .18s;
-}
+/* TABLE */
+.table-wrap{width:100%;overflow-x:auto;border:1px solid var(--border);border-radius:12px;background:var(--surface);box-shadow:0 8px 32px var(--shadow);}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+thead tr{background:var(--panel);border-bottom:1px solid rgba(255,255,255,.12);}
+thead th{padding:12px 13px;text-align:left;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--muted);white-space:nowrap;cursor:pointer;user-select:none;transition:color .18s;}
 thead th:hover{color:var(--text);}
-thead th.sort-asc{color:var(--accent);}
-thead th.sort-desc{color:var(--accent);}
-thead th .sort-icon{
-  display:inline-block;margin-left:5px;opacity:.35;font-size:10px;
-  transition:opacity .18s;
-}
+thead th.sort-asc,thead th.sort-desc{color:var(--accent);}
+.sort-icon{display:inline-block;margin-left:4px;opacity:.35;font-size:9px;transition:opacity .18s;}
 thead th:hover .sort-icon{opacity:.7;}
-thead th.sort-asc .sort-icon,
-thead th.sort-desc .sort-icon{opacity:1;color:var(--accent);}
-
-tbody tr{
-  border-bottom:1px solid var(--border);
-  transition:background .15s;
-}
-tbody tr:nth-child(odd){background:transparent;}
-tbody tr:nth-child(even){background:rgba(0,53,102,.35);}
+thead th.sort-asc .sort-icon,thead th.sort-desc .sort-icon{opacity:1;color:var(--accent);}
+tbody tr{border-bottom:1px solid var(--border);transition:background .15s;}
+tbody tr:nth-child(even){background:rgba(0,53,102,.3);}
 tbody tr:hover{background:rgba(0,194,194,.07)!important;}
 tbody tr:last-child{border-bottom:none;}
+tbody td{padding:11px 13px;vertical-align:middle;color:var(--text);line-height:1.4;}
+.td-name{font-family:'Syne',sans-serif;font-weight:600;font-size:12px;min-width:200px;max-width:260px;}
+.td-org{color:var(--muted);font-size:11.5px;min-width:150px;max-width:200px;}
+.td-desc{font-size:11.5px;color:var(--muted);min-width:200px;max-width:280px;line-height:1.5;}
+.td-narrow{white-space:nowrap;}
+.td-center{white-space:nowrap;text-align:center;}
+.td-regions{font-size:11px;color:var(--muted);min-width:140px;max-width:200px;}
+.td-elig{font-size:11px;color:var(--muted);min-width:160px;max-width:220px;}
 
-tbody td{
-  padding:12px 14px;
-  vertical-align:middle;
-  color:var(--text);
-  line-height:1.45;
-}
-.td-name{
-  font-family:'Syne',sans-serif;font-weight:600;font-size:12.5px;
-  min-width:220px;max-width:280px;
-  color:var(--text);
-}
-.td-org{color:var(--muted);font-size:12px;min-width:160px;}
-.td-region{white-space:nowrap;}
-.td-sector{white-space:nowrap;}
-.td-amount{white-space:nowrap;text-align:right;}
-.td-deadline{white-space:nowrap;}
-.td-year{white-space:nowrap;text-align:center;}
-.td-status{white-space:nowrap;}
-.td-regions{font-size:11.5px;color:var(--muted);min-width:160px;max-width:220px;}
-.td-climate{white-space:nowrap;text-align:center;}
-.td-geo{white-space:nowrap;}
-
-/* Status badge */
-.badge-status{
-  display:inline-block;padding:3px 10px;border-radius:20px;
-  font-size:10.5px;font-weight:700;letter-spacing:.4px;
-  text-transform:uppercase;
-}
+/* Badges */
+.badge-status{display:inline-block;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;}
 .badge-open{background:rgba(77,217,172,.15);color:#4dd9ac;border:1px solid rgba(77,217,172,.25);}
 .badge-closed{background:rgba(224,92,26,.12);color:#e05c1a;border:1px solid rgba(224,92,26,.2);}
+.badge-climate{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.3px;white-space:nowrap;}
+.badge-climate-only{background:rgba(0,194,194,.15);color:#00c2c2;border:1px solid rgba(0,194,194,.25);}
+.badge-climate-included{background:rgba(110,181,255,.13);color:#6eb5ff;border:1px solid rgba(110,181,255,.22);}
+.badge-climate-mostly{background:rgba(77,217,172,.13);color:#4dd9ac;border:1px solid rgba(77,217,172,.22);}
+.badge-climate-no{background:rgba(255,255,255,.06);color:var(--muted);border:1px solid var(--border);}
+.badge-climate-none{background:rgba(255,255,255,.04);color:rgba(107,154,184,.45);border:1px solid rgba(255,255,255,.05);font-style:italic;}
 
-/* Support type pills */
-.support-pills{display:flex;flex-wrap:wrap;gap:4px;min-width:130px;}
-.pill-support{
-  padding:2px 8px;border-radius:20px;
-  font-size:10px;font-weight:600;letter-spacing:.3px;
-  white-space:nowrap;
-}
+/* Support pills */
+.support-pills{display:flex;flex-wrap:wrap;gap:3px;min-width:110px;}
+.pill-support{padding:2px 7px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.2px;white-space:nowrap;}
 .pill-advisory{background:rgba(240,180,41,.15);color:#f0b429;border:1px solid rgba(240,180,41,.25);}
 .pill-grant{background:rgba(77,217,172,.13);color:#4dd9ac;border:1px solid rgba(77,217,172,.22);}
 .pill-reimbursable{background:rgba(0,194,194,.13);color:#00c2c2;border:1px solid rgba(0,194,194,.22);}
 .pill-equity{background:rgba(167,139,250,.13);color:#a78bfa;border:1px solid rgba(167,139,250,.22);}
 
-/* Climate mandate badge */
-.badge-climate{
-  display:inline-block;padding:2px 8px;border-radius:20px;
-  font-size:10px;font-weight:600;letter-spacing:.3px;white-space:nowrap;
-}
-.badge-climate-only{background:rgba(0,194,194,.15);color:#00c2c2;border:1px solid rgba(0,194,194,.25);}
-.badge-climate-included{background:rgba(110,181,255,.13);color:#6eb5ff;border:1px solid rgba(110,181,255,.22);}
-.badge-climate-mostly{background:rgba(77,217,172,.13);color:#4dd9ac;border:1px solid rgba(77,217,172,.22);}
-.badge-climate-no{background:rgba(255,255,255,.06);color:var(--muted);border:1px solid var(--border);}
-.badge-climate-none{background:rgba(255,255,255,.04);color:rgba(107,154,184,.5);border:1px solid rgba(255,255,255,.05);font-style:italic;}
+/* HQ color dot */
+.hq-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;flex-shrink:0;vertical-align:middle;}
 
-/* Row count info */
-.table-meta{
-  margin-top:12px;font-size:12px;color:var(--muted);
-  display:flex;align-items:center;gap:6px;
-}
+/* Eligibility list */
+.elig-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:2px;}
+.elig-list li::before{content:"· ";color:var(--accent);font-weight:700;}
+
+/* Meta */
+.table-meta{margin-top:10px;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;}
 .table-meta strong{color:var(--text);}
 
 /* Empty state */
-.empty-state{
-  padding:60px 20px;text-align:center;color:var(--muted);
-  font-size:14px;
-}
-.empty-state svg{margin-bottom:12px;opacity:.4;}
+.empty-state{padding:60px 20px;text-align:center;color:var(--muted);font-size:14px;}
 
-/* ── FOOTER ── */
-footer{
-  background:var(--ink);border-top:1px solid rgba(255,255,255,.06);
-  padding:60px 0 36px;
-  /* reuse index.html vars */
-  --teal:#00c2c2;
-  --gold:#f0b429;
-  --font-display:'Syne',sans-serif;
-  --font-body:'DM Sans',sans-serif;
-  --muted:#7faac8;
-}
+/* FOOTER */
+footer{background:var(--ink);border-top:1px solid rgba(255,255,255,.06);padding:60px 0 36px;--teal:#00c2c2;--gold:#f0b429;}
 .section-inner{max-width:1200px;margin:0 auto;padding:0 48px;}
 .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;}
 .footer-logo{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
 .footer-logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--teal),#006688);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;}
-.footer-logo-text{font-family:var(--font-display);font-size:14px;font-weight:700;color:#fff;}
+.footer-logo-text{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#fff;}
 .footer-logo-text span{color:var(--gold);}
 .footer-desc{font-size:13px;color:var(--muted);line-height:1.7;max-width:280px;}
-.footer-col-title{font-family:var(--font-display);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text);margin-bottom:18px;}
+.footer-col-title{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text);margin-bottom:18px;}
 .footer-links{display:flex;flex-direction:column;gap:10px;}
 .footer-links a{color:var(--muted);font-size:13px;text-decoration:none;transition:color .2s;}
 .footer-links a:hover{color:var(--teal);}
-.footer-bottom{
-  margin-top:60px;padding-top:24px;border-top:1px solid rgba(255,255,255,.06);
-  display:flex;align-items:center;justify-content:space-between;
-  font-size:12px;color:rgba(127,170,200,.5);
-}
+.footer-bottom{margin-top:60px;padding-top:24px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;font-size:12px;color:rgba(127,170,200,.5);}
 .footer-bottom-links{display:flex;gap:24px;}
 .footer-bottom-links a{color:rgba(127,170,200,.5);text-decoration:none;transition:color .2s;}
 .footer-bottom-links a:hover{color:var(--teal);}
 
-/* ── RESPONSIVE ── */
-@media(max-width:900px){
-  header{padding:0 16px;}
-  .header-stats{gap:16px;}
-  .stat-num{font-size:26px;}
-  main{padding:24px 12px 48px;}
-  .footer-grid{grid-template-columns:1fr 1fr;gap:40px;}
-  .section-inner{padding:0 20px;}
-}
-@media(max-width:600px){
-  .header-stats{display:none;}
-  .page-title{font-size:22px;}
-  .table-toolbar{flex-direction:column;align-items:stretch;}
-  .search-wrap{max-width:100%;}
-  .btn-export{width:100%;justify-content:center;}
-  .footer-grid{grid-template-columns:1fr;}
-}
+@media(max-width:900px){header{padding:0 16px;}.header-stats{gap:16px;}.stat-num{font-size:26px;}main{padding:24px 12px 48px;}.footer-grid{grid-template-columns:1fr 1fr;gap:40px;}.section-inner{padding:0 20px;}}
+@media(max-width:600px){.header-stats{display:none;}.page-title{font-size:22px;}.table-toolbar{flex-direction:column;align-items:stretch;}.search-wrap{max-width:100%;}.btn-export{width:100%;justify-content:center;}.footer-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 
-<!-- ══ HEADER ══ -->
 <header>
   <div class="logo">
     <img src="Images/logo.png" alt="Global Infrastructure Facility" style="height:56px;width:auto;display:block;"/>
   </div>
   <div class="header-stats">
-    <div class="stat-item"><div class="stat-num">42</div><div class="stat-label">Countries</div></div>
+    <div class="stat-item"><div class="stat-num" id="stat-count">137</div><div class="stat-label">Facilities</div></div>
     <div class="stat-divider"></div>
-    <div class="stat-item"><div class="stat-num">$9.4B</div><div class="stat-label">Funds Available</div></div>
+    <div class="stat-item"><div class="stat-num">42</div><div class="stat-label">Countries</div></div>
     <div class="stat-divider"></div>
     <div class="stat-item"><div class="stat-num">5</div><div class="stat-label">Support Types</div></div>
   </div>
   <div class="header-actions">
-    <button class="btn-ghost btn-submit-fund">📋 Submit Fund</button>
-    <a href="index.html" class="btn-home-header" title="Back to Home">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <a href="project-support-finder.html" class="btn-home-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </a>
+    <a href="index.html" class="btn-home-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       Home
     </a>
   </div>
 </header>
 
-<!-- ══ MAIN ══ -->
 <main>
   <div class="page-header">
     <h1 class="page-title">Project Preparation <span>Facilities</span></h1>
-    <p class="page-subtitle">All 14 facilities available through the PPF Navigator — sortable, searchable, and exportable.</p>
+    <p class="page-subtitle" id="page-subtitle">All 137 facilities in the PPF Navigator database — sortable, searchable, and exportable to CSV.</p>
   </div>
 
   <div class="table-toolbar">
-    <div class="search-wrap">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" id="searchInput" placeholder="Search by name or organisation…" oninput="filterTable()" autocomplete="off"/>
+    <div class="toolbar-left">
+      <div class="search-wrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="searchInput" placeholder="Search name, org, sector, region…" oninput="applyFilters()" autocomplete="off"/>
+      </div>
+      <select class="filter-select" id="filterRegion" onchange="applyFilters()">
+        <option value="">All Regions</option>
+        <option>Africa</option>
+        <option>Asia</option>
+        <option>Asia Pacific</option>
+        <option>Europe</option>
+        <option>Latin America</option>
+        <option>Global</option>
+      </select>
+      <select class="filter-select" id="filterSector" onchange="applyFilters()">
+        <option value="">All Sectors</option>
+        <option>Energy</option>
+        <option>Infrastructure</option>
+        <option>Water</option>
+        <option>Transport</option>
+        <option>Finance</option>
+        <option>Urban</option>
+        <option>Environment</option>
+        <option>Health</option>
+      </select>
+      <select class="filter-select" id="filterSupport" onchange="applyFilters()">
+        <option value="">All Support Types</option>
+        <option>Advisory</option>
+        <option>Grant</option>
+        <option>Reimbursable</option>
+        <option>Equity</option>
+      </select>
+      <select class="filter-select" id="filterClimate" onchange="applyFilters()">
+        <option value="">All Climate</option>
+        <option value="Only">Climate Only</option>
+        <option value="Included">Climate Included</option>
+        <option value="Mostly">Mostly Climate</option>
+        <option value="No">Not Climate</option>
+      </select>
     </div>
     <button class="btn-export" onclick="exportCSV()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       Export CSV
     </button>
   </div>
@@ -337,41 +209,37 @@ footer{
     <table id="facilitiesTable">
       <thead>
         <tr>
-          <th onclick="sortTable(0)" data-col="0">Name <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(1)" data-col="1">Organisation <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(2)" data-col="2">Region <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(3)" data-col="3">Sector <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(4)" data-col="4">Support Types <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(5)" data-col="5">Year <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(6)" data-col="6">Amount <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(7)" data-col="7">Deadline <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(8)" data-col="8">Status <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(9)" data-col="9">Regions Covered <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(10)" data-col="10">Climate Mandate <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(11)" data-col="11">Geographic Scope <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(0)">Name <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(1)">Organisation <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(2)">Region <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(3)">Sector <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(4)">Support Types <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(5)">Year <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(6)">Amount <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(7)">Status <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(8)">Climate <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(9)">Geo Scope <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(10)">Regions Covered <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(11)">HQ Location <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(12)">Description <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(13)">Eligibility <span class="sort-icon">↕</span></th>
         </tr>
       </thead>
-      <tbody id="tableBody">
-        <!-- Rows injected by JS -->
-      </tbody>
+      <tbody id="tableBody"></tbody>
     </table>
   </div>
   <div class="table-meta" id="tableMeta"></div>
 </main>
 
-<!-- ══ FOOTER ══ -->
 <footer>
   <div class="section-inner">
     <div class="footer-grid">
-      <div class="footer-brand">
+      <div>
         <div class="footer-logo">
           <div class="footer-logo-mark">🏗</div>
           <div class="footer-logo-text">PPF <span>Navigator</span></div>
         </div>
-        <p class="footer-desc">
-          A tool of the Global Infrastructure Facility — a G20 initiative supporting
-          sustainable infrastructure in emerging markets through preparation finance and advisory services.
-        </p>
+        <p class="footer-desc">A tool of the Global Infrastructure Facility — a G20 initiative supporting sustainable infrastructure in emerging markets through preparation finance and advisory services.</p>
       </div>
       <div>
         <div class="footer-col-title">Navigate</div>
@@ -379,8 +247,7 @@ footer{
           <a href="project-support-finder.html">Dashboard</a>
           <a href="index.html#mission">Mission</a>
           <a href="index.html#how">How It Works</a>
-          <a href="index.html#features">Features</a>
-          <a href="index.html#regions">Regions</a>
+          <a href="index.html#faq">FAQ</a>
         </div>
       </div>
       <div>
@@ -389,7 +256,7 @@ footer{
           <a href="facilities.html">All Facilities</a>
           <a href="project-support-finder.html">By Region</a>
           <a href="project-support-finder.html">By Sector</a>
-          <a href="project-support-finder.html">Submit a Fund</a>
+          <a href="project-support-finder.html">Submit a PPF</a>
         </div>
       </div>
       <div>
@@ -403,10 +270,9 @@ footer{
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2025 Global Infrastructure Facility · Project Preparation Facilities Navigator</span>
+      <span>© 2026 Global Infrastructure Facility · Project Preparation Facilities Navigator</span>
       <div class="footer-bottom-links">
-        <a href="#">Privacy</a>
-        <a href="#">Terms</a>
+        <a href="#">Privacy</a><a href="#">Terms</a>
         <a href="https://www.globalinfrafacility.org/" target="_blank">GIF.org</a>
       </div>
     </div>
@@ -415,129 +281,187 @@ footer{
 
 <script src="drupal-config.js"></script>
 <script src="drupal-api.js"></script>
+<script src="ppf-data.js"></script>
 <script>
 /* ── DATA ── */
-// Static fallback — used when Drupal is not configured or unreachable
-const STATIC_FACILITIES = [
-  {id:1, name:"ADB Asia Pacific Project Preparation Facility (ADB AP3F)", org:"Asian Development Bank (ADB)", region:"Asia Pacific", country:"Multiple", support:["Advisory","Grant"], sector:"Energy", amount:"Varies", deadline:"Rolling", status:"Open", year:2014, climateMandate:"Included", geoScope:"One region", regionsCovered:"East Asia Pacific; Europe and Central Asia; South Asia"},
-  {id:2, name:"Africa50 — Project Development", org:"Africa50", region:"Africa", country:"Multiple", support:["Advisory","Grant"], sector:"Infrastructure", amount:"Varies", deadline:"Rolling", status:"Open", year:2013, climateMandate:"Included", geoScope:"One region", regionsCovered:"Africa"},
-  {id:3, name:"African Legal Support Facility", org:"African Legal Support Facility (ALSF)", region:"Africa", country:"Multiple", support:["Advisory","Grant","Equity"], sector:"Finance", amount:"Varies", deadline:"Rolling", status:"Open", year:2008, climateMandate:"Included", geoScope:"One region", regionsCovered:"Africa"},
-  {id:4, name:"African Water Facility (AWF)", org:"African Water Facility / African Development Bank", region:"Africa", country:"Multiple", support:["Advisory","Grant"], sector:"Water", amount:"Varies", deadline:"Rolling", status:"Open", year:2004, climateMandate:"Included", geoScope:"One region", regionsCovered:"Africa"},
-  {id:5, name:"Allied Climate Partners", org:"Allied Climate Partners", region:"Global", country:"Multiple", support:["Advisory","Equity"], sector:"Energy", amount:"Varies", deadline:"Rolling", status:"Open", year:2023, climateMandate:"No", geoScope:"Multi-regions", regionsCovered:"Southeast Asia; Africa; Caribbean; Central America"},
-  {id:6, name:"ASEAN Catalytic Green Finance Facility (ACGFF)", org:"Asian Development Bank / ASEAN", region:"Asia Pacific", country:"Multiple", support:["Advisory","Grant"], sector:"Energy", amount:"Varies", deadline:"Rolling", status:"Open", year:2019, climateMandate:"Included", geoScope:"One region", regionsCovered:"Southeast Asia (ASEAN)"},
-  {id:7, name:"C40 Cities Finance Facility", org:"C40 Cities / GIZ / BMUB", region:"Global", country:"Multiple", support:["Advisory"], sector:"Health", amount:"Varies", deadline:"Rolling", status:"Open", year:2005, climateMandate:"Included", geoScope:"Global", regionsCovered:"Global"},
-  {id:8, name:"Energy Sector Management Assistance Program (ESMAP)", org:"World Bank / ESMAP", region:"Global", country:"Multiple", support:["Advisory","Grant"], sector:"Energy", amount:"Varies", deadline:"Rolling", status:"Open", year:1983, climateMandate:"", geoScope:"Multi-regions", regionsCovered:""},
-  {id:9, name:"Global Infrastructure Facility (GIF)", org:"Global Infrastructure Facility", region:"Global", country:"Multiple", support:["Advisory","Grant","Reimbursable"], sector:"Infrastructure", amount:"Varies", deadline:"Rolling", status:"Open", year:2014, climateMandate:"Only", geoScope:"Global", regionsCovered:"All EMDEs"},
-  {id:10, name:"IDB Project Preparation and Execution Facility (PROPEF)", org:"Inter-American Development Bank (IDB)", region:"Latin America", country:"Multiple", support:["Grant","Reimbursable"], sector:"Infrastructure", amount:"Varies", deadline:"Rolling", status:"Open", year:2000, climateMandate:"Mostly", geoScope:"One region", regionsCovered:"Latin America and the Caribbean"},
-  {id:11, name:"NEPAD Infrastructure Project Preparation Facility (IPPF)", org:"NEPAD / African Development Bank", region:"Africa", country:"Multiple", support:["Advisory","Grant","Reimbursable"], sector:"Infrastructure", amount:"Varies", deadline:"Rolling", status:"Open", year:2005, climateMandate:"Only", geoScope:"One region", regionsCovered:"Africa"},
-  {id:12, name:"PIDG Project Development (InfraCo)", org:"Private Infrastructure Development Group (PIDG)", region:"Africa", country:"Multiple", support:["Advisory","Grant"], sector:"Infrastructure", amount:"Varies", deadline:"Rolling", status:"Open", year:2002, climateMandate:"Included", geoScope:"Multi-regions", regionsCovered:"Africa, Asia"},
-  {id:13, name:"Sustainable Energy Fund for Africa (SEFA)", org:"African Development Bank (AfDB)", region:"Africa", country:"Multiple", support:["Advisory","Grant"], sector:"Energy", amount:"Varies", deadline:"Rolling", status:"Open", year:2011, climateMandate:"Included", geoScope:"One region", regionsCovered:"Africa"},
-  {id:14, name:"Western Balkans Investment Framework Infrastructure Project Facility", org:"European Commission / WBIF", region:"Europe", country:"Multiple", support:["Advisory","Grant"], sector:"Infrastructure", amount:"Varies", deadline:"Rolling", status:"Open", year:2009, climateMandate:"Included", geoScope:"One region", regionsCovered:"Europe - Western Balkans"}
-];
-
-/* ── STATE ── */
-let FACILITIES = STATIC_FACILITIES;   // replaced on load if Drupal is live
+let FACILITIES = [];
 let sortCol = -1;
 let sortAsc = true;
-let filteredIds = FACILITIES.map(f => f.id);
+let currentData = [];
+
+// HQ color by coordinates — same logic as dashboard
+function getHQColor(lat, lng) {
+  if (lng < -52 && lat > 30)                            return "#60a5fa"; // North America
+  if (lng < -30 && lat < 35)                            return "#fb923c"; // Latin America
+  if (lat > 10 && lat < 42 && lng > 32 && lng < 60)    return "#f59e0b"; // Middle East
+  if (lat < 38 && lat > -36 && lng > -20 && lng < 55)  return "#4ade80"; // Africa
+  if (lat > 35 && lat < 72 && lng > -25 && lng < 45)   return "#a78bfa"; // Europe
+  return "#22d3ee"; // Asia & Pacific
+}
+
+function getHQLabel(lat, lng) {
+  const cities = [
+    {lat:38.90,lng:-77.04,name:"Washington D.C."},
+    {lat:38.90,lng:-77.05,name:"Washington D.C."},
+    {lat:5.35,lng:-4.00,name:"Abidjan"},
+    {lat:5.36,lng:-4.01,name:"Abidjan"},
+    {lat:5.37,lng:-3.99,name:"Abidjan"},
+    {lat:48.85,lng:2.35,name:"Paris"},
+    {lat:39.91,lng:116.39,name:"Beijing"},
+    {lat:14.60,lng:121.00,name:"Manila"},
+    {lat:14.60,lng:121.02,name:"Manila"},
+    {lat:51.51,lng:-0.13,name:"London"},
+    {lat:51.50,lng:-0.09,name:"London"},
+    {lat:50.85,lng:4.35,name:"Brussels"},
+    {lat:52.37,lng:4.90,name:"Amsterdam"},
+    {lat:49.62,lng:6.13,name:"Luxembourg"},
+    {lat:-22.91,lng:-43.17,name:"Rio de Janeiro"},
+    {lat:-15.78,lng:-47.93,name:"Brasília"},
+    {lat:-12.05,lng:-77.04,name:"Lima"},
+    {lat:23.81,lng:90.41,name:"Dhaka"},
+    {lat:1.29,lng:103.85,name:"Singapore"},
+    {lat:31.23,lng:121.47,name:"Shanghai"},
+    {lat:35.69,lng:139.69,name:"Tokyo"},
+    {lat:21.39,lng:39.86,name:"Jeddah"},
+    {lat:-25.75,lng:28.19,name:"Pretoria"},
+    {lat:-25.99,lng:28.12,name:"Johannesburg"},
+    {lat:-1.29,lng:36.82,name:"Nairobi"},
+    {lat:9.07,lng:7.40,name:"Abuja"},
+    {lat:5.55,lng:-0.20,name:"Accra"},
+    {lat:18.00,lng:-75.00,name:"Caribbean (region)"},
+    {lat:19.43,lng:-99.13,name:"Mexico City"},
+    {lat:28.61,lng:77.21,name:"New Delhi"},
+    {lat:-6.21,lng:106.85,name:"Jakarta"},
+    {lat:13.08,lng:80.27,name:"Chennai"},
+    {lat:13.75,lng:100.52,name:"Bangkok"},
+    {lat:50.45,lng:30.52,name:"Kyiv"},
+    {lat:40.71,lng:-74.01,name:"New York"},
+    {lat:23.13,lng:-82.38,name:"Havana"},
+    {lat:18.11,lng:-77.30,name:"Kingston"},
+    {lat:33.72,lng:73.04,name:"Islamabad"},
+    {lat:-13.97,lng:33.79,name:"Lilongwe"},
+    {lat:8.49,lng:-13.23,name:"Freetown"},
+    {lat:6.37,lng:2.39,name:"Cotonou"},
+    {lat:14.93,lng:-23.51,name:"Praia"},
+    {lat:30.06,lng:31.24,name:"Cairo"},
+    {lat:36.82,lng:10.17,name:"Tunis"},
+    {lat:36.81,lng:10.18,name:"Tunis"},
+    {lat:-29.86,lng:30.98,name:"Durban"},
+    {lat:9.07,lng:7.40,name:"Abuja"},
+    {lat:15.00,lng:101.00,name:"Mekong Region"},
+    {lat:-25.75,lng:28.19,name:"Pretoria"},
+  ];
+  let best = null, bestDist = Infinity;
+  cities.forEach(c => {
+    const d = Math.hypot(c.lat - lat, c.lng - lng);
+    if (d < bestDist) { bestDist = d; best = c; }
+  });
+  return (best && bestDist < 0.5) ? best.name : `${lat.toFixed(2)}°, ${lng.toFixed(2)}°`;
+}
 
 /* ── RENDER HELPERS ── */
 function supportPills(types) {
+  if (!types || !types.length) return '<span style="color:rgba(107,154,184,.4);font-style:italic;font-size:11px;">—</span>';
   return types.map(t => {
-    const cls = {Advisory:'pill-advisory', Grant:'pill-grant', Reimbursable:'pill-reimbursable', Equity:'pill-equity'}[t] || 'pill-advisory';
+    const cls = {Advisory:'pill-advisory',Grant:'pill-grant',Reimbursable:'pill-reimbursable',Equity:'pill-equity'}[t] || 'pill-advisory';
     return `<span class="pill-support ${cls}">${t}</span>`;
   }).join('');
 }
 
 function climateBadge(val) {
   if (!val) return `<span class="badge-climate badge-climate-none">—</span>`;
-  const map = {
-    'Only': ['badge-climate-only', 'Only'],
-    'Included': ['badge-climate-included', 'Included'],
-    'Mostly': ['badge-climate-mostly', 'Mostly'],
-    'No': ['badge-climate-no', 'No']
-  };
+  const map = {Only:['badge-climate-only','Only'],Included:['badge-climate-included','Included'],Mostly:['badge-climate-mostly','Mostly'],No:['badge-climate-no','No']};
   const [cls, label] = map[val] || ['badge-climate-none', val];
   return `<span class="badge-climate ${cls}">${label}</span>`;
 }
 
 function statusBadge(s) {
   const cls = s === 'Open' ? 'badge-open' : 'badge-closed';
-  return `<span class="badge-status ${cls}">${s}</span>`;
+  return `<span class="badge-status ${cls}">${s || '—'}</span>`;
 }
 
-function escape(str) {
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function esc(str) {
+  return String(str == null ? '' : str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function truncate(str, n) {
+  if (!str) return '';
+  return str.length > n ? str.slice(0, n) + '…' : str;
 }
 
 /* ── RENDER TABLE ── */
 function renderTable(data) {
   const tbody = document.getElementById('tableBody');
-  if (data.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="12" class="empty-state">
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <div>No facilities match your search.</div></td></tr>`;
-    document.getElementById('tableMeta').innerHTML = 'Showing <strong>0</strong> of <strong>' + FACILITIES.length + '</strong> facilities';
+  if (!data.length) {
+    tbody.innerHTML = `<tr><td colspan="14" class="empty-state">No facilities match your filters.</td></tr>`;
+    document.getElementById('tableMeta').innerHTML = `Showing <strong>0</strong> of <strong>${FACILITIES.length}</strong> facilities`;
     return;
   }
-
-  tbody.innerHTML = data.map(f => `
-    <tr>
-      <td class="td-name">${escape(f.name)}</td>
-      <td class="td-org">${escape(f.org)}</td>
-      <td class="td-region">${escape(f.region)}</td>
-      <td class="td-sector">${escape(f.sector)}</td>
+  tbody.innerHTML = data.map(f => {
+    const color = getHQColor(f.lat || 38.90, f.lng || -77.04);
+    const hqLabel = getHQLabel(f.lat || 38.90, f.lng || -77.04);
+    const eligHtml = f.eligibility && f.eligibility.length
+      ? `<ul class="elig-list">${f.eligibility.map(e => `<li>${esc(e)}</li>`).join('')}</ul>`
+      : '<span style="color:rgba(107,154,184,.4);font-style:italic">—</span>';
+    return `<tr>
+      <td class="td-name">${esc(f.name)}</td>
+      <td class="td-org">${esc(f.org || '—')}</td>
+      <td class="td-narrow">${esc(f.region || '—')}</td>
+      <td class="td-narrow">${esc(f.sector || '—')}</td>
       <td><div class="support-pills">${supportPills(f.support)}</div></td>
-      <td class="td-year">${f.year}</td>
-      <td class="td-amount">${escape(f.amount)}</td>
-      <td class="td-deadline">${escape(f.deadline)}</td>
-      <td class="td-status">${statusBadge(f.status)}</td>
-      <td class="td-regions">${f.regionsCovered ? escape(f.regionsCovered) : '<span style="color:rgba(107,154,184,.45);font-style:italic">—</span>'}</td>
-      <td class="td-climate">${climateBadge(f.climateMandate)}</td>
-      <td class="td-geo">${escape(f.geoScope)}</td>
-    </tr>
-  `).join('');
+      <td class="td-center">${f.year || '<span style="color:rgba(107,154,184,.4)">—</span>'}</td>
+      <td class="td-narrow">${esc(f.amount || '—')}</td>
+      <td class="td-center">${statusBadge(f.status)}</td>
+      <td class="td-center">${climateBadge(f.climateMandate)}</td>
+      <td class="td-narrow">${esc(f.geoScope || '—')}</td>
+      <td class="td-regions">${f.regionsCovered ? esc(f.regionsCovered) : '<span style="color:rgba(107,154,184,.4);font-style:italic">—</span>'}</td>
+      <td class="td-narrow"><span class="hq-dot" style="background:${color};box-shadow:0 0 5px ${color}88;"></span>${esc(hqLabel)}</td>
+      <td class="td-desc" title="${esc(f.desc || '')}">${esc(truncate(f.desc, 120))}</td>
+      <td class="td-elig">${eligHtml}</td>
+    </tr>`;
+  }).join('');
 
   document.getElementById('tableMeta').innerHTML =
-    'Showing <strong>' + data.length + '</strong> of <strong>' + FACILITIES.length + '</strong> facilities';
+    `Showing <strong>${data.length}</strong> of <strong>${FACILITIES.length}</strong> facilities`;
 }
 
-/* ── FILTER ── */
-function filterTable() {
-  const q = document.getElementById('searchInput').value.trim().toLowerCase();
-  let data = FACILITIES;
-  if (q) {
-    data = FACILITIES.filter(f =>
-      f.name.toLowerCase().includes(q) ||
-      f.org.toLowerCase().includes(q)
-    );
-  }
-  filteredIds = data.map(f => f.id);
-  if (sortCol >= 0) {
-    data = applySortToData(data);
-  }
-  renderTable(data);
+/* ── FILTERS + SORT ── */
+function applyFilters() {
+  const q   = document.getElementById('searchInput').value.trim().toLowerCase();
+  const reg = document.getElementById('filterRegion').value;
+  const sec = document.getElementById('filterSector').value;
+  const sup = document.getElementById('filterSupport').value;
+  const cli = document.getElementById('filterClimate').value;
+
+  let data = FACILITIES.filter(f => {
+    if (q && !f.name.toLowerCase().includes(q) && !(f.org||'').toLowerCase().includes(q) && !(f.sector||'').toLowerCase().includes(q) && !(f.region||'').toLowerCase().includes(q) && !(f.regionsCovered||'').toLowerCase().includes(q)) return false;
+    if (reg && f.region !== reg) return false;
+    if (sec && f.sector !== sec) return false;
+    if (sup && !(f.support||[]).includes(sup)) return false;
+    if (cli && f.climateMandate !== cli) return false;
+    return true;
+  });
+
+  currentData = sortCol >= 0 ? applySortToData(data) : data;
+  renderTable(currentData);
   updateSortHeaders();
 }
 
-/* ── SORT ── */
-const COL_KEYS = ['name','org','region','sector','support','year','amount','deadline','status','regionsCovered','climateMandate','geoScope'];
+const COL_KEYS = ['name','org','region','sector','support','year','amount','status','climateMandate','geoScope','regionsCovered','_hq','desc','eligibility'];
 
 function getSortValue(f, col) {
   const key = COL_KEYS[col];
-  const v = f[key];
-  if (key === 'support') return v.join(',');
-  if (key === 'year') return v;
-  return String(v || '').toLowerCase();
+  if (key === 'support') return (f.support||[]).join(',');
+  if (key === 'year') return f.year || 0;
+  if (key === '_hq') return getHQLabel(f.lat||38.9, f.lng||-77.04);
+  if (key === 'eligibility') return (f.eligibility||[]).join(', ');
+  return String(f[key] == null ? '' : f[key]).toLowerCase();
 }
 
 function applySortToData(data) {
-  return [...data].sort((a, b) => {
-    const va = getSortValue(a, sortCol);
-    const vb = getSortValue(b, sortCol);
-    if (typeof va === 'number' && typeof vb === 'number') {
-      return sortAsc ? va - vb : vb - va;
-    }
+  return [...data].sort((a,b) => {
+    const va = getSortValue(a, sortCol), vb = getSortValue(b, sortCol);
+    if (typeof va === 'number' && typeof vb === 'number') return sortAsc ? va-vb : vb-va;
     if (va < vb) return sortAsc ? -1 : 1;
     if (va > vb) return sortAsc ? 1 : -1;
     return 0;
@@ -545,82 +469,67 @@ function applySortToData(data) {
 }
 
 function sortTable(col) {
-  if (sortCol === col) {
-    sortAsc = !sortAsc;
-  } else {
-    sortCol = col;
-    sortAsc = true;
-  }
-  filterTable();
+  sortCol = (sortCol === col) ? col : col;
+  sortAsc = (sortCol === col) ? !sortAsc : true;
+  sortCol = col;
+  applyFilters();
 }
 
 function updateSortHeaders() {
-  const ths = document.querySelectorAll('thead th');
-  ths.forEach((th, i) => {
-    th.classList.remove('sort-asc', 'sort-desc');
+  document.querySelectorAll('thead th').forEach((th,i) => {
+    th.classList.remove('sort-asc','sort-desc');
     const icon = th.querySelector('.sort-icon');
     if (i === sortCol) {
       th.classList.add(sortAsc ? 'sort-asc' : 'sort-desc');
-      icon.textContent = sortAsc ? '▲' : '▼';
+      if(icon) icon.textContent = sortAsc ? '▲' : '▼';
     } else {
-      icon.textContent = '↕';
+      if(icon) icon.textContent = '↕';
     }
   });
 }
 
-/* ── EXPORT CSV ── */
+/* ── EXPORT CSV (all fields) ── */
 function exportCSV() {
-  const q = document.getElementById('searchInput').value.trim().toLowerCase();
-  let data = FACILITIES.filter(f => filteredIds.includes(f.id));
-  if (sortCol >= 0) data = applySortToData(data);
+  const data = currentData.length ? currentData : FACILITIES;
+  const headers = ['ID','Name','Organisation','Region','Country','Sector','Support Types','Year','Amount','Deadline','Status','Climate Mandate','Geographic Scope','Regions Covered','HQ Location','Lat','Lng','Description','Eligibility','Pure Grant','Reimbursable','Equity','In-Kind'];
 
-  const headers = ['ID','Name','Organisation','Region','Sector','Support Types','Year','Amount','Deadline','Status','Regions Covered','Climate Mandate','Geographic Scope'];
-
-  function csvCell(val) {
+  function cell(val) {
     const s = String(val == null ? '' : val);
-    if (s.includes(',') || s.includes('"') || s.includes('\n')) {
-      return '"' + s.replace(/"/g, '""') + '"';
-    }
-    return s;
+    return (s.includes(',') || s.includes('"') || s.includes('\n')) ? '"' + s.replace(/"/g,'""') + '"' : s;
   }
 
-  const rows = [headers.map(csvCell).join(',')];
+  const rows = [headers.map(cell).join(',')];
   data.forEach(f => {
+    const hq = getHQLabel(f.lat||38.9, f.lng||-77.04);
     rows.push([
-      f.id,
-      f.name,
-      f.org,
-      f.region,
-      f.sector,
-      f.support.join('; '),
-      f.year,
-      f.amount,
-      f.deadline,
-      f.status,
-      f.regionsCovered,
-      f.climateMandate,
-      f.geoScope
-    ].map(csvCell).join(','));
+      f.id, f.name, f.org||'', f.region||'', f.country||'',
+      f.sector||'', (f.support||[]).join('; '),
+      f.year||'', f.amount||'', f.deadline||'', f.status||'',
+      f.climateMandate||'', f.geoScope||'', f.regionsCovered||'',
+      hq, f.lat||'', f.lng||'',
+      f.desc||'', (f.eligibility||[]).join('; '),
+      f.pureGrant||'', f.reimbursable||'', f.equity||'', f.inkind||''
+    ].map(cell).join(','));
   });
 
   const blob = new Blob([rows.join('\r\n')], {type:'text/csv;charset=utf-8;'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url;
-  a.download = 'ppf-facilities.csv';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  a.href = url; a.download = 'ppf-facilities.csv';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
 }
 
 /* ── INIT ── */
 (async function init() {
-  FACILITIES = await loadFacilities();
-  filteredIds = FACILITIES.map(f => f.id);
+  let data = null;
+  try { data = await loadFacilities(); } catch(e){}
+  FACILITIES = (data && data.length) ? data : (window.PPF_STATIC_FACILITIES || []);
+  document.getElementById('stat-count').textContent = FACILITIES.length;
+  document.getElementById('page-subtitle').textContent =
+    `All ${FACILITIES.length} facilities in the PPF Navigator database — sortable, searchable, and exportable to CSV.`;
+  currentData = FACILITIES;
   renderTable(FACILITIES);
-  document.getElementById('tableMeta').innerHTML =
-    'Showing <strong>' + FACILITIES.length + '</strong> of <strong>' + FACILITIES.length + '</strong> facilities';
 })();
 </script>
 </body>
