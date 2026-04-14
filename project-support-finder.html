@@ -308,6 +308,16 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
 .detail-header{padding:20px 20px 0;display:flex;align-items:flex-start;justify-content:space-between;}
 .detail-close{background:var(--card);border:1px solid var(--border);border-radius:8px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:16px;flex-shrink:0;transition:all .2s;}
 .detail-close:hover{border-color:var(--accent);color:var(--accent);}
+.detail-header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;}
+.ds-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:11.5px;font-weight:700;letter-spacing:.4px;white-space:nowrap;}
+.ds-validated{background:linear-gradient(135deg,rgba(74,222,128,.25),rgba(0,194,194,.18));color:#4ade80;border:1px solid rgba(74,222,128,.5);box-shadow:0 0 12px rgba(74,222,128,.2),inset 0 1px 0 rgba(255,255,255,.08);}
+.ds-validated .ds-icon{font-size:13px;filter:drop-shadow(0 0 4px rgba(74,222,128,.7));}
+.ds-under-validation{background:rgba(96,165,250,.13);color:#60a5fa;border:1px solid rgba(96,165,250,.3);}
+.ds-draft{background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.25);}
+.card-status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:3px;}
+.result-card.ds-card-validated{border-color:rgba(74,222,128,.4);background:linear-gradient(135deg,rgba(74,222,128,.09),rgba(0,194,194,.06));box-shadow:0 0 16px rgba(74,222,128,.08);}
+.result-card.ds-card-validated::before{background:linear-gradient(to bottom,#4ade80,#00c2c2);}
+.result-card.ds-card-validated:hover{border-color:rgba(74,222,128,.6);box-shadow:-4px 0 24px rgba(74,222,128,.18);}
 .detail-body{padding:16px 20px 20px;overflow-y:auto;flex:1;}
 .detail-type-bar{display:flex;gap:6px;margin-bottom:16px;}
 .detail-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;line-height:1.25;margin-bottom:6px;}
@@ -335,12 +345,18 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
 .cluster-tooltip-hint{font-size:11px;color:var(--accent);font-weight:600;text-align:center;margin-top:8px;padding-top:6px;border-top:1px solid var(--border);}
 .leaflet-tooltip.cluster-tip{background:none;border:none;box-shadow:none;padding:0;}
 /* Cluster grid cards */
-.cg-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 15px;cursor:pointer;transition:all .18s;display:flex;flex-direction:column;gap:7px;position:relative;overflow:hidden;}
+.cg-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;cursor:pointer;transition:all .18s;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden;min-height:90px;}
 .cg-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px;background:var(--cg-color,var(--accent));}
 .cg-card:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.35);border-color:var(--accent);}
+.cg-card.ds-validated{background:linear-gradient(145deg,rgba(74,222,128,.22) 0%,rgba(0,194,194,.15) 60%,rgba(74,222,128,.12) 100%);border:1.5px solid rgba(74,222,128,.6);box-shadow:0 0 24px rgba(74,222,128,.2),inset 0 1px 0 rgba(255,255,255,.08);}
+.cg-card.ds-validated::before{display:none;}
+.cg-card.ds-validated:hover{border-color:rgba(74,222,128,.9);box-shadow:0 8px 32px rgba(74,222,128,.3),0 0 0 1px rgba(74,222,128,.2);}
+.cg-validated-inner{width:100%;display:flex;flex-direction:column;align-items:center;text-align:center;gap:5px;}
+.cg-validated-stamp{display:inline-flex;align-items:center;justify-content:center;background:rgba(74,222,128,.18);border:1px solid rgba(74,222,128,.45);border-radius:50%;width:20px;height:20px;font-size:11px;color:#4ade80;}
+.cg-validated-stamp .vs-star{filter:drop-shadow(0 0 5px rgba(74,222,128,.9));}
 .cg-icon{font-size:22px;line-height:1;}
-.cg-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;line-height:1.35;color:var(--text);}
-.cg-org{font-size:11.5px;color:var(--muted);line-height:1.3;}
+.cg-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;line-height:1.4;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.cg-org{font-size:11px;color:var(--muted);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .cg-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:2px;}
 .cg-tag{font-size:10px;padding:2px 7px;border-radius:20px;border:1px solid;font-weight:600;}
 .leaflet-tooltip.cluster-tip::before{display:none;}
@@ -699,7 +715,10 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
           <div class="detail-title" id="detail-title"></div>
           <div class="detail-org" id="detail-org"></div>
         </div>
-        <div class="detail-close" onclick="closeDetail()">✕</div>
+        <div class="detail-header-right">
+          <div class="detail-close" onclick="closeDetail()">✕</div>
+          <div id="detail-data-status"></div>
+        </div>
       </div>
       <div class="detail-body">
         <div class="detail-highlight" id="detail-highlight"></div>
@@ -893,18 +912,29 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
 
 <!-- CLUSTER GRID MODAL -->
 <div class="modal-overlay" id="cluster-modal" onclick="if(event.target===this)closeClusterModal()">
-  <div id="cluster-modal-box" style="background:var(--panel);border:1px solid var(--border);border-radius:18px;width:min(92vw,860px);max-height:82vh;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.6);overflow:hidden;">
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px 16px;border-bottom:1px solid var(--border);flex-shrink:0;">
-      <div>
-        <div id="cluster-modal-title" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;"></div>
-        <div id="cluster-modal-sub" style="font-size:12.5px;color:var(--muted);margin-top:3px;"></div>
+  <div id="cluster-modal-box" style="background:var(--panel);border:1px solid var(--border);border-radius:20px;width:min(96vw,1060px);max-height:88vh;display:flex;flex-direction:column;box-shadow:0 32px 100px rgba(0,0,0,.7);overflow:hidden;">
+
+    <!-- Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:22px 28px 18px;border-bottom:1px solid var(--border);flex-shrink:0;background:linear-gradient(135deg,rgba(0,194,194,.06) 0%,transparent 60%);">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <!-- Pin icon -->
+        <div style="width:44px;height:44px;border-radius:12px;background:rgba(0,194,194,.12);border:1px solid rgba(0,194,194,.25);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">📍</div>
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div id="cluster-modal-title" style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;letter-spacing:-.3px;"></div>
+            <div id="cluster-modal-count-badge" style="background:rgba(0,194,194,.15);border:1px solid rgba(0,194,194,.3);border-radius:20px;padding:2px 10px;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.3px;"></div>
+          </div>
+          <div id="cluster-modal-sub" style="font-size:12px;color:var(--muted);margin-top:4px;"></div>
+        </div>
       </div>
       <div style="display:flex;align-items:center;gap:10px;">
-        <input id="cluster-search" type="text" placeholder="Search…" oninput="filterClusterGrid()" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:7px 12px;font-size:13px;color:var(--text);font-family:'DM Sans',sans-serif;width:180px;outline:none;">
-        <button onclick="closeClusterModal()" style="background:var(--card);border:1px solid var(--border);border-radius:8px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:18px;flex-shrink:0;transition:all .2s;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">×</button>
+        <input id="cluster-search" type="text" placeholder="Search facilities…" oninput="filterClusterGrid()" style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-size:13px;color:var(--text);font-family:'DM Sans',sans-serif;width:200px;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+        <button onclick="closeClusterModal()" style="background:var(--card);border:1px solid var(--border);border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:18px;flex-shrink:0;transition:all .2s;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">×</button>
       </div>
     </div>
-    <div id="cluster-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;padding:20px;overflow-y:auto;"></div>
+
+    <!-- Grid -->
+    <div id="cluster-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;padding:24px;overflow-y:auto;"></div>
   </div>
 </div>
 
@@ -1872,17 +1902,20 @@ function renderMapMarkers(filtered){
   currentFiltered=filtered;
   markersLayer.clearLayers();
   const zoom=map?map.getZoom():2;
+  const SPREAD_MAX = 5; // only spread small groups; larger ones always stay as a cluster modal
   groupByLocation(filtered).forEach(g=>{
     if(g.items.length===1){
       addFundMarker(g.items[0],g.items[0].lat,g.items[0].lng,false);
-    } else if(zoom>=CLUSTER_ZOOM){
+    } else if(zoom>=CLUSTER_ZOOM && g.items.length<=SPREAD_MAX){
+      // Small group at high zoom: spread neatly in a tight arc
       const pxPerDeg=(256*Math.pow(2,zoom))/360;
-      const radius=70/pxPerDeg;
+      const radius=50/pxPerDeg;
       g.items.forEach((f,i)=>{
         const angle=(2*Math.PI*i)/g.items.length-Math.PI/2;
         addFundMarker(f,g.lat+radius*Math.cos(angle),g.lng+radius*Math.sin(angle),true);
       });
     } else {
+      // Large group OR low zoom: always show as a cluster that opens the grid modal
       const color=getColor(g.items[0]);
       const icon=L.divIcon({
         html:`<div class="cluster-marker" style="background:var(--surface);border-color:${color};color:${color}">${g.items.length}</div>`,
@@ -1925,12 +1958,17 @@ function updateResults(filtered){
   const rl=document.getElementById('result-label'); if(rl) rl.textContent=filtered.length===1?t('facilityFound'):t('facilitiesFound');
   const list=document.getElementById('results-list');
   if(!filtered.length){ list.innerHTML=`<div class="empty-state"><div class="es-icon">🔍</div><p>No facilities match your filters.</p></div>`; return; }
-  list.innerHTML=filtered.map((f,i)=>`<div class="result-card" id="card-${f.id}" style="--type-color:${getColor(f.support)};animation-delay:${i*.04}s" onclick="selectFacility(${f.id})">
-    <div class="card-top"><div class="card-title">${f.icon} ${f.name}</div><div class="card-amount">${f.amount}</div></div>
+  list.innerHTML=filtered.map((f,i)=>{
+    const ds=getDataStatus(f);
+    const dotColor=ds==='Data Validated'?'#4ade80':ds==='Data Under Validation'?'#60a5fa':'#f87171';
+    const validatedClass=ds==='Data Validated'?' ds-card-validated':'';
+    return `<div class="result-card${validatedClass}" id="card-${f.id}" style="--type-color:${getColor(f.support)};animation-delay:${i*.04}s" onclick="selectFacility(${f.id})">
+    <div class="card-top"><div class="card-title">${f.icon} ${f.name}<span class="card-status-dot" style="background:${dotColor};box-shadow:0 0 6px ${dotColor}66;display:inline-block;margin-left:6px;" title="${ds}"></span></div><div class="card-amount">${f.amount}</div></div>
     <div class="card-meta"><span class="tag tag-region">📍 ${f.region}</span>${f.support.map(s=>`<span class="tag tag-${s.toLowerCase()}">${s}</span>`).join('')}</div>
     <div class="card-description">${f.desc.substring(0,90)}…</div>
     <div class="card-footer"><div class="card-org">🏛 ${f.org.split('(')[0].trim()}</div><div class="deadline-badge">⏱ ${f.deadline}</div></div>
-  </div>`).join('');
+  </div>`;
+  }).join('');
 }
 
 function selectFacility(id){ const f=facilities.find(x=>x.id===id); if(!f) return; highlightCard(id); openDetail(f); map.setView([f.lat,f.lng],5,{animate:true}); }
@@ -1957,7 +1995,12 @@ function renderGrid(filtered){
       ? '<span class="tag" style="background:rgba(77,217,172,.12);color:#4dd9ac;border:1px solid rgba(77,217,172,.3);">🌱 '+f.climateMandate+'</span>'
       : '';
     const regionsText = f.regionsCovered || f.region;
-    const yearText = f.year ? 'Est. '+f.year : '';
+    const ds = getDataStatus(f);
+    const dsBadge = ds === 'Data Validated'
+      ? '<span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px 3px 6px;border-radius:4px;font-size:10px;font-weight:700;background:linear-gradient(135deg,rgba(74,222,128,.25),rgba(0,194,194,.18));color:#4ade80;white-space:nowrap;letter-spacing:.3px;"><span style="display:inline-block;width:14px;height:14px;border-radius:2px;background:#4ade80;color:#0a1628;font-size:9px;font-weight:900;line-height:14px;text-align:center;">✦</span> Validated</span>'
+      : ds === 'Data Under Validation'
+      ? '<span style="display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:4px;font-size:10px;font-weight:600;border:1.5px dashed rgba(96,165,250,.5);color:#60a5fa;white-space:nowrap;letter-spacing:.2px;background:transparent;">⏳ Under Validation</span>'
+      : '<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:#f87171;white-space:nowrap;border-left:2px solid #f87171;padding-left:6px;letter-spacing:.2px;">Draft</span>';
     return '<div class="fac-card" style="--stripe-color:'+stripeColor+';animation-delay:'+(i*.04)+'s" onclick="selectFacility('+f.id+')">'
       + '<div class="fac-card-stripe"></div>'
       + '<div class="fac-card-body">'
@@ -1972,8 +2015,8 @@ function renderGrid(filtered){
       +   '<div class="fac-card-desc">'+f.desc.substring(0,110)+'…</div>'
       + '</div>'
       + '<div class="fac-card-footer">'
-      +   '<span class="fac-card-region">📍 '+regionsText+'</span>'
-      +   '<span style="font-size:11px;color:var(--muted);">'+yearText+'</span>'
+      +   dsBadge
+      +   '<span style="font-size:11px;color:var(--muted);">'+(f.year ? 'Est. '+f.year : '')+'</span>'
       + '</div>'
       + '</div>';
   }).join('');
@@ -2003,7 +2046,8 @@ function openClusterGrid(items) {
   const f0 = items[0];
   const locLabel = deriveLocationLabel(f0.lat, f0.lng);
   document.getElementById('cluster-modal-title').textContent = locLabel;
-  document.getElementById('cluster-modal-sub').textContent = `${items.length} facilit${items.length===1?'y':'ies'} headquartered here`;
+  document.getElementById('cluster-modal-count-badge').textContent = `${items.length} facilit${items.length===1?'y':'ies'}`;
+  document.getElementById('cluster-modal-sub').textContent = `Facilities headquartered in this location`;
   document.getElementById('cluster-search').value = '';
   renderClusterGrid(items);
   document.getElementById('cluster-modal').classList.add('open');
@@ -2040,6 +2084,19 @@ function deriveLocationLabel(lat, lng) {
     {lat:13.08,lng:80.27,name:"Chennai"},
     {lat:13.75,lng:100.52,name:"Bangkok"},
     {lat:50.45,lng:30.52,name:"Kyiv"},
+    {lat:36.82,lng:10.17,name:"Tunis"},
+    {lat:30.06,lng:31.25,name:"Cairo"},
+    {lat:33.89,lng:35.50,name:"Beirut"},
+    {lat:41.01,lng:28.95,name:"Istanbul"},
+    {lat:40.42,lng:-3.70,name:"Madrid"},
+    {lat:41.90,lng:12.50,name:"Rome"},
+    {lat:48.21,lng:16.37,name:"Vienna"},
+    {lat:47.37,lng:8.54,name:"Zürich"},
+    {lat:46.95,lng:7.45,name:"Bern"},
+    {lat:59.91,lng:10.75,name:"Oslo"},
+    {lat:55.68,lng:12.57,name:"Copenhagen"},
+    {lat:-33.87,lng:151.21,name:"Sydney"},
+    {lat:3.15,lng:101.69,name:"Kuala Lumpur"},
   ];
   let best = null, bestDist = Infinity;
   cities.forEach(c=>{
@@ -2053,17 +2110,39 @@ function renderClusterGrid(items) {
   const grid = document.getElementById('cluster-grid');
   grid.innerHTML = items.map(f => {
     const color = getColor(f);
+    const ds = getDataStatus(f);
+    const isValidated = ds === 'Data Validated';
+    const dotColor = isValidated ? null : ds === 'Data Under Validation' ? '#60a5fa' : '#f87171';
+    const validatedClass = isValidated ? ' ds-validated' : '';
     const tags = f.support.slice(0,3).map(s=>
       `<span class="cg-tag" style="color:${color};border-color:${color}33;background:${color}18">${s}</span>`
     ).join('');
-    return `<div class="cg-card" onclick="closeClusterModal();openDetailById(${f.id})" style="--cg-color:${color}">
+    const dot = isValidated ? '' : `<div style="width:8px;height:8px;border-radius:50%;background:${dotColor};flex-shrink:0;margin-top:5px;box-shadow:0 0 6px ${dotColor}88;"></div>`;
+
+    if (isValidated) {
+      return `<div class="cg-card ds-validated" onclick="closeClusterModal();openDetailById(${f.id})" style="--cg-color:#4ade80">
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div class="cg-icon">${f.icon}</div>
+          <div style="flex:1;min-width:0;">
+            <div class="cg-name" style="color:#4ade80;">${f.name}</div>
+            <div class="cg-org">${f.org||'—'}</div>
+          </div>
+          <div class="cg-validated-stamp" style="margin-top:1px;flex-shrink:0;"><span class="vs-star">✦</span></div>
+        </div>
+        <div style="font-size:11px;color:rgba(74,222,128,.55);display:flex;gap:10px;margin-top:2px;">
+          <span>📍 ${f.region||'—'}</span>
+        </div>
+      </div>`;
+    }
+
+    return `<div class="cg-card${validatedClass}" onclick="closeClusterModal();openDetailById(${f.id})" style="--cg-color:${color}">
       <div style="display:flex;align-items:flex-start;gap:10px;">
         <div class="cg-icon">${f.icon}</div>
         <div style="flex:1;min-width:0;">
           <div class="cg-name">${f.name}</div>
           <div class="cg-org">${f.org||'—'}</div>
         </div>
-        <div style="width:8px;height:8px;border-radius:50%;background:${color};flex-shrink:0;margin-top:5px;box-shadow:0 0 6px ${color}88;"></div>
+        ${dot}
       </div>
       ${tags?`<div class="cg-tags">${tags}</div>`:''}
       <div style="font-size:11px;color:var(--muted);display:flex;gap:10px;margin-top:2px;">
@@ -2088,11 +2167,26 @@ function closeClusterModal() {
 }
 
 // ── DETAIL PANEL ──────────────────────────────────────────
+function getDataStatus(f) {
+  if (f.id === 9) return 'Data Validated';
+  if (f.id <= 14) return 'Data Under Validation';
+  return 'Draft';
+}
+function dataStatusBadge(f) {
+  const s = getDataStatus(f);
+  if (s === 'Data Validated')
+    return `<span class="ds-badge ds-validated"><span class="ds-icon">✦</span> Data Validated</span>`;
+  if (s === 'Data Under Validation')
+    return `<span class="ds-badge ds-under-validation">Under Validation</span>`;
+  return `<span class="ds-badge ds-draft">Draft</span>`;
+}
+
 function openDetail(f){
   _currentDetailFund = f;
   document.getElementById('detail-title').textContent=f.name;
   document.getElementById('detail-org').textContent=f.org+' · '+f.country;
   document.getElementById('detail-types').innerHTML=f.support.map(s=>`<span class="tag tag-${s.toLowerCase()}">${s}</span>`).join('');
+  document.getElementById('detail-data-status').innerHTML=dataStatusBadge(f);
 
   // Build instrument badges
   const instruments = [

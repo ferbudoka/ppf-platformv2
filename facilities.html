@@ -104,6 +104,13 @@ tbody td{padding:11px 13px;vertical-align:middle;color:var(--text);line-height:1
 .pcm-badge{display:inline-block;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:600;white-space:nowrap;}
 .pcm-yes{background:rgba(74,222,128,.15);color:#4ade80;border:1px solid rgba(74,222,128,.3);}
 .pcm-no{color:rgba(107,154,184,.25);font-size:11px;}
+/* Data status badges */
+.ds-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.4px;white-space:nowrap;}
+.ds-validated{background:linear-gradient(135deg,rgba(74,222,128,.25),rgba(0,194,194,.18));color:#4ade80;border:1px solid rgba(74,222,128,.5);box-shadow:0 0 10px rgba(74,222,128,.18),inset 0 1px 0 rgba(255,255,255,.08);}
+.ds-validated .ds-check{font-size:12px;filter:drop-shadow(0 0 4px rgba(74,222,128,.7));}
+.ds-under-validation{background:rgba(96,165,250,.13);color:#60a5fa;border:1px solid rgba(96,165,250,.3);}
+.ds-draft{background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.25);}
+.ds-check{font-size:11px;}
 
 /* Eligibility list */
 .elig-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:2px;}
@@ -221,26 +228,27 @@ footer{background:var(--ink);border-top:1px solid rgba(255,255,255,.06);padding:
       <thead>
         <tr>
           <th onclick="sortTable(0)">Name <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(1)">Organisation <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(2)">Region <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(3)">Sector <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(4)">Support Types <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(5)" title="Identification &amp; Screening" style="text-align:center;">Identif. <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(6)" title="Pre-Feasibility" style="text-align:center;">Pre-Feasib. <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(7)" title="Design &amp; Detailed Feasibility" style="text-align:center;">Design <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(8)" title="Appraisal &amp; Structuring" style="text-align:center;">Appraisal <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(9)" title="Tendering" style="text-align:center;">Tender <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(10)" title="Market Sounding" style="text-align:center;">Mkt Sound. <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(11)" title="Project Cycle Management Mandate" style="text-align:center;">PCM <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(12)">Year <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(13)">Amount <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(14)">Status <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(15)">Climate <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(16)">Geo Scope <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(17)">Regions Covered <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(18)">HQ Location <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(19)">Description <span class="sort-icon">↕</span></th>
-          <th onclick="sortTable(20)">Eligibility <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(1)">Data Status <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(2)">Organisation <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(3)">Region <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(4)">Sector <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(5)">Support Types <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(6)" title="Identification &amp; Screening" style="text-align:center;">Identif. <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(7)" title="Pre-Feasibility" style="text-align:center;">Pre-Feasib. <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(8)" title="Design &amp; Detailed Feasibility" style="text-align:center;">Design <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(9)" title="Appraisal &amp; Structuring" style="text-align:center;">Appraisal <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(10)" title="Tendering" style="text-align:center;">Tender <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(11)" title="Market Sounding" style="text-align:center;">Mkt Sound. <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(12)" title="Project Cycle Management Mandate" style="text-align:center;">PCM <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(13)">Year <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(14)">Amount <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(15)">Status <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(16)">Climate <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(17)">Geo Scope <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(18)">Regions Covered <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(19)">HQ Location <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(20)">Description <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(21)">Eligibility <span class="sort-icon">↕</span></th>
         </tr>
       </thead>
       <tbody id="tableBody"></tbody>
@@ -377,6 +385,22 @@ function getHQLabel(lat, lng) {
   return (best && bestDist < 0.5) ? best.name : `${lat.toFixed(2)}°, ${lng.toFixed(2)}°`;
 }
 
+/* ── DATA STATUS ── */
+function getDataStatus(f) {
+  if (f.id === 9) return 'Data Validated';
+  if (f.id <= 14) return 'Data Under Validation';
+  return 'Draft';
+}
+
+function dataStatusBadge(f) {
+  const s = getDataStatus(f);
+  if (s === 'Data Validated')
+    return `<span class="ds-badge ds-validated"><span class="ds-check">✦</span> Data Validated</span>`;
+  if (s === 'Data Under Validation')
+    return `<span class="ds-badge ds-under-validation">Under Validation</span>`;
+  return `<span class="ds-badge ds-draft">Draft</span>`;
+}
+
 /* ── RENDER HELPERS ── */
 function stageDot(val) {
   if (val === 'Y') return '<span class="stage-dot stage-yes" title="Yes">✓</span>';
@@ -425,7 +449,7 @@ function truncate(str, n) {
 function renderTable(data) {
   const tbody = document.getElementById('tableBody');
   if (!data.length) {
-    tbody.innerHTML = `<tr><td colspan="21" class="empty-state">No facilities match your filters.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="22" class="empty-state">No facilities match your filters.</td></tr>`;
     document.getElementById('tableMeta').innerHTML = `Showing <strong>0</strong> of <strong>${FACILITIES.length}</strong> facilities`;
     return;
   }
@@ -437,6 +461,7 @@ function renderTable(data) {
       : '<span style="color:rgba(107,154,184,.4);font-style:italic">—</span>';
     return `<tr>
       <td class="td-name">${esc(f.name)}</td>
+      <td class="td-center">${dataStatusBadge(f)}</td>
       <td class="td-org">${esc(f.org || '—')}</td>
       <td class="td-narrow">${esc(f.region || '—')}</td>
       <td class="td-narrow">${esc(f.sector || '—')}</td>
@@ -486,11 +511,13 @@ function applyFilters() {
   updateSortHeaders();
 }
 
-const COL_KEYS = ['name','org','region','sector','support','s2','s3','s32','s4','s42','s43','_pcm','year','amount','status','climateMandate','geoScope','regionsCovered','_hq','desc','eligibility'];
+const COL_KEYS = ['name','_ds','org','region','sector','support','s2','s3','s32','s4','s42','s43','_pcm','year','amount','status','climateMandate','geoScope','regionsCovered','_hq','desc','eligibility'];
 const STAGE_SORT = {'Y':2,'Partial':1,'':0,'N':0};
+const DS_SORT = {'Data Validated':3,'Data Under Validation':2,'Draft':1};
 
 function getSortValue(f, col) {
   const key = COL_KEYS[col];
+  if (key === '_ds') return DS_SORT[getDataStatus(f)] || 0;
   if (key === 'support') return (f.support||[]).join(',');
   if (key === 'year') return f.year || 0;
   if (key === '_hq') return getHQLabel(f.lat||38.9, f.lng||-77.04);
@@ -533,7 +560,7 @@ function updateSortHeaders() {
 /* ── EXPORT CSV (all fields) ── */
 function exportCSV() {
   const data = currentData.length ? currentData : FACILITIES;
-  const headers = ['ID','Name','Organisation','Region','Country','Sector','Support Types','Stage: Identification','Stage: Pre-Feasibility','Stage: Design','Stage: Appraisal','Stage: Tendering','Stage: Market Sounding','PCM Mandate','Year','Amount','Deadline','Status','Climate Mandate','Geographic Scope','Regions Covered','HQ Location','Lat','Lng','Description','Eligibility','Pure Grant','Reimbursable','Equity','In-Kind'];
+  const headers = ['ID','Name','Data Status','Organisation','Region','Country','Sector','Support Types','Stage: Identification','Stage: Pre-Feasibility','Stage: Design','Stage: Appraisal','Stage: Tendering','Stage: Market Sounding','PCM Mandate','Year','Amount','Deadline','Status','Climate Mandate','Geographic Scope','Regions Covered','HQ Location','Lat','Lng','Description','Eligibility','Pure Grant','Reimbursable','Equity','In-Kind'];
 
   function cell(val) {
     const s = String(val == null ? '' : val);
@@ -544,7 +571,7 @@ function exportCSV() {
   data.forEach(f => {
     const hq = getHQLabel(f.lat||38.9, f.lng||-77.04);
     rows.push([
-      f.id, f.name, f.org||'', f.region||'', f.country||'',
+      f.id, f.name, getDataStatus(f), f.org||'', f.region||'', f.country||'',
       f.sector||'', (f.support||[]).join('; '),
       f.s2||'', f.s3||'', f.s32||'', f.s4||'', f.s42||'', f.s43||'', f.pcm||'',
       f.year||'', f.amount||'', f.deadline||'', f.status||'',
