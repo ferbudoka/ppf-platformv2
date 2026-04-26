@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Project Preparation Facilities Navigator</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -13,65 +13,65 @@
 /* ── GIF-INSPIRED DARK (default) ── */
 /* Primary: Deep navy #003366 | Teal accent #00A6A6 | Gold #E8A020 | Warm orange #E05C1A */
 :root {
-  --ink:#00213d;          /* deep navy bg */
-  --surface:#002b50;      /* slightly lighter navy */
-  --panel:#003566;        /* GIF navy panel */
-  --card:#00407a;         /* card bg */
-  --border:rgba(255,255,255,0.1);
-  --border-active:rgba(0,166,166,0.5);
-  --text:#e8f0f8;
+  --ink:#0D1829;
+  --surface:#0F2036;
+  --panel:#0F2036;
+  --card:#142840;
+  --border:rgba(255,255,255,0.08);
+  --border-active:rgba(29,91,212,0.5);
+  --text:#E2EAF4;
   --muted:#8aadc8;
-  --accent:#00c2c2;       /* GIF teal */
-  --accent-2:#4dd9ac;     /* green-teal */
-  --accent-3:#f0b429;     /* GIF gold */
-  --accent-4:#e05c1a;     /* GIF orange */
-  --accent-5:#6eb5ff;     /* light blue */
-  --glow:rgba(0,194,194,0.15);
+  --accent:#1D5BD4;
+  --accent-2:#10B981;
+  --accent-3:#f0b429;
+  --accent-4:#e05c1a;
+  --accent-5:#60A5FA;
+  --glow:rgba(29,91,212,0.15);
   --shadow:rgba(0,0,0,0.55);
   --nav-gold:#f0b429;
 }
 /* ── GIF-INSPIRED LIGHT ── */
 body.light {
-  --ink:#f2f6fa;
-  --surface:#ffffff;
-  --panel:#f7f9fc;
-  --card:#eaf0f8;
-  --border:rgba(0,51,102,0.1);
-  --border-active:rgba(0,153,153,0.4);
-  --text:#00101f;
-  --muted:#1e3a5f;
-  --accent:#006080;
-  --accent-2:#006b52;
-  --accent-3:#a86300;
-  --accent-4:#a83400;
-  --accent-5:#1a4d8c;
-  --glow:rgba(0,96,128,0.1);
-  --shadow:rgba(0,20,50,0.18);
-  --nav-gold:#a86300;
+  --ink:#F8FAFC;
+  --surface:#FFFFFF;
+  --panel:#F8FAFC;
+  --card:#EBF1FD;
+  --border:rgba(29,91,212,0.1);
+  --border-active:rgba(29,91,212,0.4);
+  --text:#0F172A;
+  --muted:#475569;
+  --accent:#1D5BD4;
+  --accent-2:#059669;
+  --accent-3:#D97706;
+  --accent-4:#DC4E1A;
+  --accent-5:#2563EB;
+  --glow:rgba(29,91,212,0.1);
+  --shadow:rgba(15,23,42,0.18);
+  --nav-gold:#D97706;
 }
-body.light .marker-inner{box-shadow:0 4px 14px rgba(0,0,0,.15),0 0 0 4px rgba(0,123,158,.1);}
+body.light .marker-inner{box-shadow:0 4px 14px rgba(0,0,0,.15),0 0 0 4px rgba(29,91,212,.1);}
 body.light .leaflet-popup-content-wrapper{background:var(--surface)!important;color:var(--text)!important;}
 body.light .fac-card:hover{box-shadow:0 10px 32px rgba(0,30,70,.12);}
-body.light .result-card:hover{box-shadow:-4px 0 16px rgba(0,123,158,.15);}
+body.light .result-card:hover{box-shadow:-4px 0 16px rgba(29,91,212,.15);}
 body.light header::after{opacity:.6;}
 body.light ::-webkit-scrollbar-thumb{background:rgba(0,51,102,.15);}
 body.light .filter-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234a6fa0' d='M6 8L1 3h10z'/%3E%3C/svg%3E");}
 body.light .fac-card-desc{color:rgba(0,34,68,.6);}
 body.light .detail-desc{color:rgba(0,34,68,.75);}
-body.light .tag-region{background:rgba(0,123,158,.12);color:var(--accent);}
+body.light .tag-region{background:rgba(29,91,212,.12);color:var(--accent);}
 body.light .tag-grant{background:rgba(0,143,111,.12);color:var(--accent-2);}
 body.light .tag-loan{background:rgba(196,125,0,.12);color:var(--accent-3);}
 body.light .tag-technical{background:rgba(37,99,168,.12);color:var(--accent-5);}
 body.light .tag-advisory{background:rgba(201,65,0,.12);color:var(--accent-4);}
-body.light .tag-blended{background:rgba(0,123,158,.12);color:var(--accent);}
-body.light .modal-info-box{background:rgba(0,123,158,.06);border-color:rgba(0,123,158,.2);}
+body.light .tag-blended{background:rgba(29,91,212,.12);color:var(--accent);}
+body.light .modal-info-box{background:rgba(29,91,212,.06);border-color:rgba(29,91,212,.2);}
 body.light .floating-toolbar{box-shadow:0 4px 24px rgba(0,30,70,.18);}
 body.light .facilities-section{background:var(--ink);}
 body.light .stat-num{color:var(--accent-3);}
 body.light .logo-text{color:var(--text);}
 
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'DM Sans',sans-serif;background:var(--ink);color:var(--text);min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;transition:background .3s,color .3s;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--ink);color:var(--text);min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;transition:background .3s,color .3s;-webkit-font-smoothing:antialiased;}
 ::-webkit-scrollbar{width:5px;height:5px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px;}
 
 /* FLOATING BOTTOM TOOLBAR */
@@ -80,23 +80,23 @@ body{font-family:'DM Sans',sans-serif;background:var(--ink);color:var(--text);mi
   display:flex;align-items:center;gap:7px;
   padding:10px 17px;border-radius:30px;border:1px solid var(--border);
   background:var(--panel);color:var(--text);
-  font-family:'DM Sans',sans-serif;font-size:14.4px;font-weight:500;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:14.4px;font-weight:500;
   cursor:pointer;transition:all .2s;white-space:nowrap;
   box-shadow:0 4px 16px var(--shadow);backdrop-filter:blur(12px);
 }
 .toolbar-btn:hover{background:var(--card);color:var(--accent);border-color:var(--accent);}
-.toolbar-btn.t-active{background:var(--accent);color:#002b50;font-weight:700;border-color:var(--accent);}
+.toolbar-btn.t-active{background:var(--accent);color:#fff;font-weight:700;border-color:var(--accent);}
 
 /* HEADER HOME BUTTON */
 .btn-home-header{
   display:flex;align-items:center;gap:7px;
   padding:7px 16px 7px 12px;border-radius:8px;
   background:transparent;border:1px solid rgba(255,255,255,.18);
-  color:var(--text);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;
+  color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;
   text-decoration:none;cursor:pointer;transition:all .2s;letter-spacing:.2px;
 }
 .btn-home-header:hover{
-  border-color:var(--accent);color:var(--accent);background:rgba(0,194,194,.08);
+  border-color:var(--accent);color:var(--accent);background:rgba(29,91,212,.08);
 }
 .btn-home-header svg{flex-shrink:0;transition:transform .2s;}
 .btn-home-header:hover svg{transform:translateY(-1px);}
@@ -120,12 +120,27 @@ body{font-family:'DM Sans',sans-serif;background:var(--ink);color:var(--text);mi
 .modal-overlay.open .modal{transform:translateY(0) scale(1);}
 .modal-header{padding:24px 24px 0;display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0;}
 .modal-icon{font-size:36px;margin-bottom:8px;}
-.modal-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;line-height:1.2;}
+.modal-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;line-height:1.2;}
 .modal-title span{color:var(--accent);}
 .modal-subtitle{font-size:13px;color:var(--muted);margin-top:5px;line-height:1.5;}
 .modal-close{background:var(--card);border:1px solid var(--border);border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:17px;flex-shrink:0;transition:all .2s;}
 .modal-close:hover{border-color:var(--accent);color:var(--accent);}
-#modal-form-view{display:flex;flex-direction:column;flex:1;overflow:hidden;min-height:0;}
+#modal-form-view,#suggest-form-view{display:flex;flex-direction:column;flex:1;overflow:hidden;min-height:0;}
+.sg-prefilled{background:rgba(29,91,212,.07)!important;border-color:rgba(29,91,212,.25)!important;}
+.sg-prefilled:focus{border-color:var(--border-active)!important;background:var(--card)!important;}
+.sg-ynp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:4px;}
+.sg-ynp-item{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:6px;}
+.sg-ynp-label{font-size:10.5px;color:var(--muted);font-weight:500;line-height:1.3;}
+.sg-ynp-btns{display:flex;gap:4px;}
+.sg-ynp-btn{flex:1;padding:4px 0;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;font-family:'Plus Jakarta Sans',sans-serif;}
+.sg-ynp-btn:hover{border-color:var(--accent);color:var(--accent);}
+.sg-ynp-btn.sg-active-Y{background:rgba(29,91,212,.2);border-color:rgba(29,91,212,.5);color:var(--accent);}
+.sg-ynp-btn.sg-active-Partial{background:rgba(240,180,41,.15);border-color:rgba(240,180,41,.4);color:var(--accent-3);}
+.sg-ynp-btn.sg-active-N{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:#f87171;}
+.sg-applicants-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;padding:4px 0 8px;}
+.sg-check-item{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text);cursor:pointer;padding:7px 10px;background:var(--card);border:1px solid var(--border);border-radius:8px;transition:border-color .15s;}
+.sg-check-item:hover{border-color:var(--accent);}
+.sg-check-item input{accent-color:var(--accent);width:14px;height:14px;cursor:pointer;}
 .modal-body{padding:20px 24px 8px;overflow-y:auto;flex:1;min-height:0;}
 .msec-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;margin-top:20px;display:flex;align-items:center;gap:8px;}
 .msec-title:first-child{margin-top:0;}
@@ -135,14 +150,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--ink);color:var(--text);mi
 .form-field{display:flex;flex-direction:column;gap:5px;}
 .form-label{font-size:11px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
 .form-label .req{color:var(--accent-4);}
-.form-input,.form-select,.form-textarea{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s,box-shadow .2s;width:100%;}
+.form-input,.form-select,.form-textarea{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s,box-shadow .2s;width:100%;}
 .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--border-active);box-shadow:0 0 0 3px var(--glow);}
 .form-input::placeholder,.form-textarea::placeholder{color:var(--muted);opacity:.7;}
 .form-textarea{resize:vertical;min-height:76px;}
 .form-select{appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
 .form-select option{background:var(--card);}
 .form-hint{font-size:11px;color:var(--muted);line-height:1.5;margin-top:3px;font-style:italic;}
-.modal-info-box{background:rgba(0,194,194,.07);border:1px solid rgba(0,194,194,.18);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--text);line-height:1.65;margin-top:16px;}
+.modal-info-box{background:rgba(29,91,212,.07);border:1px solid rgba(29,91,212,.18);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--text);line-height:1.65;margin-top:16px;}
 body.light .modal-info-box{background:rgba(37,99,235,.05);border-color:rgba(37,99,235,.2);}
 .modal-info-box strong{color:var(--accent);}
 .modal-info-box ul{margin:6px 0 0 16px;}
@@ -155,7 +170,7 @@ body.light .modal-info-box{background:rgba(37,99,235,.05);border-color:rgba(37,9
 .success-icon{font-size:56px;margin-bottom:16px;animation:popIn .4s cubic-bezier(0.34,1.56,0.64,1);}
 @keyframes popIn{from{transform:scale(0);}to{transform:scale(1);}}
 .region-highlight-layer{pointer-events:none!important;}
-.success-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:8px;}
+.success-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;margin-bottom:8px;}
 .success-sub{color:var(--muted);font-size:14px;line-height:1.65;max-width:380px;}
 
 /* HEADER */
@@ -164,19 +179,19 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;ba
 .logo{display:flex;align-items:center;gap:10px;}
 .logo img{background:#fff;border-radius:6px;padding:4px 10px;}
 body.light .logo img{background:none;padding:0;border-radius:0;}
-.logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),#006688);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 2px 12px rgba(0,194,194,.3);}
-.logo-text{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:#ffffff;letter-spacing:-.2px;}.logo-text span{color:var(--accent-3);font-weight:800;}
+.logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),#1649B0);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 2px 12px rgba(29,91,212,.3);}
+.logo-text{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:15px;color:#ffffff;letter-spacing:-.2px;}.logo-text span{color:var(--accent-3);font-weight:800;}
 .header-stats{display:flex;gap:32px;align-items:center;position:absolute;left:50%;transform:translateX(-50%);}
 .stat-item{display:flex;align-items:baseline;gap:6px;}
-.stat-num{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;color:var(--accent-3);line-height:1;letter-spacing:-.5px;}
+.stat-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:38px;font-weight:800;color:var(--accent-3);line-height:1;letter-spacing:-.5px;}
 .stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;}
 .header-actions{display:flex;gap:10px;align-items:center;}
 .stat-divider{width:1px;height:36px;background:rgba(255,255,255,.12);}
-.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text);padding:7px 16px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .2s;}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text);padding:7px 16px;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .2s;}
 .btn-ghost:hover{border-color:var(--accent-3);color:var(--accent-3);}
 .btn-submit-fund{background:linear-gradient(135deg,var(--accent-3),#d4880a)!important;border:none!important;color:#002244!important;font-weight:700!important;border-radius:8px!important;}
 .btn-case-study{background:linear-gradient(135deg,#6eb5ff,#3a7fd5)!important;border:none!important;color:#001830!important;font-weight:700!important;border-radius:8px!important;}
-.btn-primary{background:linear-gradient(135deg,#00a8a8,#0066cc);border:none;color:#fff;padding:7px 18px;border-radius:8px;font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+.btn-primary{background:linear-gradient(135deg,#1D5BD4,#0EA5E9);border:none;color:#fff;padding:7px 18px;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
 .btn-primary:hover{opacity:.85;transform:translateY(-1px);}
 
 /* TOP SECTION */
@@ -185,9 +200,9 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
 /* SIDEBAR */
 .sidebar{width:340px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
 .sidebar-header{padding:20px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-.sidebar-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:14px;}
+.sidebar-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:14px;}
 .search-box{position:relative;}
-.search-box input{width:100%;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 16px 10px 38px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:all .2s;}
+.search-box input{width:100%;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 16px 10px 38px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;outline:none;transition:all .2s;}
 .search-box input:focus{border-color:var(--border-active);box-shadow:0 0 0 3px var(--glow);}
 .search-box input::placeholder{color:var(--muted);}
 .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;}
@@ -195,9 +210,9 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
 .filter-group{margin-bottom:16px;}.filter-group:last-child{margin-bottom:0;}
 
 .pill-group{display:flex;flex-wrap:wrap;gap:6px;}
-.pill{padding:5px 12px;border-radius:20px;border:1px solid var(--pb,var(--border));background:transparent;color:var(--pc,var(--muted));font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .18s;white-space:nowrap;}
+.pill{padding:5px 12px;border-radius:20px;border:1px solid var(--pb,var(--border));background:transparent;color:var(--pc,var(--muted));font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .18s;white-space:nowrap;}
 .pill:hover{border-color:var(--pc,var(--accent));color:var(--pc,var(--accent));background:color-mix(in srgb,var(--pc,var(--accent)) 10%,transparent);}
-.pill.active{background:var(--pc,var(--accent));border-color:var(--pc,var(--accent));color:#001830;font-weight:600;}
+.pill.active{background:var(--pc,var(--accent));border-color:var(--pc,var(--accent));color:#0D1829;font-weight:600;}
 
 /* ── Stage pills — violet family (higher contrast) ── */
 [data-filter="stage"][data-value="all"]                        {--pc:#e0d4ff;--pb:rgba(224,212,255,.18);}
@@ -221,7 +236,7 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
 [data-filter="region"][data-value="all"]            {--pc:#2dd4bf;--pb:rgba(45,212,191,.22);}
 [data-filter="region"][data-value="Africa"]         {--pc:#14b8a6;--pb:rgba(20,184,166,.22);}
 [data-filter="region"][data-value="Asia Pacific"]   {--pc:#0d9488;--pb:rgba(13,148,136,.22);}
-[data-filter="region"][data-value="Latin America"]  {--pc:#00c2c2;--pb:rgba(0,194,194,.22);}
+[data-filter="region"][data-value="Latin America"]  {--pc:#00c2c2;--pb:rgba(29,91,212,.22);}
 [data-filter="region"][data-value="Europe"]         {--pc:#06b6d4;--pb:rgba(6,182,212,.22);}
 [data-filter="region"][data-value="Global"]         {--pc:#67e8f9;--pb:rgba(103,232,249,.22);}
 
@@ -239,32 +254,32 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
 [data-filter="sector"][data-value="Water"]          {--pc:#6eb5ff;--pb:rgba(110,181,255,.22);}
 [data-filter="sector"][data-value="Finance"]        {--pc:#2563a8;--pb:rgba(37,99,168,.22);}
 [data-filter="sector"][data-value="Health"]         {--pc:#38bdf8;--pb:rgba(56,189,248,.22);}
-.filter-select{width:100%;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;transition:border-color .2s;}
+.filter-select{width:100%;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;transition:border-color .2s;}
 .filter-select option{background:var(--card);}
 .coming-soon-filter{background:var(--card);border:1px dashed var(--border);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px;}
 .coming-soon-badge{margin-left:auto;font-size:9px;text-transform:uppercase;letter-spacing:.6px;background:rgba(99,179,237,.12);color:var(--accent);padding:2px 7px;border-radius:10px;border:1px solid rgba(99,179,237,.2);}
 .active-filters{display:flex;gap:6px;flex-wrap:wrap;padding:10px 20px;border-bottom:1px solid var(--border);}
-.active-filter-tag{display:flex;align-items:center;gap:5px;background:rgba(0,194,194,.1);border:1px solid rgba(0,194,194,.25);border-radius:20px;padding:3px 10px;font-size:11px;color:var(--accent);}
+.active-filter-tag{display:flex;align-items:center;gap:5px;background:rgba(29,91,212,.1);border:1px solid rgba(29,91,212,.25);border-radius:20px;padding:3px 10px;font-size:11px;color:var(--accent);}
 .af-remove{cursor:pointer;opacity:.6;transition:opacity .15s;line-height:1;}.af-remove:hover{opacity:1;}
 .results-section{flex:1;overflow-y:auto;padding:12px 20px 20px;}
 .results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-top:4px;}
 .results-count{font-size:12px;color:var(--muted);}.results-count strong{color:var(--text);font-weight:500;}
-.sort-btn{background:none;border:none;color:var(--muted);font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;}.sort-btn:hover{color:var(--accent);}
+.sort-btn{background:none;border:none;color:var(--muted);font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;}.sort-btn:hover{color:var(--accent);}
 .result-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:8px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;animation:fadeSlideIn .3s ease both;}
 .result-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--type-color,var(--accent));border-radius:3px 0 0 3px;}
-.result-card:hover{border-color:rgba(0,194,194,.3);transform:translateX(3px);box-shadow:-4px 0 20px rgba(0,194,194,.1);}
-.result-card.active{border-color:var(--border-active);background:rgba(0,194,194,.06);}
+.result-card:hover{border-color:rgba(29,91,212,.3);transform:translateX(3px);box-shadow:-4px 0 20px rgba(29,91,212,.1);}
+.result-card.active{border-color:var(--border-active);background:rgba(29,91,212,.06);}
 .card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;}
-.card-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;line-height:1.3;flex:1;padding-right:8px;}
-.card-amount{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-2);white-space:nowrap;}
+.card-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;line-height:1.3;flex:1;padding-right:8px;}
+.card-amount{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;color:var(--accent-2);white-space:nowrap;}
 .card-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
 .tag{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:500;letter-spacing:.3px;}
-.tag-region{background:rgba(0,194,194,.15);color:var(--accent);}
+.tag-region{background:rgba(29,91,212,.15);color:var(--accent);}
 .tag-grant{background:rgba(77,217,172,.15);color:var(--accent-2);}
 .tag-loan{background:rgba(240,180,41,.15);color:var(--accent-3);}
 .tag-technical{background:rgba(110,181,255,.15);color:var(--accent-5);}
 .tag-advisory{background:rgba(224,92,26,.18);color:var(--accent-4);}
-.tag-blended{background:rgba(0,194,194,.15);color:var(--accent);}
+.tag-blended{background:rgba(29,91,212,.15);color:var(--accent);}
 .card-description{font-size:11.5px;color:var(--muted);line-height:1.5;}
 .card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
 .card-org{font-size:11px;color:var(--muted);}
@@ -282,8 +297,8 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
 .map-chip{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-size:12px;color:var(--text);backdrop-filter:blur(10px);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap;}
 .map-chip:hover{border-color:var(--accent);}
 .map-view-toggle{background:var(--panel);border:1px solid var(--border);border-radius:10px;overflow:hidden;display:flex;}
-.view-btn{padding:8px 14px;border:none;background:transparent;color:var(--muted);font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s;border-right:1px solid var(--border);}
-.view-btn:last-child{border-right:none;}.view-btn.active{background:var(--accent);color:#002b50;font-weight:600;}
+.view-btn{padding:8px 14px;border:none;background:transparent;color:var(--muted);font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .2s;border-right:1px solid var(--border);}
+.view-btn:last-child{border-right:none;}.view-btn.active{background:var(--accent);color:#fff;font-weight:600;}
 
 
 /* DETAIL PANEL */
@@ -310,34 +325,39 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
 .detail-close:hover{border-color:var(--accent);color:var(--accent);}
 .detail-header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;}
 .ds-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:11.5px;font-weight:700;letter-spacing:.4px;white-space:nowrap;}
-.ds-validated{background:linear-gradient(135deg,rgba(74,222,128,.25),rgba(0,194,194,.18));color:#4ade80;border:1px solid rgba(74,222,128,.5);box-shadow:0 0 12px rgba(74,222,128,.2),inset 0 1px 0 rgba(255,255,255,.08);}
+.ds-validated{background:linear-gradient(135deg,rgba(74,222,128,.25),rgba(29,91,212,.18));color:#4ade80;border:1px solid rgba(74,222,128,.5);box-shadow:0 0 12px rgba(74,222,128,.2),inset 0 1px 0 rgba(255,255,255,.08);}
 .ds-validated .ds-icon{font-size:13px;filter:drop-shadow(0 0 4px rgba(74,222,128,.7));}
 .ds-under-validation{background:rgba(96,165,250,.13);color:#60a5fa;border:1px solid rgba(96,165,250,.3);}
 .ds-draft{background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.25);}
 .card-status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:3px;}
-.result-card.ds-card-validated{border-color:rgba(74,222,128,.4);background:linear-gradient(135deg,rgba(74,222,128,.09),rgba(0,194,194,.06));box-shadow:0 0 16px rgba(74,222,128,.08);}
+.result-card.ds-card-validated{border-color:rgba(74,222,128,.4);background:linear-gradient(135deg,rgba(74,222,128,.09),rgba(29,91,212,.06));box-shadow:0 0 16px rgba(74,222,128,.08);}
 .result-card.ds-card-validated::before{background:linear-gradient(to bottom,#4ade80,#00c2c2);}
 .result-card.ds-card-validated:hover{border-color:rgba(74,222,128,.6);box-shadow:-4px 0 24px rgba(74,222,128,.18);}
 .detail-body{padding:16px 20px 20px;overflow-y:auto;flex:1;}
 .detail-type-bar{display:flex;gap:6px;margin-bottom:16px;}
-.detail-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;line-height:1.25;margin-bottom:6px;}
+.detail-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;line-height:1.25;margin-bottom:6px;}
 .detail-org{font-size:13px;color:var(--muted);margin-bottom:16px;}
 .detail-highlight{background:var(--card);border-radius:10px;padding:14px;margin-bottom:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .highlight-item .h-label{font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:3px;}
-.highlight-item .h-value{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;}
+.highlight-item .h-value{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;}
 .detail-desc{font-size:13px;color:rgba(232,234,240,.8);line-height:1.65;margin-bottom:16px;}
-.detail-eligibility h4{font-family:'Syne',sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:10px;}
+.detail-eligibility h4{font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:10px;}
 .elig-item{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text);padding:6px 0;border-bottom:1px solid var(--border);}
 .elig-item:last-child{border-bottom:none;}
 .elig-check{color:var(--accent-2);}
-.detail-actions{display:flex;gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border);}
-.detail-actions .btn-primary{flex:1;text-align:center;}
+.detail-actions{display:flex;flex-direction:column;gap:8px;padding:16px 20px 18px;background:rgba(0,0,0,.18);border-top:2px solid var(--border);flex-shrink:0;}
+body.light .detail-actions{background:rgba(0,30,70,.05);}
+.detail-actions-row{display:flex;gap:8px;}
+.btn-suggest{width:100%;text-align:center;background:rgba(240,180,41,.12);border:1px solid rgba(240,180,41,.35);color:var(--accent-3);padding:9px 14px;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+.btn-suggest:hover{background:rgba(240,180,41,.22);border-color:var(--accent-3);}
+.btn-suggest:disabled{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08);color:var(--muted);cursor:not-allowed;opacity:.55;}
+.btn-suggest:disabled:hover{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08);}
 
 /* Leaflet */
 .custom-marker{display:flex;align-items:center;justify-content:center;transform:scale(var(--marker-scale,1));transition:transform .25s ease;}
 @keyframes markerPop{0%{transform:scale(0) translateY(8px);opacity:0;}70%{transform:scale(calc(var(--marker-scale,1)*1.2)) translateY(-2px);}100%{transform:scale(var(--marker-scale,1)) translateY(0);opacity:1;}}
 .custom-marker.spreading{animation:markerPop .45s cubic-bezier(0.34,1.56,0.64,1) both;}
-.cluster-marker{width:44px;height:44px;border-radius:50%;border:3px solid;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:17px;font-weight:800;cursor:pointer;transform:scale(var(--marker-scale,1));transition:transform .25s ease;box-shadow:0 4px 20px rgba(0,0,0,.4),0 0 0 5px rgba(255,255,255,.15);}
+.cluster-marker{width:44px;height:44px;border-radius:50%;border:3px solid;display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;cursor:pointer;transform:scale(var(--marker-scale,1));transition:transform .25s ease;box-shadow:0 4px 20px rgba(0,0,0,.4),0 0 0 5px rgba(255,255,255,.15);}
 .cluster-marker:hover{filter:brightness(1.12);}
 .cluster-tooltip{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:10px 13px;min-width:180px;box-shadow:0 8px 32px rgba(0,0,0,.4);pointer-events:none;}
 .cluster-tooltip-item{font-size:12px;color:var(--text);padding:3px 0;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--border);}
@@ -348,14 +368,14 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
 .cg-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;cursor:pointer;transition:all .18s;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden;min-height:90px;}
 .cg-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px;background:var(--cg-color,var(--accent));}
 .cg-card:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.35);border-color:var(--accent);}
-.cg-card.ds-validated{background:linear-gradient(145deg,rgba(74,222,128,.22) 0%,rgba(0,194,194,.15) 60%,rgba(74,222,128,.12) 100%);border:1.5px solid rgba(74,222,128,.6);box-shadow:0 0 24px rgba(74,222,128,.2),inset 0 1px 0 rgba(255,255,255,.08);}
+.cg-card.ds-validated{background:linear-gradient(145deg,rgba(74,222,128,.22) 0%,rgba(29,91,212,.15) 60%,rgba(74,222,128,.12) 100%);border:1.5px solid rgba(74,222,128,.6);box-shadow:0 0 24px rgba(74,222,128,.2),inset 0 1px 0 rgba(255,255,255,.08);}
 .cg-card.ds-validated::before{display:none;}
 .cg-card.ds-validated:hover{border-color:rgba(74,222,128,.9);box-shadow:0 8px 32px rgba(74,222,128,.3),0 0 0 1px rgba(74,222,128,.2);}
 .cg-validated-inner{width:100%;display:flex;flex-direction:column;align-items:center;text-align:center;gap:5px;}
 .cg-validated-stamp{display:inline-flex;align-items:center;justify-content:center;background:rgba(74,222,128,.18);border:1px solid rgba(74,222,128,.45);border-radius:50%;width:20px;height:20px;font-size:11px;color:#4ade80;}
 .cg-validated-stamp .vs-star{filter:drop-shadow(0 0 5px rgba(74,222,128,.9));}
 .cg-icon{font-size:22px;line-height:1;}
-.cg-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;line-height:1.4;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.cg-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;line-height:1.4;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .cg-org{font-size:11px;color:var(--muted);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .cg-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:2px;}
 .cg-tag{font-size:10px;padding:2px 7px;border-radius:20px;border:1px solid;font-weight:600;}
@@ -365,11 +385,11 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
 .leaflet-popup-content{margin:0!important;}
 .leaflet-popup-tip-container{display:none!important;}
 .popup-content{padding:14px;min-width:220px;}
-.popup-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:4px;color:var(--text);}
+.popup-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;margin-bottom:4px;color:var(--text);}
 .popup-count{font-size:12px;color:var(--muted);margin-bottom:10px;}
 .popup-types{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
-.popup-view-btn{width:100%;background:rgba(0,194,194,.1);border:1px solid rgba(0,194,194,.3);border-radius:8px;padding:7px;color:var(--accent);font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;transition:all .2s;font-weight:500;}
-.popup-view-btn:hover{background:var(--accent);color:#003;}
+.popup-view-btn{width:100%;background:rgba(29,91,212,.1);border:1px solid rgba(29,91,212,.3);border-radius:8px;padding:7px;color:var(--accent);font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;cursor:pointer;transition:all .2s;font-weight:500;}
+.popup-view-btn:hover{background:var(--accent);color:#fff;}
 .leaflet-control-zoom{border:1px solid var(--border)!important;border-radius:10px!important;overflow:hidden;box-shadow:none!important;}
 .leaflet-control-zoom a{background:var(--panel)!important;color:var(--text)!important;border-bottom:1px solid var(--border)!important;width:32px!important;height:32px!important;line-height:32px!important;font-size:16px!important;}
 .leaflet-control-zoom a:hover{background:var(--card)!important;color:var(--accent)!important;}
@@ -377,19 +397,19 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
 
 
 .fac-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .22s;animation:fadeSlideIn .35s ease both;}
-.fac-card:hover{border-color:rgba(0,194,194,.35);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,15,40,.5);}
+.fac-card:hover{border-color:rgba(29,91,212,.35);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,15,40,.5);}
 .fac-card-stripe{height:3px;background:var(--stripe-color,var(--accent));}
 .fac-card-body{padding:16px;}
 .fac-card-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:8px;}
 .fac-card-icon{font-size:26px;flex-shrink:0;margin-top:2px;}
-.fac-card-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;line-height:1.35;flex:1;}
+.fac-card-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;line-height:1.35;flex:1;}
 .fac-card-org{font-size:11.5px;color:var(--muted);margin-bottom:10px;}
 .fac-card-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
 .fac-card-desc{font-size:12px;color:rgba(232,234,240,.6);line-height:1.6;}
 .fac-card-footer{padding:10px 16px 14px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);}
 .fac-card-region{font-size:11px;color:var(--muted);}
 .fac-card-deadline{font-size:11px;color:var(--accent-3);background:rgba(240,180,41,.1);border:1px solid rgba(240,180,41,.25);padding:3px 8px;border-radius:6px;}
-.fac-card-amount{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--accent-2);margin-bottom:4px;}
+.fac-card-amount{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:800;color:var(--accent-2);margin-bottom:4px;}
 
 /* TABLE */
 .facilities-table-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border);}
@@ -399,46 +419,46 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
 .facilities-table tr{transition:background .15s;cursor:pointer;}
 .facilities-table tr:last-child td{border-bottom:none;}
 .facilities-table tr:hover td{background:rgba(255,255,255,.025);}
-.tbl-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;}
+.tbl-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;}
 .tbl-org{font-size:11px;color:var(--muted);margin-top:2px;}
-.tbl-amount{font-family:'Syne',sans-serif;font-weight:700;color:var(--accent-2);white-space:nowrap;}
+.tbl-amount{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;color:var(--accent-2);white-space:nowrap;}
 
 /* Instrument pill dot colors */
 
 
 /* Section header */
 .facilities-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:0; }
-.facilities-title { font-family:'Syne',sans-serif; font-size:20px; font-weight:800; }
+.facilities-title { font-family:'Plus Jakarta Sans',sans-serif; font-size:20px; font-weight:800; }
 .facilities-title span { color:var(--accent); }
 .facilities-subtitle { color:var(--muted); font-size:13px; margin-top:4px; }
-.facilities-count-chip { background:rgba(0,194,194,.1); border:1px solid rgba(0,194,194,.25); border-radius:20px; padding:6px 14px; font-family:'Syne',sans-serif; font-size:13px; font-weight:700; color:var(--accent); }
+.facilities-count-chip { background:rgba(29,91,212,.1); border:1px solid rgba(29,91,212,.25); border-radius:20px; padding:6px 14px; font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; font-weight:700; color:var(--accent); }
 
 /* FACILITIES SECTION */
 .facilities-section{background:var(--ink);padding:40px 40px 80px;border-top:2px solid var(--border);}
 .tab-bar{display:flex;border-bottom:1px solid var(--border);margin-bottom:28px;}
-.tab{padding:16px 22px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;margin-bottom:-1px;}
+.tab{padding:16px 22px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;margin-bottom:-1px;}
 .tab:hover{color:var(--text);}
 .tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:500;}
 .facilities-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;}
 .fac-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .22s;animation:fadeSlideIn .35s ease both;}
-.fac-card:hover{border-color:rgba(0,194,194,.35);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,15,40,.5);}
+.fac-card:hover{border-color:rgba(29,91,212,.35);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,15,40,.5);}
 .fac-card-stripe{height:3px;background:var(--stripe-color,var(--accent));}
 .fac-card-body{padding:16px;}
 .fac-card-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:8px;}
 .fac-card-icon{font-size:26px;flex-shrink:0;margin-top:2px;}
-.fac-card-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;line-height:1.35;flex:1;}
+.fac-card-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;line-height:1.35;flex:1;}
 .fac-card-org{font-size:11.5px;color:var(--muted);margin-bottom:10px;}
 .fac-card-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
 .fac-card-desc{font-size:12px;color:rgba(232,234,240,.6);line-height:1.6;}
 .fac-card-footer{padding:10px 16px 14px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);}
 .fac-card-region{font-size:11px;color:var(--muted);}
 .fac-card-deadline{font-size:11px;color:var(--accent-3);background:rgba(240,180,41,.1);border:1px solid rgba(240,180,41,.25);padding:3px 8px;border-radius:6px;}
-.fac-card-amount{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--accent-2);margin-bottom:4px;}
+.fac-card-amount{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:800;color:var(--accent-2);margin-bottom:4px;}
 .facilities-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:0;}
-.facilities-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;}
+.facilities-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;}
 .facilities-title span{color:var(--accent);}
 .facilities-subtitle{color:var(--muted);font-size:13px;margin-top:4px;}
-.facilities-count-chip{background:rgba(0,194,194,.1);border:1px solid rgba(0,194,194,.25);border-radius:20px;padding:6px 14px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent);}
+.facilities-count-chip{background:rgba(29,91,212,.1);border:1px solid rgba(29,91,212,.25);border-radius:20px;padding:6px 14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;color:var(--accent);}
 
 /* COLLAPSIBLE FILTERS */
 .filter-group { margin-bottom:4px; }
@@ -456,7 +476,7 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
 }
 .filter-toggle-meta {
   font-size:10px; color:var(--accent); font-weight:600;
-  background:rgba(0,194,194,.12); border:1px solid rgba(0,194,194,.2);
+  background:rgba(29,91,212,.12); border:1px solid rgba(29,91,212,.2);
   border-radius:10px; padding:1px 7px; display:none;
 }
 .filter-toggle-meta.show { display:inline-block; }
@@ -482,7 +502,7 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
 }
 .map-scroll-hint-badge {
   background:rgba(0,19,31,.82); backdrop-filter:blur(8px);
-  border:1px solid rgba(0,194,194,.4); border-radius:40px;
+  border:1px solid rgba(29,91,212,.4); border-radius:40px;
   padding:8px 18px; font-size:12px; font-weight:600;
   color:var(--text); display:flex; align-items:center; gap:8px;
   box-shadow:0 4px 20px rgba(0,0,0,.4);
@@ -494,16 +514,16 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
 /* SIDEBAR FILTER HEADING */
 .sidebar-filter-heading {
   display:flex; align-items:center; gap:8px;
-  font-family:'Syne',sans-serif; font-size:13px; font-weight:700;
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; font-weight:700;
   text-transform:uppercase; letter-spacing:1.2px; color:var(--accent);
 }
 .sidebar-filter-heading svg { color:var(--accent); flex-shrink:0; }
-.reset-btn{padding:5px 13px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .18s;white-space:nowrap;}
+.reset-btn{padding:5px 13px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .18s;white-space:nowrap;}
 .reset-btn:hover{border-color:var(--accent);color:var(--accent);}
 
 /* FIND SUPPORT label above search */
 .facilities-search-label {
-  font-family:'Syne',sans-serif; font-size:11px; font-weight:700;
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:11px; font-weight:700;
   text-transform:uppercase; letter-spacing:1px; color:var(--muted);
   margin-bottom:6px;
 }
@@ -665,10 +685,10 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
     </div>
     <div class="active-filters" id="active-filters" style="display:none"></div>
     <div id="results-list" style="display:none"></div>
-    <div style="padding:16px 20px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;background:rgba(0,194,194,.05);">
+    <div style="padding:16px 20px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;background:rgba(29,91,212,.05);">
       <div style="font-size:20px;animation:bounce 2s ease-in-out infinite;">↓</div>
       <div>
-        <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--text);">View Full Facilities List</div>
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:700;color:var(--text);">View Full Facilities List</div>
         <div style="font-size:11px;color:var(--muted);margin-top:2px;">Scroll down to browse, compare and filter all facilities</div>
       </div>
     </div>
@@ -689,7 +709,7 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
     </div>
 
     <div class="map-overlay-bl" style="display:flex;flex-direction:column;gap:8px;align-items:flex-start;">
-      <div id="map-legend" style="background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:10px 14px;backdrop-filter:blur(12px);box-shadow:0 4px 20px rgba(0,0,0,.4);font-size:11.5px;font-family:'DM Sans',sans-serif;min-width:150px;">
+      <div id="map-legend" style="background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:10px 14px;backdrop-filter:blur(12px);box-shadow:0 4px 20px rgba(0,0,0,.4);font-size:11.5px;font-family:'Plus Jakarta Sans',sans-serif;min-width:150px;">
         <div style="font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:8px;">HQ Location</div>
         <div style="display:flex;flex-direction:column;gap:5px;">
           <div style="display:flex;align-items:center;gap:7px;"><span style="width:12px;height:12px;border-radius:50%;background:#60a5fa;flex-shrink:0;display:inline-block;box-shadow:0 0 6px #60a5fa88;"></span><span>North America</span></div>
@@ -724,15 +744,381 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
         <div class="detail-highlight" id="detail-highlight"></div>
         <div class="detail-desc" id="detail-desc"></div>
         <div class="detail-eligibility"><h4>Eligibility Criteria</h4><div id="detail-elig"></div></div>
-        <div class="detail-actions">
-          <button class="btn-primary">Contact →</button>
-          <button class="btn-ghost">📌 Save</button>
-          <button class="btn-ghost">🔗 Share</button>
+      </div>
+      <div class="detail-actions">
+        <button class="btn-suggest" onclick="openSuggestModal()">✏ Suggest Changes</button>
+        <div class="detail-actions-row">
+          <button class="btn-primary" style="flex:1;">Contact PPF</button>
           <button class="btn-ghost" id="pdf-download-btn" onclick="downloadFundPDF()">⬇ PDF</button>
         </div>
       </div>
     </div><!-- close detail-panel -->
   </div><!-- close detail-overlay -->
+
+<!-- SUGGEST CHANGES MODAL -->
+<div class="modal-overlay" id="suggest-modal" onclick="if(event.target===this)closeSuggestModal()">
+  <div class="modal" style="width:660px;">
+    <div id="suggest-form-view">
+      <div class="modal-header">
+        <div>
+          <div class="modal-icon">✏️</div>
+          <div class="modal-title">Suggest <span>Changes</span></div>
+          <div class="modal-subtitle" id="suggest-modal-subtitle">Review the data below and edit any fields you believe are incorrect.</div>
+        </div>
+        <div class="modal-close" onclick="closeSuggestModal()">✕</div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-info-box">
+          <strong>📌 How this works:</strong> Fields highlighted in <span style="color:var(--accent);font-weight:600;">teal</span> show current data. Edit only what you believe is wrong. An admin will review before any change is made.
+        </div>
+
+        <!-- FACILITY IDENTITY -->
+        <div class="msec-title">Facility Identity</div>
+        <div class="form-row full">
+          <div class="form-field">
+            <label class="form-label">Facility Name</label>
+            <input class="form-input" id="sg-name" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Managing Organisation</label>
+            <input class="form-input" id="sg-org" />
+          </div>
+          <div class="form-field">
+            <label class="form-label">Year Established</label>
+            <input class="form-input" id="sg-year" type="number" min="1960" max="2030"/>
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="form-field">
+            <label class="form-label">Facility Description</label>
+            <textarea class="form-textarea" id="sg-desc" style="min-height:80px;"></textarea>
+          </div>
+        </div>
+
+        <!-- GEOGRAPHIC COVERAGE -->
+        <div class="msec-title">Geographic Coverage</div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Primary Region</label>
+            <select class="form-select" id="sg-region">
+              <option value="">— select —</option>
+              <option>Africa</option><option>Asia Pacific</option>
+              <option>Latin America</option><option>Europe</option>
+              <option>Middle East</option><option>Global</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Geographic Scope</label>
+            <select class="form-select" id="sg-scope">
+              <option value="">— select —</option>
+              <option>Global</option><option>One region</option>
+              <option>Multiple regions</option><option>One country</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">All EMDEs / LMICs</label>
+            <select class="form-select" id="sg-allEMDEs">
+              <option value="">— select —</option>
+              <option value="Yes">Yes</option><option value="No">No</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Regions Covered</label>
+            <input class="form-input" id="sg-regionsCovered" placeholder="e.g. Africa; South Asia" />
+          </div>
+        </div>
+
+        <!-- SUPPORT INSTRUMENTS -->
+        <div class="msec-title">Support Instruments</div>
+        <div class="sg-ynp-grid" id="sg-instruments-grid">
+          <div class="sg-ynp-item">
+            <div class="sg-ynp-label">In-kind Advisory</div>
+            <div class="sg-ynp-btns" data-field="sg-inkind">
+              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
+              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
+            </div>
+          </div>
+          <div class="sg-ynp-item">
+            <div class="sg-ynp-label">Pure Grant</div>
+            <div class="sg-ynp-btns" data-field="sg-pureGrant">
+              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
+              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
+            </div>
+          </div>
+          <div class="sg-ynp-item">
+            <div class="sg-ynp-label">Reimbursable Grant</div>
+            <div class="sg-ynp-btns" data-field="sg-reimbursable">
+              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
+              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
+            </div>
+          </div>
+          <div class="sg-ynp-item">
+            <div class="sg-ynp-label">Equity</div>
+            <div class="sg-ynp-btns" data-field="sg-equity">
+              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
+              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PREPARATION STAGES -->
+        <div class="msec-title">Preparation Stages</div>
+        <div style="font-size:10px;color:var(--muted);margin-bottom:8px;">Stage 2 — Identification</div>
+        <div class="sg-ynp-grid">
+          <div class="sg-ynp-item">
+            <div class="sg-ynp-label">ID &amp; Screening</div>
+            <div class="sg-ynp-btns" data-field="sg-s2">
+              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
+              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
+              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
+            </div>
+          </div>
+          <div class="sg-ynp-item">
+            <div class="sg-ynp-label">Pre-feasibility</div>
+            <div class="sg-ynp-btns" data-field="sg-s21">
+              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
+              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
+              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--muted);margin:10px 0 8px;">Stage 3 — Appraisal &amp; Design</div>
+        <div class="sg-ynp-grid">
+          <div class="sg-ynp-item">
+            <div class="sg-ynp-label">Appraisal &amp; Structuring</div>
+            <div class="sg-ynp-btns" data-field="sg-s3">
+              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
+              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
+              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
+            </div>
+          </div>
+          <div class="sg-ynp-item">
+            <div class="sg-ynp-label">Detailed Feasibility</div>
+            <div class="sg-ynp-btns" data-field="sg-s31">
+              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
+              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
+              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
+            </div>
+          </div>
+          <div class="sg-ynp-item">
+            <div class="sg-ynp-label">Full Design</div>
+            <div class="sg-ynp-btns" data-field="sg-s32">
+              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
+              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
+              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
+            </div>
+          </div>
+          <div class="sg-ynp-item">
+            <div class="sg-ynp-label">Early Stage Design</div>
+            <div class="sg-ynp-btns" data-field="sg-s321">
+              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
+              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
+              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
+            </div>
+          </div>
+          <div class="sg-ynp-item">
+            <div class="sg-ynp-label">Later Stage Design</div>
+            <div class="sg-ynp-btns" data-field="sg-s322">
+              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
+              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
+              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--muted);margin:10px 0 8px;">Stage 4 — Tendering &amp; Close</div>
+        <div class="sg-ynp-grid">
+          <div class="sg-ynp-item">
+            <div class="sg-ynp-label">Contract &amp; Tendering</div>
+            <div class="sg-ynp-btns" data-field="sg-s4">
+              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
+              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
+              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
+            </div>
+          </div>
+          <div class="sg-ynp-item">
+            <div class="sg-ynp-label">Bid Doc Drafting</div>
+            <div class="sg-ynp-btns" data-field="sg-s41">
+              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
+              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
+              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
+            </div>
+          </div>
+          <div class="sg-ynp-item">
+            <div class="sg-ynp-label">Tendering</div>
+            <div class="sg-ynp-btns" data-field="sg-s42">
+              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
+              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
+              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
+            </div>
+          </div>
+          <div class="sg-ynp-item">
+            <div class="sg-ynp-label">Market Sounding</div>
+            <div class="sg-ynp-btns" data-field="sg-s43">
+              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
+              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
+              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
+            </div>
+          </div>
+          <div class="sg-ynp-item">
+            <div class="sg-ynp-label">Commercial Close</div>
+            <div class="sg-ynp-btns" data-field="sg-s44">
+              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
+              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
+              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTORS -->
+        <div class="msec-title">Infrastructure Sectors</div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Sector Scope</label>
+            <select class="form-select" id="sg-secScope">
+              <option value="">— select —</option>
+              <option>All</option><option>Multiple</option><option>One</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Other Sectors / Notes</label>
+            <input class="form-input" id="sg-secOther" />
+          </div>
+        </div>
+        <div class="sg-ynp-grid" style="margin-top:8px;">
+          <div class="sg-ynp-item">
+            <div class="sg-ynp-label">Energy</div>
+            <div class="sg-ynp-btns" data-field="sg-secEnergy">
+              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
+              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
+              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
+            </div>
+          </div>
+          <div class="sg-ynp-item">
+            <div class="sg-ynp-label">Transport</div>
+            <div class="sg-ynp-btns" data-field="sg-secTransport">
+              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
+              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
+              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
+            </div>
+          </div>
+          <div class="sg-ynp-item">
+            <div class="sg-ynp-label">Digital</div>
+            <div class="sg-ynp-btns" data-field="sg-secDigital">
+              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
+              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
+              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
+            </div>
+          </div>
+          <div class="sg-ynp-item">
+            <div class="sg-ynp-label">Water</div>
+            <div class="sg-ynp-btns" data-field="sg-secWater">
+              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
+              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
+              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
+            </div>
+          </div>
+          <div class="sg-ynp-item">
+            <div class="sg-ynp-label">Waste</div>
+            <div class="sg-ynp-btns" data-field="sg-secWaste">
+              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
+              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
+              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
+            </div>
+          </div>
+          <div class="sg-ynp-item">
+            <div class="sg-ynp-label">Urban</div>
+            <div class="sg-ynp-btns" data-field="sg-secUrban">
+              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
+              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
+              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
+            </div>
+          </div>
+          <div class="sg-ynp-item">
+            <div class="sg-ynp-label">Social</div>
+            <div class="sg-ynp-btns" data-field="sg-secSocial">
+              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
+              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
+              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ELIGIBLE APPLICANTS -->
+        <div class="msec-title">Eligible Applicants</div>
+        <div class="sg-applicants-grid">
+          <label class="sg-check-item"><input type="checkbox" id="sg-elig-natgov"> National Governments</label>
+          <label class="sg-check-item"><input type="checkbox" id="sg-elig-mungov"> Municipal Governments</label>
+          <label class="sg-check-item"><input type="checkbox" id="sg-elig-soe"> SOE</label>
+          <label class="sg-check-item"><input type="checkbox" id="sg-elig-private"> Private Sector Sponsor</label>
+          <label class="sg-check-item"><input type="checkbox" id="sg-elig-mdb"> MDB</label>
+          <label class="sg-check-item"><input type="checkbox" id="sg-elig-other"> Other</label>
+        </div>
+
+        <!-- CLIMATE & THEMATIC -->
+        <div class="msec-title">Climate &amp; Thematic</div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Climate Mandate</label>
+            <select class="form-select" id="sg-climate">
+              <option value="">— select —</option>
+              <option>Only</option><option>Mostly</option><option>Included</option>
+              <option>Not specified</option><option>No</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="form-label">PCM Mandate</label>
+            <input class="form-input" id="sg-pcm" />
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="form-field">
+            <label class="form-label">Thematic / Vertical Focus</label>
+            <input class="form-input" id="sg-thematic" />
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="form-field">
+            <label class="form-label">Other Non-infrastructure Sectors</label>
+            <input class="form-input" id="sg-otherNonInfra" />
+          </div>
+        </div>
+
+        <!-- YOUR DETAILS -->
+        <div class="msec-title">Your Details <span style="font-size:10px;font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0;"> — required so we can follow up</span></div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Your Name <span class="req">*</span></label>
+            <input class="form-input" id="sg-contact-name" placeholder="Full name" />
+          </div>
+          <div class="form-field">
+            <label class="form-label">Your Email <span class="req">*</span></label>
+            <input class="form-input" id="sg-contact-email" type="email" placeholder="email@example.com" />
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="form-field">
+            <label class="form-label">Reason / Source for Change</label>
+            <textarea class="form-textarea" id="sg-reason" placeholder="e.g. Official website updated, the fund closed in 2024…"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-ghost" onclick="closeSuggestModal()">Cancel</button>
+        <button class="btn-primary" onclick="submitSuggestion()">Submit Suggestion →</button>
+      </div>
+    </div>
+    <div class="modal-success" id="suggest-success">
+      <div class="success-icon">📬</div>
+      <div class="success-title">Suggestion Received!</div>
+      <div class="success-sub">Thank you. Our team will review your suggested changes and update the record if confirmed. You may receive a follow-up email.</div>
+      <button class="btn-primary" style="margin-top:20px;" onclick="closeSuggestModal()">Close</button>
+    </div>
+  </div>
+</div>
 
 <!-- SVG MAP REMOVED -->
 <div class="worldmap-section" style="display:none">
@@ -915,20 +1301,20 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
   <div id="cluster-modal-box" style="background:var(--panel);border:1px solid var(--border);border-radius:20px;width:min(96vw,1060px);max-height:88vh;display:flex;flex-direction:column;box-shadow:0 32px 100px rgba(0,0,0,.7);overflow:hidden;">
 
     <!-- Header -->
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:22px 28px 18px;border-bottom:1px solid var(--border);flex-shrink:0;background:linear-gradient(135deg,rgba(0,194,194,.06) 0%,transparent 60%);">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:22px 28px 18px;border-bottom:1px solid var(--border);flex-shrink:0;background:linear-gradient(135deg,rgba(29,91,212,.06) 0%,transparent 60%);">
       <div style="display:flex;align-items:center;gap:16px;">
         <!-- Pin icon -->
-        <div style="width:44px;height:44px;border-radius:12px;background:rgba(0,194,194,.12);border:1px solid rgba(0,194,194,.25);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">📍</div>
+        <div style="width:44px;height:44px;border-radius:12px;background:rgba(29,91,212,.12);border:1px solid rgba(29,91,212,.25);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">📍</div>
         <div>
           <div style="display:flex;align-items:center;gap:10px;">
-            <div id="cluster-modal-title" style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;letter-spacing:-.3px;"></div>
-            <div id="cluster-modal-count-badge" style="background:rgba(0,194,194,.15);border:1px solid rgba(0,194,194,.3);border-radius:20px;padding:2px 10px;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.3px;"></div>
+            <div id="cluster-modal-title" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;letter-spacing:-.3px;"></div>
+            <div id="cluster-modal-count-badge" style="background:rgba(29,91,212,.15);border:1px solid rgba(29,91,212,.3);border-radius:20px;padding:2px 10px;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.3px;"></div>
           </div>
           <div id="cluster-modal-sub" style="font-size:12px;color:var(--muted);margin-top:4px;"></div>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:10px;">
-        <input id="cluster-search" type="text" placeholder="Search facilities…" oninput="filterClusterGrid()" style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-size:13px;color:var(--text);font-family:'DM Sans',sans-serif;width:200px;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+        <input id="cluster-search" type="text" placeholder="Search facilities…" oninput="filterClusterGrid()" style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-size:13px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;width:200px;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
         <button onclick="closeClusterModal()" style="background:var(--card);border:1px solid var(--border);border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:18px;flex-shrink:0;transition:all .2s;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">×</button>
       </div>
     </div>
@@ -1628,14 +2014,54 @@ function openSubmitModal(){
   if(body) body.scrollTop=0;
 }
 function closeSubmitModal(){ document.getElementById('submit-modal').classList.remove('open'); }
-function submitFund(){
-  const name=document.getElementById('f-name').value.trim();
-  const org=document.getElementById('f-org').value.trim();
-  const contact=document.getElementById('f-contact').value.trim();
-  const email=document.getElementById('f-email').value.trim();
+async function submitFund(){
+  const name    = document.getElementById('f-name').value.trim();
+  const org     = document.getElementById('f-org').value.trim();
+  const contact = document.getElementById('f-contact').value.trim();
+  const email   = document.getElementById('f-email').value.trim();
   if(!name||!org||!contact||!email){ alert('Please fill in all required fields marked with *.'); return; }
-  document.getElementById('modal-form-view').style.display='none';
-  document.getElementById('modal-success-view').classList.add('show');
+
+  const submitBtn = document.querySelector('#submit-modal .btn-primary[onclick="submitFund()"]');
+  if(submitBtn){ submitBtn.textContent = 'Submitting…'; submitBtn.disabled = true; }
+
+  const payload = {
+    facility_name:    name,
+    organisation:     org,
+    year:             document.getElementById('f-year').value,
+    website:          document.getElementById('f-url').value,
+    sector:           document.getElementById('f-sector').value,
+    fund_size:        document.getElementById('f-currency').value + ' ' + document.getElementById('f-fundsize').value,
+    geo_scope:        document.getElementById('f-geoscope').value,
+    all_emdes:        document.getElementById('f-emdes').value,
+    regions:          document.getElementById('f-regions').value,
+    climate_mandate:  document.getElementById('f-climate').value,
+    pcm_mandate:      document.getElementById('f-pcm').value,
+    thematic:         document.getElementById('f-thematic').value,
+    description:      document.getElementById('f-desc').value,
+    eligibility:      document.getElementById('f-elig').value,
+    contact_name:     contact,
+    contact_email:    email,
+    supporting_links: document.getElementById('f-notes').value,
+  };
+
+  try {
+    const res = await fetch('https://formspree.io/f/mzdywrkk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if(res.ok){
+      document.getElementById('modal-form-view').style.display='none';
+      document.getElementById('modal-success-view').classList.add('show');
+    } else {
+      const data = await res.json().catch(()=>({}));
+      alert('Submission failed: ' + (data.error || res.status + ' ' + res.statusText));
+    }
+  } catch(err){
+    alert('Network error: ' + err.message);
+  } finally {
+    if(submitBtn){ submitBtn.textContent = '📤 Submit PPF'; submitBtn.disabled = false; }
+  }
 }
 document.getElementById('submit-modal').addEventListener('click',function(e){ if(e.target===this) closeSubmitModal(); });
 
@@ -1648,7 +2074,7 @@ function openCaseStudyModal(){
   if(body) body.scrollTop=0;
 }
 function closeCaseStudyModal(){ document.getElementById('case-study-modal').classList.remove('open'); }
-function submitCaseStudy(){
+async function submitCaseStudy(){
   const projectName = document.getElementById('cs-project-name').value.trim();
   const country     = document.getElementById('cs-country').value.trim();
   const sector      = document.getElementById('cs-sector').value;
@@ -1664,8 +2090,57 @@ function submitCaseStudy(){
     alert('Please fill in all required fields marked with *.');
     return;
   }
-  document.getElementById('cs-form-view').style.display='none';
-  document.getElementById('cs-success-view').classList.add('show');
+
+  const submitBtn = document.querySelector('#case-study-modal .btn-primary[onclick="submitCaseStudy()"]');
+  if(submitBtn){ submitBtn.textContent = 'Submitting…'; submitBtn.disabled = true; }
+
+  const eligChecks = ['cs-ea-national','cs-ea-municipal','cs-ea-soe','cs-ea-private','cs-ea-mdb','cs-ea-other'];
+  const eligLabels = ['National Govt','Municipal Govt','SOE','Private Sector','MDB','Other'];
+  const selectedElig = eligChecks.map((id,i) => document.getElementById(id)?.checked ? eligLabels[i] : null).filter(Boolean).join('; ');
+
+  const payload = {
+    project_name:     projectName,
+    country:          country,
+    sector:           sector,
+    facility:         facility,
+    stage:            stage,
+    challenge:        challenge,
+    how_helped:       howHelped,
+    outcomes:         outcomes,
+    contact_name:     contact,
+    organisation:     org,
+    contact_email:    email,
+    year:             document.getElementById('cs-year').value,
+    support_type:     document.getElementById('cs-support-type').value,
+    role:             document.getElementById('cs-role').value,
+    project_value:    document.getElementById('cs-currency').value + ' ' + document.getElementById('cs-project-value').value,
+    capital_raised:   document.getElementById('cs-cap-currency').value + ' ' + document.getElementById('cs-capital').value,
+    financial_close:  document.getElementById('cs-financial-close').value,
+    climate_impact:   document.getElementById('cs-climate-impact').value,
+    beneficiaries:    document.getElementById('cs-beneficiaries').value,
+    lessons:          document.getElementById('cs-lessons').value,
+    eligible_applicants: selectedElig,
+    supporting_docs:  document.getElementById('cs-docs').value,
+  };
+
+  try {
+    const res = await fetch('https://formspree.io/f/mnjlrzob', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if(res.ok){
+      document.getElementById('cs-form-view').style.display='none';
+      document.getElementById('cs-success-view').classList.add('show');
+    } else {
+      const data = await res.json().catch(()=>({}));
+      alert('Submission failed: ' + (data.error || res.status + ' ' + res.statusText));
+    }
+  } catch(err){
+    alert('Network error: ' + err.message);
+  } finally {
+    if(submitBtn){ submitBtn.textContent = '📤 Submit Case Study'; submitBtn.disabled = false; }
+  }
 }
 document.getElementById('case-study-modal').addEventListener('click',function(e){ if(e.target===this) closeCaseStudyModal(); });
 
@@ -1997,7 +2472,7 @@ function renderGrid(filtered){
     const regionsText = f.regionsCovered || f.region;
     const ds = getDataStatus(f);
     const dsBadge = ds === 'Data Validated'
-      ? '<span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px 3px 6px;border-radius:4px;font-size:10px;font-weight:700;background:linear-gradient(135deg,rgba(74,222,128,.25),rgba(0,194,194,.18));color:#4ade80;white-space:nowrap;letter-spacing:.3px;"><span style="display:inline-block;width:14px;height:14px;border-radius:2px;background:#4ade80;color:#0a1628;font-size:9px;font-weight:900;line-height:14px;text-align:center;">✦</span> Validated</span>'
+      ? '<span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px 3px 6px;border-radius:4px;font-size:10px;font-weight:700;background:linear-gradient(135deg,rgba(74,222,128,.25),rgba(29,91,212,.18));color:#4ade80;white-space:nowrap;letter-spacing:.3px;"><span style="display:inline-block;width:14px;height:14px;border-radius:2px;background:#4ade80;color:#0a1628;font-size:9px;font-weight:900;line-height:14px;text-align:center;">✦</span> Validated</span>'
       : ds === 'Data Under Validation'
       ? '<span style="display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:4px;font-size:10px;font-weight:600;border:1.5px dashed rgba(96,165,250,.5);color:#60a5fa;white-space:nowrap;letter-spacing:.2px;background:transparent;">⏳ Under Validation</span>'
       : '<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:#f87171;white-space:nowrap;border-left:2px solid #f87171;padding-left:6px;letter-spacing:.2px;">Draft</span>';
@@ -2187,6 +2662,12 @@ function openDetail(f){
   document.getElementById('detail-org').textContent=f.org+' · '+f.country;
   document.getElementById('detail-types').innerHTML=f.support.map(s=>`<span class="tag tag-${s.toLowerCase()}">${s}</span>`).join('');
   document.getElementById('detail-data-status').innerHTML=dataStatusBadge(f);
+  const isValidated = getDataStatus(f) === 'Data Validated';
+  const suggestBtn = document.querySelector('.btn-suggest');
+  if(suggestBtn){
+    suggestBtn.disabled = isValidated;
+    suggestBtn.title = isValidated ? 'This facility has been validated — no changes can be suggested' : '';
+  }
 
   // Build instrument badges
   const instruments = [
@@ -2197,8 +2678,8 @@ function openDetail(f){
   ];
   const instrHtml = instruments.map(i=>`
     <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:3px 9px;border-radius:20px;margin:2px;
-      background:${i.val==='Y'?'rgba(0,194,194,.15)':'rgba(255,255,255,.05)'};
-      border:1px solid ${i.val==='Y'?'rgba(0,194,194,.35)':'rgba(255,255,255,.1)'};
+      background:${i.val==='Y'?'rgba(29,91,212,.15)':'rgba(255,255,255,.05)'};
+      border:1px solid ${i.val==='Y'?'rgba(29,91,212,.35)':'rgba(255,255,255,.1)'};
       color:${i.val==='Y'?'var(--accent)':'var(--muted)'}">
       ${i.val==='Y'?'✓':'✗'} ${i.label}
     </span>`).join('');
@@ -2234,8 +2715,8 @@ function openDetail(f){
     const v = (val||'').toUpperCase();
     const isY = v === 'Y' || v === 'YES';
     const isP = v === 'PARTIAL';
-    const bg  = isY ? 'rgba(0,194,194,.15)' : isP ? 'rgba(240,180,41,.12)' : 'rgba(255,255,255,.04)';
-    const bc  = isY ? 'rgba(0,194,194,.4)'  : isP ? 'rgba(240,180,41,.4)'  : 'rgba(255,255,255,.08)';
+    const bg  = isY ? 'rgba(29,91,212,.15)' : isP ? 'rgba(240,180,41,.12)' : 'rgba(255,255,255,.04)';
+    const bc  = isY ? 'rgba(29,91,212,.4)'  : isP ? 'rgba(240,180,41,.4)'  : 'rgba(255,255,255,.08)';
     const col = isY ? '#00c2c2'             : isP ? '#f0b429'              : '#445566';
     const ic  = isY ? '✓' : isP ? '~' : '—';
     return `<div style="background:${bg};border:1px solid ${bc};border-radius:7px;padding:6px 4px;text-align:center;font-size:10px;color:${col};font-weight:700;line-height:1.3;display:flex;flex-direction:column;align-items:center;gap:2px;">
@@ -2877,6 +3358,178 @@ function updateFilterMeta(key, value) {
     meta.classList.add('show');
   }
 }
+// ── SUGGEST CHANGES ───────────────────────────────────────
+function openSuggestModal(){
+  const f = _currentDetailFund;
+  if(!f) return;
+  document.getElementById('suggest-modal-subtitle').textContent =
+    `Reviewing: ${f.name} — edit any field you believe is incorrect, then submit.`;
+
+  const fill = (id, val) => {
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.value = val || '';
+    el.classList.toggle('sg-prefilled', !!(val));
+    el.addEventListener('input', () => el.classList.remove('sg-prefilled'), {once:true});
+    el.addEventListener('change', () => el.classList.remove('sg-prefilled'), {once:true});
+  };
+
+  // Text / select fields
+  fill('sg-name',          f.name);
+  fill('sg-org',           f.org);
+  fill('sg-year',          f.year);
+  fill('sg-desc',          f.desc);
+  fill('sg-region',        f.region);
+  fill('sg-scope',         f.geoScope);
+  fill('sg-allEMDEs',      f.allEMDEs);
+  fill('sg-regionsCovered',f.regionsCovered);
+  fill('sg-climate',       f.climateMandate);
+  fill('sg-pcm',           f.pcm);
+  fill('sg-thematic',      f.thematic);
+  fill('sg-otherNonInfra', f.otherNonInfra);
+  fill('sg-secScope',      f.secScope);
+  fill('sg-secOther',      f.secOther);
+
+  // Y/N/Partial toggle buttons
+  const ynpMap = {
+    'sg-inkind':      f.inkind,
+    'sg-pureGrant':   f.pureGrant,
+    'sg-reimbursable':f.reimbursable,
+    'sg-equity':      f.equity,
+    'sg-s2':  f.s2,  'sg-s21': f.s21,
+    'sg-s3':  f.s3,  'sg-s31': f.s31, 'sg-s32': f.s32, 'sg-s321': f.s321, 'sg-s322': f.s322,
+    'sg-s4':  f.s4,  'sg-s41': f.s41, 'sg-s42': f.s42, 'sg-s43':  f.s43,  'sg-s44':  f.s44,
+    'sg-secEnergy':   f.secEnergy,   'sg-secTransport': f.secTransport,
+    'sg-secDigital':  f.secDigital,  'sg-secWater':     f.secWater,
+    'sg-secWaste':    f.secWaste,    'sg-secUrban':     f.secUrban,
+    'sg-secSocial':   f.secSocial,
+  };
+  document.querySelectorAll('.sg-ynp-btn').forEach(btn => btn.classList.remove('sg-active-Y','sg-active-Partial','sg-active-N'));
+  Object.entries(ynpMap).forEach(([field, val]) => {
+    if(!val) return;
+    const v = val.toString().toUpperCase() === 'Y' ? 'Y' : val === 'Partial' ? 'Partial' : val.toUpperCase() === 'N' ? 'N' : null;
+    if(!v) return;
+    const grp = document.querySelector(`.sg-ynp-btns[data-field="${field}"]`);
+    if(grp){
+      const btn = grp.querySelector(`[data-val="${v}"]`) || grp.querySelector(`[data-val="${val}"]`);
+      if(btn) btn.classList.add(`sg-active-${v}`);
+    }
+  });
+
+  // Eligible applicant checkboxes
+  const eligMap = {
+    'sg-elig-natgov':  'National Governments',
+    'sg-elig-mungov':  'Municipal Governments',
+    'sg-elig-soe':     'SOE',
+    'sg-elig-private': 'Private Sector Sponsor',
+    'sg-elig-mdb':     'MDB',
+    'sg-elig-other':   'Other',
+  };
+  const eligList = (f.eligibility || []).join(' ').toLowerCase();
+  Object.entries(eligMap).forEach(([id, label]) => {
+    const el = document.getElementById(id);
+    if(el) el.checked = eligList.includes(label.toLowerCase());
+  });
+
+  document.getElementById('sg-contact-name').value  = '';
+  document.getElementById('sg-contact-email').value = '';
+  document.getElementById('sg-reason').value        = '';
+  document.getElementById('suggest-success').classList.remove('show');
+  document.getElementById('suggest-modal').classList.add('open');
+}
+function closeSuggestModal(){
+  document.getElementById('suggest-modal').classList.remove('open');
+}
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.sg-ynp-btn');
+  if(!btn) return;
+  const grp = btn.closest('.sg-ynp-btns');
+  grp.querySelectorAll('.sg-ynp-btn').forEach(b => b.className = 'sg-ynp-btn');
+  btn.classList.add(`sg-active-${btn.dataset.val}`);
+});
+async function submitSuggestion(){
+  const name  = document.getElementById('sg-contact-name').value.trim();
+  const email = document.getElementById('sg-contact-email').value.trim();
+  if(!name || !email){ alert('Please enter your name and email so we can follow up.'); return; }
+
+  const f = _currentDetailFund;
+
+  const ynpVal = (field) => {
+    const active = document.querySelector(`.sg-ynp-btns[data-field="${field}"] .sg-ynp-btn.sg-active-Y, .sg-ynp-btns[data-field="${field}"] .sg-ynp-btn.sg-active-Partial, .sg-ynp-btns[data-field="${field}"] .sg-ynp-btn.sg-active-N`);
+    return active ? active.dataset.val : '';
+  };
+
+  const eligLabels = {
+    'sg-elig-natgov':'National Governments','sg-elig-mungov':'Municipal Governments',
+    'sg-elig-soe':'SOE','sg-elig-private':'Private Sector Sponsor',
+    'sg-elig-mdb':'MDB','sg-elig-other':'Other',
+  };
+  const selectedElig = Object.entries(eligLabels).filter(([id])=>document.getElementById(id)?.checked).map(([,l])=>l).join('; ');
+
+  const payload = {
+    facility_id:   f.id,
+    facility_name: f.name,
+    // Identity
+    name:          document.getElementById('sg-name').value,
+    org:           document.getElementById('sg-org').value,
+    year:          document.getElementById('sg-year').value,
+    description:   document.getElementById('sg-desc').value,
+    // Geography
+    region:        document.getElementById('sg-region').value,
+    geo_scope:     document.getElementById('sg-scope').value,
+    all_EMDEs:     document.getElementById('sg-allEMDEs').value,
+    regions_covered: document.getElementById('sg-regionsCovered').value,
+    // Support instruments
+    inkind:        ynpVal('sg-inkind'),
+    pure_grant:    ynpVal('sg-pureGrant'),
+    reimbursable:  ynpVal('sg-reimbursable'),
+    equity:        ynpVal('sg-equity'),
+    // Preparation stages
+    s2:  ynpVal('sg-s2'),  s21: ynpVal('sg-s21'),
+    s3:  ynpVal('sg-s3'),  s31: ynpVal('sg-s31'),  s32: ynpVal('sg-s32'),
+    s321:ynpVal('sg-s321'),s322:ynpVal('sg-s322'),
+    s4:  ynpVal('sg-s4'),  s41: ynpVal('sg-s41'),  s42: ynpVal('sg-s42'),
+    s43: ynpVal('sg-s43'), s44: ynpVal('sg-s44'),
+    // Sectors
+    sec_scope:     document.getElementById('sg-secScope').value,
+    sec_energy:    ynpVal('sg-secEnergy'),
+    sec_transport: ynpVal('sg-secTransport'),
+    sec_digital:   ynpVal('sg-secDigital'),
+    sec_water:     ynpVal('sg-secWater'),
+    sec_waste:     ynpVal('sg-secWaste'),
+    sec_urban:     ynpVal('sg-secUrban'),
+    sec_social:    ynpVal('sg-secSocial'),
+    sec_other:     document.getElementById('sg-secOther').value,
+    // Eligible applicants
+    eligible_applicants: selectedElig,
+    // Climate & thematic
+    climate_mandate:    document.getElementById('sg-climate').value,
+    pcm_mandate:        document.getElementById('sg-pcm').value,
+    thematic:           document.getElementById('sg-thematic').value,
+    other_non_infra:    document.getElementById('sg-otherNonInfra').value,
+    // Contact
+    reason:        document.getElementById('sg-reason').value,
+    contact_name:  name,
+    contact_email: email,
+  };
+
+  try {
+    const res = await fetch('https://formspree.io/f/xqewjqql', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if(res.ok){
+      document.getElementById('suggest-form-view').style.display = 'none';
+      document.getElementById('suggest-success').classList.add('show');
+    } else {
+      alert('Something went wrong. Please try again later.');
+    }
+  } catch(err){
+    alert('Network error. Please check your connection and try again.');
+  }
+}
+
 // Close detail on Escape
 document.addEventListener('keydown', e => { if(e.key==='Escape') closeDetail(); });
 
