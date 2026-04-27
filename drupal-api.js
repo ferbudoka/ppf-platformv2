@@ -78,10 +78,10 @@ const DrupalAPI = (() => {
       allEMDEs:       a(f.allEMDEs)       ?? 'N',
       geoScope:       a(f.geoScope)       ?? '',
       // Stage flags
-      s2: a(f.s2), s21: a(f.s21),
-      s3: a(f.s3), s31: a(f.s31), s32: a(f.s32),
-      s321: a(f.s321), s322: a(f.s322),
-      s4: a(f.s4), s41: a(f.s41), s42: a(f.s42), s43: a(f.s43), s44: a(f.s44),
+      s1: a(f.s1), s11: a(f.s11),
+      s2: a(f.s2), s21: a(f.s21), s22: a(f.s22),
+      s221: a(f.s221), s222: a(f.s222),
+      s3: a(f.s3), s31: a(f.s31), s32: a(f.s32), s33: a(f.s33), s34: a(f.s34),
       // Sector flags
       secScope: a(f.secScope),
       secEnergy: a(f.secEnergy), secTransport: a(f.secTransport),

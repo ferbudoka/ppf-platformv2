@@ -215,13 +215,13 @@ body.light .logo img{background:none;padding:0;border-radius:0;}
 .pill.active{background:var(--pc,var(--accent));border-color:var(--pc,var(--accent));color:#0D1829;font-weight:600;}
 
 /* ── Stage pills — violet family (higher contrast) ── */
-[data-filter="stage"][data-value="all"]                        {--pc:#e0d4ff;--pb:rgba(224,212,255,.18);}
-[data-filter="stage"][data-value="Identification & Screening"] {--pc:#c4b5fd;--pb:rgba(196,181,253,.20);}
-[data-filter="stage"][data-value="Pre-Feasibility"]            {--pc:#a78bfa;--pb:rgba(167,139,250,.20);}
-[data-filter="stage"][data-value="Detailed Feasibility Study"] {--pc:#9d77f8;--pb:rgba(157,119,248,.20);}
-[data-filter="stage"][data-value="Appraisal & Structuring"]    {--pc:#8b5cf6;--pb:rgba(139,92,246,.20);}
-[data-filter="stage"][data-value="Bid Document Drafting"]      {--pc:#7c45e8;--pb:rgba(124,69,232,.20);}
-[data-filter="stage"][data-value="Tender Process"]             {--pc:#6d28d9;--pb:rgba(109,40,217,.20);}
+[data-filter="stage"][data-value="all"]              {--pc:#e0d4ff;--pb:rgba(224,212,255,.18);}
+[data-filter="stage"][data-value="Identification"]   {--pc:#c4b5fd;--pb:rgba(196,181,253,.20);}
+[data-filter="stage"][data-value="Pre-Feasibility"]  {--pc:#a78bfa;--pb:rgba(167,139,250,.20);}
+[data-filter="stage"][data-value="Design"]           {--pc:#9d77f8;--pb:rgba(157,119,248,.20);}
+[data-filter="stage"][data-value="Appraisal"]        {--pc:#8b5cf6;--pb:rgba(139,92,246,.20);}
+[data-filter="stage"][data-value="Tendering"]        {--pc:#7c45e8;--pb:rgba(124,69,232,.20);}
+[data-filter="stage"][data-value="Market Sounding"]  {--pc:#6d28d9;--pb:rgba(109,40,217,.20);}
 
 /* ── Eligible Applicant pills — rose/pink family ── */
 [data-filter="applicant"][data-value="all"]                    {--pc:#fda4af;--pb:rgba(253,164,175,.18);}
@@ -580,12 +580,12 @@ body.light .detail-actions{background:rgba(0,30,70,.05);}
         <div class="filter-body">
           <div class="pill-group">
             <button class="pill active" data-filter="stage" data-value="all">All Stages</button>
-            <button class="pill" data-filter="stage" data-value="Identification & Screening">Identification & Screening</button>
+            <button class="pill" data-filter="stage" data-value="Identification">Identification</button>
             <button class="pill" data-filter="stage" data-value="Pre-Feasibility">Pre-Feasibility</button>
-            <button class="pill" data-filter="stage" data-value="Detailed Feasibility Study">Detailed Feasibility Study</button>
-            <button class="pill" data-filter="stage" data-value="Appraisal & Structuring">Appraisal & Structuring</button>
-            <button class="pill" data-filter="stage" data-value="Bid Document Drafting">Bid Document Drafting</button>
-            <button class="pill" data-filter="stage" data-value="Tender Process">Tender Process</button>
+            <button class="pill" data-filter="stage" data-value="Design">Design</button>
+            <button class="pill" data-filter="stage" data-value="Appraisal">Appraisal</button>
+            <button class="pill" data-filter="stage" data-value="Tendering">Tendering</button>
+            <button class="pill" data-filter="stage" data-value="Market Sounding">Market Sounding</button>
           </div>
         </div>
       </div>
@@ -748,7 +748,7 @@ body.light .detail-actions{background:rgba(0,30,70,.05);}
       <div class="detail-actions">
         <button class="btn-suggest" onclick="openSuggestModal()">✏ Suggest Changes</button>
         <div class="detail-actions-row">
-          <button class="btn-primary" style="flex:1;">Contact PPF</button>
+          <button class="btn-primary" style="flex:1;" onclick="if(_currentDetailFund&&_currentDetailFund.contact){const c=_currentDetailFund.contact;window.open(c.startsWith('http')?c:'mailto:'+c,'_blank');}">Contact PPF</button>
           <button class="btn-ghost" id="pdf-download-btn" onclick="downloadFundPDF()">⬇ PDF</button>
         </div>
       </div>
@@ -867,10 +867,17 @@ body.light .detail-actions{background:rgba(0,30,70,.05);}
 
         <!-- PREPARATION STAGES -->
         <div class="msec-title">Preparation Stages</div>
-        <div style="font-size:10px;color:var(--muted);margin-bottom:8px;">Stage 2 — Identification</div>
         <div class="sg-ynp-grid">
           <div class="sg-ynp-item">
-            <div class="sg-ynp-label">ID &amp; Screening</div>
+            <div class="sg-ynp-label">Identification</div>
+            <div class="sg-ynp-btns" data-field="sg-s1">
+              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
+              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
+              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
+            </div>
+          </div>
+          <div class="sg-ynp-item">
+            <div class="sg-ynp-label">Pre-Feasibility</div>
             <div class="sg-ynp-btns" data-field="sg-s2">
               <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
               <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
@@ -878,18 +885,7 @@ body.light .detail-actions{background:rgba(0,30,70,.05);}
             </div>
           </div>
           <div class="sg-ynp-item">
-            <div class="sg-ynp-label">Pre-feasibility</div>
-            <div class="sg-ynp-btns" data-field="sg-s21">
-              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
-              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
-              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
-            </div>
-          </div>
-        </div>
-        <div style="font-size:10px;color:var(--muted);margin:10px 0 8px;">Stage 3 — Appraisal &amp; Design</div>
-        <div class="sg-ynp-grid">
-          <div class="sg-ynp-item">
-            <div class="sg-ynp-label">Appraisal &amp; Structuring</div>
+            <div class="sg-ynp-label">Design</div>
             <div class="sg-ynp-btns" data-field="sg-s3">
               <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
               <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
@@ -897,42 +893,7 @@ body.light .detail-actions{background:rgba(0,30,70,.05);}
             </div>
           </div>
           <div class="sg-ynp-item">
-            <div class="sg-ynp-label">Detailed Feasibility</div>
-            <div class="sg-ynp-btns" data-field="sg-s31">
-              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
-              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
-              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
-            </div>
-          </div>
-          <div class="sg-ynp-item">
-            <div class="sg-ynp-label">Full Design</div>
-            <div class="sg-ynp-btns" data-field="sg-s32">
-              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
-              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
-              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
-            </div>
-          </div>
-          <div class="sg-ynp-item">
-            <div class="sg-ynp-label">Early Stage Design</div>
-            <div class="sg-ynp-btns" data-field="sg-s321">
-              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
-              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
-              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
-            </div>
-          </div>
-          <div class="sg-ynp-item">
-            <div class="sg-ynp-label">Later Stage Design</div>
-            <div class="sg-ynp-btns" data-field="sg-s322">
-              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
-              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
-              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
-            </div>
-          </div>
-        </div>
-        <div style="font-size:10px;color:var(--muted);margin:10px 0 8px;">Stage 4 — Tendering &amp; Close</div>
-        <div class="sg-ynp-grid">
-          <div class="sg-ynp-item">
-            <div class="sg-ynp-label">Contract &amp; Tendering</div>
+            <div class="sg-ynp-label">Appraisal</div>
             <div class="sg-ynp-btns" data-field="sg-s4">
               <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
               <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
@@ -940,16 +901,8 @@ body.light .detail-actions{background:rgba(0,30,70,.05);}
             </div>
           </div>
           <div class="sg-ynp-item">
-            <div class="sg-ynp-label">Bid Doc Drafting</div>
-            <div class="sg-ynp-btns" data-field="sg-s41">
-              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
-              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
-              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
-            </div>
-          </div>
-          <div class="sg-ynp-item">
             <div class="sg-ynp-label">Tendering</div>
-            <div class="sg-ynp-btns" data-field="sg-s42">
+            <div class="sg-ynp-btns" data-field="sg-s5">
               <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
               <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
               <button type="button" class="sg-ynp-btn" data-val="N">N</button>
@@ -957,15 +910,7 @@ body.light .detail-actions{background:rgba(0,30,70,.05);}
           </div>
           <div class="sg-ynp-item">
             <div class="sg-ynp-label">Market Sounding</div>
-            <div class="sg-ynp-btns" data-field="sg-s43">
-              <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
-              <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
-              <button type="button" class="sg-ynp-btn" data-val="N">N</button>
-            </div>
-          </div>
-          <div class="sg-ynp-item">
-            <div class="sg-ynp-label">Commercial Close</div>
-            <div class="sg-ynp-btns" data-field="sg-s44">
+            <div class="sg-ynp-btns" data-field="sg-s6">
               <button type="button" class="sg-ynp-btn" data-val="Y">Y</button>
               <button type="button" class="sg-ynp-btn" data-val="Partial">~</button>
               <button type="button" class="sg-ynp-btn" data-val="N">N</button>
@@ -1421,27 +1366,27 @@ body.light .detail-actions{background:rgba(0,30,70,.05);}
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
           <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
             <input type="checkbox" id="ps-id" style="accent-color:var(--accent);width:14px;height:14px;cursor:pointer;">
-            <label for="ps-id" style="font-size:11.5px;cursor:pointer;color:var(--text);">1. Identification &amp; Screening</label>
+            <label for="ps-id" style="font-size:11.5px;cursor:pointer;color:var(--text);">Identification &amp; Screening</label>
           </div>
           <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
             <input type="checkbox" id="ps-prefeas" style="accent-color:var(--accent);width:14px;height:14px;cursor:pointer;">
-            <label for="ps-prefeas" style="font-size:11.5px;cursor:pointer;color:var(--text);">2. Pre-Feasibility</label>
+            <label for="ps-prefeas" style="font-size:11.5px;cursor:pointer;color:var(--text);">Pre-Feasibility</label>
           </div>
           <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
             <input type="checkbox" id="ps-feas" style="accent-color:var(--accent);width:14px;height:14px;cursor:pointer;">
-            <label for="ps-feas" style="font-size:11.5px;cursor:pointer;color:var(--text);">3. Detailed Feasibility Study</label>
+            <label for="ps-feas" style="font-size:11.5px;cursor:pointer;color:var(--text);">Detailed Feasibility Study</label>
           </div>
           <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
             <input type="checkbox" id="ps-appr" style="accent-color:var(--accent);width:14px;height:14px;cursor:pointer;">
-            <label for="ps-appr" style="font-size:11.5px;cursor:pointer;color:var(--text);">4. Appraisal &amp; Structuring</label>
+            <label for="ps-appr" style="font-size:11.5px;cursor:pointer;color:var(--text);">Appraisal &amp; Structuring</label>
           </div>
           <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
             <input type="checkbox" id="ps-bid" style="accent-color:var(--accent);width:14px;height:14px;cursor:pointer;">
-            <label for="ps-bid" style="font-size:11.5px;cursor:pointer;color:var(--text);">5. Bid Document Drafting</label>
+            <label for="ps-bid" style="font-size:11.5px;cursor:pointer;color:var(--text);">Bid Document Drafting</label>
           </div>
           <div class="form-field" style="flex-direction:row;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
             <input type="checkbox" id="ps-tender" style="accent-color:var(--accent);width:14px;height:14px;cursor:pointer;">
-            <label for="ps-tender" style="font-size:11.5px;cursor:pointer;color:var(--text);">6. Tender Process</label>
+            <label for="ps-tender" style="font-size:11.5px;cursor:pointer;color:var(--text);">Tender Process</label>
           </div>
         </div>
 
@@ -1649,12 +1594,12 @@ body.light .detail-actions{background:rgba(0,30,70,.05);}
             <label class="form-label">Stage of Support <span class="req">*</span></label>
             <select class="form-select" id="cs-stage">
               <option value="">Select stage…</option>
-              <option>1. Identification &amp; Screening</option>
-              <option>2. Pre-Feasibility</option>
-              <option>3. Detailed Feasibility Study</option>
-              <option>4. Appraisal &amp; Structuring</option>
-              <option>5. Bid Document Drafting</option>
-              <option>6. Tender Process</option>
+              <option>Identification &amp; Screening</option>
+              <option>Pre-Feasibility</option>
+              <option>Detailed Feasibility Study</option>
+              <option>Appraisal &amp; Structuring</option>
+              <option>Bid Document Drafting</option>
+              <option>Tender Process</option>
               <option>Multiple Stages</option>
             </select>
           </div>
@@ -2312,20 +2257,21 @@ function resetSvgFilter(){
 // ── FILTERING ────────────────────────────────────────────
 function getFiltered(){
   return facilities.filter(f=>{
-    // Stage filter — maps to actual stage coverage fields
+    // Stage filter — maps to s1–s6 fields
     const stageMap = {
-      'Identification':  f.s2==='Y',
-      'Appraisal':       f.s3==='Y'||f.s3==='Partial',
-      'Design':          f.s32==='Y'||f.s321==='Y'||f.s322==='Y',
-      'Tendering':       f.s42==='Y',
-      'Market Sounding': f.s43==='Y',
+      'Identification':  f.s1==='Y',
+      'Pre-Feasibility': f.s2==='Y',
+      'Design':          f.s3==='Y',
+      'Appraisal':       f.s4==='Y',
+      'Tendering':       f.s5==='Y',
+      'Market Sounding': f.s6==='Y',
     };
     const mt = activeFilters.stage==='all' || stageMap[activeFilters.stage] === true;
     // Region filter — matches f.region; Global facilities appear in all region searches
     const mr = activeFilters.region==='all' || f.region===activeFilters.region || f.region==='Global';
-    // Support filter — maps to dedicated Y/N instrument fields
+    // Support filter — checks f.support array and instrument Y/N fields
     const supportMap = {
-      'Advisory':     f.inkind==='Y',
+      'Advisory':     f.support && f.support.includes('Advisory'),
       'Grant':        f.pureGrant==='Y',
       'Reimbursable': f.reimbursable==='Y',
       'Equity':       f.equity==='Y',
@@ -2643,9 +2589,7 @@ function closeClusterModal() {
 
 // ── DETAIL PANEL ──────────────────────────────────────────
 function getDataStatus(f) {
-  if (f.id === 9) return 'Data Validated';
-  if (f.id <= 14) return 'Data Under Validation';
-  return 'Draft';
+  return f.status || 'Draft';
 }
 function dataStatusBadge(f) {
   const s = getDataStatus(f);
@@ -2728,74 +2672,20 @@ function openDetail(f){
   const stageMatrix = `
   <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
     <div style="font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:600;margin-bottom:10px;">Preparation Stages Coverage</div>
-    <div style="font-size:9.5px;color:var(--muted);margin-bottom:8px;font-weight:500;">Stage 2 — Identification</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px;">
-      ${stageCell(f.s2,'2. ID & Screening')}
-      ${stageCell(f.s21,'2.1 Pre-feasibility')}
-    </div>
-    <div style="font-size:9.5px;color:var(--muted);margin-bottom:8px;font-weight:500;">Stage 3 — Appraisal & Design</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:6px;margin-bottom:12px;">
-      ${stageCell(f.s3,'3. Appraisal & Structuring')}
-      ${stageCell(f.s31,'3.1 Detailed Feasibility')}
-      ${stageCell(f.s32,'3.2 Full Design')}
-      ${stageCell(f.s321,'3.2.1 Early Stage Design')}
-      ${stageCell(f.s322,'3.2.2 Later Stage Design')}
-    </div>
-    <div style="font-size:9.5px;color:var(--muted);margin-bottom:8px;font-weight:500;">Stage 4 — Tendering & Close</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:6px;">
-      ${stageCell(f.s4,'4. Contract & Tendering')}
-      ${stageCell(f.s41,'4.1 Contract Drafting')}
-      ${stageCell(f.s42,'4.2 Tendering')}
-      ${stageCell(f.s43,'4.3 Market Sounding')}
-      ${stageCell(f.s44,'4.4 Commercial Close')}
+    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;">
+      ${stageCell(f.s1,'Identification')}
+      ${stageCell(f.s2,'Pre-Feasibility')}
+      ${stageCell(f.s3,'Design')}
+      ${stageCell(f.s4,'Appraisal')}
+      ${stageCell(f.s5,'Tendering')}
+      ${stageCell(f.s6,'Market Sounding')}
     </div>
   </div>`;
 
   // Eligibility items
   let eligHtml = f.eligibility.map(e=>`<div class="elig-item"><span class="elig-check">✓</span>${e}</div>`).join('');
-  // ── Sector coverage matrix ───────────────────────────────
-  const sectors = [
-    {label:'Energy',     val:f.secEnergy},
-    {label:'Transport',  val:f.secTransport},
-    {label:'Digital',    val:f.secDigital},
-    {label:'Water',      val:f.secWater},
-    {label:'Waste',      val:f.secWaste},
-    {label:'Urban',      val:f.secUrban},
-    {label:'Social',     val:f.secSocial},
-    {label:'Undefined',  val:f.secUndefined},
-  ];
 
-  function sectorCell(val, label) {
-    const v = (val||'').toUpperCase();
-    const isY = v === 'Y' || v === 'YES';
-    const isP = v === 'PARTIAL' || v === 'NA';
-    const bg  = isY ? 'rgba(77,217,172,.14)' : isP ? 'rgba(110,181,255,.12)' : 'rgba(255,255,255,.04)';
-    const bc  = isY ? 'rgba(77,217,172,.4)'  : isP ? 'rgba(110,181,255,.35)' : 'rgba(255,255,255,.08)';
-    const col = isY ? '#4dd9ac'             : isP ? '#6eb5ff'               : '#445566';
-    const ic  = isY ? '✓' : isP ? '~' : (val==='' ? '' : '—');
-    return `<div style="background:${bg};border:1px solid ${bc};border-radius:7px;padding:6px 4px;text-align:center;font-size:10px;color:${col};font-weight:700;line-height:1.3;display:flex;flex-direction:column;align-items:center;gap:2px;">
-      <span style="font-size:12px;">${ic}</span>
-      <span style="font-size:9px;color:inherit;opacity:.85;">${label}</span>
-    </div>`;
-  }
-
-  let sectorMatrixHtml = '';
-  if (f.secScope) {
-    const scopeColor = f.secScope==='All' ? '#00c2c2' : f.secScope==='Multiple' ? '#f0b429' : '#6eb5ff';
-    sectorMatrixHtml = `
-    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:600;">Sectors Covered</div>
-        <span style="font-size:11px;padding:2px 10px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:${scopeColor};font-weight:700;">${f.secScope}</span>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px;">
-        ${sectors.map(s=>sectorCell(s.val,s.label)).join('')}
-      </div>
-      ${f.secOther && f.secOther!=='N' && f.secOther!=='NA' ? `<div style="font-size:11px;color:var(--muted);padding:7px 10px;background:rgba(255,255,255,.04);border-radius:7px;border:1px solid rgba(255,255,255,.08);margin-top:4px;">📌 <em>${f.secOther}</em></div>` : ''}
-    </div>`;
-  }
-
-  document.getElementById('detail-elig').innerHTML = eligHtml + stageMatrix + sectorMatrixHtml;
+  document.getElementById('detail-elig').innerHTML = eligHtml + stageMatrix;
   document.getElementById('detail-overlay').classList.add('open');
 }
 function openDetailById(id){ const f=facilities.find(x=>x.id===id); if(f){openDetail(f);highlightCard(id);} }
@@ -3070,23 +2960,13 @@ async function downloadFundPDF() {
   // ── PREPARATION STAGES ────────────────────────────────────
   sec('Preparation Stages');
   const stageGroups = [
-    { title: 'Stage 2 — Identification', cols: 2, cells: [
-        { val: f.s2,  label: '2. ID & Screening' },
-        { val: f.s21, label: '2.1 Pre-Feasibility' },
-    ]},
-    { title: 'Stage 3 — Appraisal & Design', cols: 5, cells: [
-        { val: f.s3,   label: '3. Appraisal' },
-        { val: f.s31,  label: '3.1 Feasibility' },
-        { val: f.s32,  label: '3.2 Full Design' },
-        { val: f.s321, label: '3.2.1 Early Design' },
-        { val: f.s322, label: '3.2.2 Late Design' },
-    ]},
-    { title: 'Stage 4 — Tendering & Close', cols: 5, cells: [
-        { val: f.s4,  label: '4. Tendering' },
-        { val: f.s41, label: '4.1 Contract Draft' },
-        { val: f.s42, label: '4.2 Tender Process' },
-        { val: f.s43, label: '4.3 Market Sounding' },
-        { val: f.s44, label: '4.4 Commercial Close' },
+    { title: 'Preparation Stages Coverage', cols: 6, cells: [
+        { val: f.s1, label: 'Identification' },
+        { val: f.s2, label: 'Pre-Feasibility' },
+        { val: f.s3, label: 'Design' },
+        { val: f.s4, label: 'Appraisal' },
+        { val: f.s5, label: 'Tendering' },
+        { val: f.s6, label: 'Market Sounding' },
     ]},
   ];
   const cellH = 36, cellGap = 4;
@@ -3354,13 +3234,8 @@ function openSuggestModal(){
     'sg-pureGrant':   f.pureGrant,
     'sg-reimbursable':f.reimbursable,
     'sg-equity':      f.equity,
-    'sg-s2':  f.s2,  'sg-s21': f.s21,
-    'sg-s3':  f.s3,  'sg-s31': f.s31, 'sg-s32': f.s32, 'sg-s321': f.s321, 'sg-s322': f.s322,
-    'sg-s4':  f.s4,  'sg-s41': f.s41, 'sg-s42': f.s42, 'sg-s43':  f.s43,  'sg-s44':  f.s44,
-    'sg-secEnergy':   f.secEnergy,   'sg-secTransport': f.secTransport,
-    'sg-secDigital':  f.secDigital,  'sg-secWater':     f.secWater,
-    'sg-secWaste':    f.secWaste,    'sg-secUrban':     f.secUrban,
-    'sg-secSocial':   f.secSocial,
+    'sg-s1': f.s1, 'sg-s2': f.s2, 'sg-s3': f.s3,
+    'sg-s4': f.s4, 'sg-s5': f.s5, 'sg-s6': f.s6,
   };
   document.querySelectorAll('.sg-ynp-btn').forEach(btn => btn.classList.remove('sg-active-Y','sg-active-Partial','sg-active-N'));
   Object.entries(ynpMap).forEach(([field, val]) => {
@@ -3443,21 +3318,8 @@ async function submitSuggestion(){
     reimbursable:  ynpVal('sg-reimbursable'),
     equity:        ynpVal('sg-equity'),
     // Preparation stages
-    s2:  ynpVal('sg-s2'),  s21: ynpVal('sg-s21'),
-    s3:  ynpVal('sg-s3'),  s31: ynpVal('sg-s31'),  s32: ynpVal('sg-s32'),
-    s321:ynpVal('sg-s321'),s322:ynpVal('sg-s322'),
-    s4:  ynpVal('sg-s4'),  s41: ynpVal('sg-s41'),  s42: ynpVal('sg-s42'),
-    s43: ynpVal('sg-s43'), s44: ynpVal('sg-s44'),
-    // Sectors
-    sec_scope:     document.getElementById('sg-secScope').value,
-    sec_energy:    ynpVal('sg-secEnergy'),
-    sec_transport: ynpVal('sg-secTransport'),
-    sec_digital:   ynpVal('sg-secDigital'),
-    sec_water:     ynpVal('sg-secWater'),
-    sec_waste:     ynpVal('sg-secWaste'),
-    sec_urban:     ynpVal('sg-secUrban'),
-    sec_social:    ynpVal('sg-secSocial'),
-    sec_other:     document.getElementById('sg-secOther').value,
+    s1: ynpVal('sg-s1'), s2: ynpVal('sg-s2'), s3: ynpVal('sg-s3'),
+    s4: ynpVal('sg-s4'), s5: ynpVal('sg-s5'), s6: ynpVal('sg-s6'),
     // Eligible applicants
     eligible_applicants: selectedElig,
     // Climate & thematic

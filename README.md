@@ -189,7 +189,7 @@ Each facility object includes:
 - Identity: `id`, `name`, `org`, `icon`, `color`
 - Geography: `region`, `country`, `lat`, `lng`, `geoScope`, `regionsCovered`
 - Support: `support[]`, `inkind`, `pureGrant`, `reimbursable`, `equity`
-- Preparation stages: `s2`, `s3`, `s32`, `s4`, `s42`, `s43` (Y / Partial / N)
+- Preparation stages: `s1`, `s2`, `s22`, `s3`, `s32`, `s33` (Y / Partial / N)
 - PCM mandate: `pcm`
 - Sector flags: `sector`, `secEnergy`, `secTransport`, `secDigital`, `secWater`, `secWaste`, `secUrban`, `secSocial`
 - Climate: `climateMandate`

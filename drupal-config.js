@@ -49,11 +49,11 @@ const DRUPAL_CONFIG = {
     reimbursable:    'field_reimbursable',
     equity:          'field_equity',
     // Stage flags
-    s2: 'field_s2', s21: 'field_s21',
-    s3: 'field_s3', s31: 'field_s31', s32: 'field_s32',
-    s321: 'field_s321', s322: 'field_s322',
-    s4: 'field_s4', s41: 'field_s41', s42: 'field_s42',
-    s43: 'field_s43', s44: 'field_s44',
+    s1: 'field_s2', s11: 'field_s21',
+    s2: 'field_s3', s21: 'field_s31', s22: 'field_s32',
+    s221: 'field_s321', s222: 'field_s322',
+    s3: 'field_s4', s31: 'field_s41', s32: 'field_s42',
+    s33: 'field_s43', s34: 'field_s44',
     // Sector flags
     secScope: 'field_sec_scope',
     secEnergy: 'field_sec_energy', secTransport: 'field_sec_transport',
