@@ -2835,358 +2835,316 @@ async function downloadFundPDF() {
   const W = doc.internal.pageSize.getWidth();
   const H = doc.internal.pageSize.getHeight();
 
-  // colour palette — light theme
-  const navy   = [0,   28,  60];
-  const teal   = [0,  160, 160];
-  const gold   = [200, 140,  20];
+  // ── Palette ──────────────────────────────────────────────
+  const navy   = [11,  31,  58];
+  const blue   = [29,  91, 212];
+  const blueDk = [22,  73, 176];
+  const blueLt = [96, 165, 250];
+  const sky    = [14, 165, 233];
+  const gold   = [240, 180,  41];
+  const green  = [16,  185, 129];
+  const purple = [167, 139, 250];
   const white  = [255, 255, 255];
-  const muted  = [100, 120, 145];
-  const border = [210, 220, 232];
-  const card   = [245, 248, 252];
-  const text   = [20,  40,  70];
+  const offwh  = [248, 250, 252];
+  const muted  = [100, 116, 139];
+  const border = [226, 232, 240];
+  const card   = [241, 245, 249];
+  const text   = [15,  23,  42];
 
-  // helpers
-  const sectionLabel = (label, lineStart, y) => {
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(7.5);
-    doc.setTextColor(...navy);
-    doc.text(label, 30, y);
-    doc.setDrawColor(...border);
-    doc.setLineWidth(0.4);
-    doc.line(lineStart, y - 1, W - 30, y - 1);
-  };
+  const PAD = 32;
+  const CW  = W - PAD * 2;
 
-  const stageCell = (val, label, x, y, cw, ch) => {
-    const v      = (val || '').toUpperCase();
-    const isY    = v === 'Y' || v === 'YES';
-    const isP    = v === 'PARTIAL';
+  // ── Stage/YNP cell ───────────────────────────────────────
+  const stageCell = (val, label, x, cy, cw, ch) => {
+    const v    = (val || '').toUpperCase();
+    const isY  = v === 'Y' || v === 'YES';
+    const isP  = v === 'PARTIAL' || v === '~';
     const isEmpty = val === '' || val == null;
-
-    // background + border
-    if (isY)         { doc.setFillColor(220, 248, 248); doc.setDrawColor(...teal);           doc.setLineWidth(0.8); }
-    else if (isP)    { doc.setFillColor(228, 238, 255); doc.setDrawColor(100, 150, 230);     doc.setLineWidth(0.6); }
-    else             { doc.setFillColor(248, 250, 253); doc.setDrawColor(...border);         doc.setLineWidth(0.3); }
-    doc.roundedRect(x, y, cw, ch, 3, 3, 'FD');
-
-    const cx  = x + cw / 2;       // horizontal centre
-    const ic  = isY ? '✓' : isP ? '~' : isEmpty ? '' : '—';
-    const icColor  = isY ? teal : isP ? [80, 130, 210] : [190, 205, 218];
-    const lblColor = isY ? [0, 120, 120] : muted;
-
-    // icon — upper half of cell
+    if (isY)      { doc.setFillColor(219,234,254); doc.setDrawColor(...blue);       doc.setLineWidth(0.8); }
+    else if (isP) { doc.setFillColor(254,243,199); doc.setDrawColor(245,158,11);    doc.setLineWidth(0.6); }
+    else          { doc.setFillColor(...offwh);     doc.setDrawColor(...border);     doc.setLineWidth(0.3); }
+    doc.roundedRect(x, cy, cw, ch, 3, 3, 'FD');
+    const cx = x + cw / 2;
+    const ic = isY ? '✓' : isP ? '~' : isEmpty ? '' : '—';
     doc.setFont('helvetica', isY ? 'bold' : 'normal');
     doc.setFontSize(9);
-    doc.setTextColor(...icColor);
-    doc.text(ic, cx, y + ch * 0.44, { align: 'center' });
-
-    // label — lower half, wrapped if needed
-    doc.setFontSize(6);
-    doc.setTextColor(...lblColor);
+    doc.setTextColor(...(isY ? blue : isP ? [245,158,11] : [203,213,225]));
+    doc.text(ic, cx, cy + ch * 0.46, { align: 'center' });
+    const ll = doc.splitTextToSize(label, cw - 4);
+    doc.setFontSize(5.5);
+    doc.setTextColor(...(isY ? blueDk : isP ? [180,120,0] : muted));
     doc.setFont('helvetica', isY ? 'bold' : 'normal');
-    const ll = doc.splitTextToSize(label, cw - 6);
-    const lh = 7.5; // line height for 6pt
-    const startLY = y + ch * 0.62;
-    ll.slice(0, 2).forEach((line, li) => doc.text(line, cx, startLY + li * lh, { align: 'center' }));
+    ll.slice(0, 2).forEach((ln, li) => doc.text(ln, cx, cy + ch * 0.65 + li * 7, { align: 'center' }));
   };
 
-  const PAD = 30; // left/right margin
-  const CW  = W - PAD * 2; // content width = 535pt
-
-  // ── white background ──
-  doc.setFillColor(...white);
+  // ── Page background ──────────────────────────────────────
+  doc.setFillColor(...offwh);
   doc.rect(0, 0, W, H, 'F');
 
-  // ── navy top accent bar ──
+  // ── HEADER ───────────────────────────────────────────────
+  const hdrH = 90;
   doc.setFillColor(...navy);
-  doc.rect(0, 0, W, 6, 'F');
+  doc.rect(0, 0, W, hdrH, 'F');
+  // blue top stripe
+  doc.setFillColor(...blue);
+  doc.rect(0, 0, W, 5, 'F');
+  // gold accent line
+  doc.setFillColor(...gold);
+  doc.rect(0, 5, W, 2.5, 'F');
 
-  // ─────────────────────────────────────────────────────
-  // HEADER BLOCK
-  // ─────────────────────────────────────────────────────
-  // Measure name + org height first so we can size the header dynamically
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(13);
-  const nameLines = doc.splitTextToSize(f.name, CW - 150);
-  const nameH     = nameLines.length * 16;   // 16pt line height
-  const headerH   = Math.max(94, nameH + 62); // min 94pt
-
-  doc.setFillColor(...card);
-  doc.setDrawColor(...border);
-  doc.setLineWidth(0.5);
-  doc.roundedRect(PAD, 14, CW, headerH, 8, 8, 'FD');
-
-  // Logo (left column, vertically centred)
-  const logoW = 100, logoH = 36;
-  const logoX  = PAD + 12;
-  const logoY  = 14 + (headerH - logoH) / 2;
+  // Logo on white pill
   if (logoData) {
-    doc.addImage(logoData, 'PNG', logoX, logoY, logoW, logoH);
-  } else {
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(11);
-    doc.setTextColor(...navy);
-    doc.text('GIF PPF', logoX + 4, logoY + 24);
+    doc.setFillColor(...white);
+    doc.roundedRect(PAD - 4, 16, 96, 34, 5, 5, 'F');
+    doc.addImage(logoData, 'PNG', PAD - 1, 19, 90, 28);
   }
-
-  // Vertical divider
-  const divX = PAD + 124;
-  doc.setDrawColor(...border);
-  doc.setLineWidth(0.5);
-  doc.line(divX, 22, divX, 14 + headerH - 8);
+  // Divider
+  doc.setDrawColor(255,255,255);
+  doc.setLineWidth(0.4);
+  const divX = PAD + 104;
+  doc.line(divX, 16, divX, hdrH - 14);
 
   // Fund name
-  const textX = divX + 14;
-  const nameY  = 14 + 26;
+  const txtX = divX + 14;
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(13);
-  doc.setTextColor(...navy);
-  doc.text(nameLines, textX, nameY);
+  doc.setFontSize(13.5);
+  doc.setTextColor(...white);
+  const nameLines = doc.splitTextToSize(f.name, W - txtX - PAD - 80);
+  doc.text(nameLines, txtX, 30);
+  const nameH = nameLines.length * 16;
 
   // Org · Country
-  const orgY = nameY + nameH + 2;
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
-  doc.setTextColor(...muted);
-  doc.text(f.org + '  ·  ' + f.country, textX, orgY);
+  doc.setTextColor(147,197,253);
+  doc.text((f.org || '') + (f.country ? '  ·  ' + f.country : ''), txtX, 30 + nameH + 5);
 
-  // Support type badges — centered in right column
-  const badgeAreaX = textX;
-  const badgeAreaW = W - PAD - 10 - badgeAreaX;
-  const badgeH2    = 14;
-  const badgeGap   = 5;
-  const badgePadX  = 10;
-
+  // Support type badges
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(6.5);
-  const badgeSizes = f.support.map(s => ({ text: s, w: doc.getTextWidth(s) + badgePadX * 2 }));
-  const totalBW    = badgeSizes.reduce((a, b) => a + b.w + badgeGap, 0) - badgeGap;
-  let   bx         = badgeAreaX + (badgeAreaW - totalBW) / 2;
-  const badgeY     = orgY + 10;
-
-  badgeSizes.forEach(b => {
-    doc.setFillColor(...teal);
-    doc.setDrawColor(...teal);
-    doc.roundedRect(bx, badgeY, b.w, badgeH2, 3, 3, 'F');
-    doc.setTextColor(...white);
-    doc.text(b.text, bx + b.w / 2, badgeY + 9.5, { align: 'center' });
-    bx += b.w + badgeGap;
+  doc.setFontSize(6);
+  let bx = txtX;
+  const byBadge = 30 + nameH + 18;
+  (f.support || []).forEach(s => {
+    const bw = doc.getTextWidth(s) + 14;
+    doc.setFillColor(...gold);
+    doc.roundedRect(bx, byBadge - 7.5, bw, 12, 2, 2, 'F');
+    doc.setTextColor(...navy);
+    doc.text(s, bx + bw / 2, byBadge + 1, { align: 'center' });
+    bx += bw + 5;
   });
 
-  // ─────────────────────────────────────────────────────
-  // STATS ROW  (5 equal columns, flush under header)
-  // ─────────────────────────────────────────────────────
-  const statsY  = 14 + headerH + 6;
-  const statsH  = 46;
-  const statW   = CW / 5;
-  const statsData = [
-    { label: 'YEAR CREATED',    value: String(f.year || '—') },
-    { label: 'REGION',          value: f.region },
-    { label: 'FUNDING',         value: f.amount },
-    { label: 'STATUS',          value: f.status },
-    { label: 'CLIMATE MANDATE', value: f.climateMandate || 'Not specified' },
+  // Data status badge — top-right
+  const dsStatus = getDataStatus(f);
+  const dsColor  = dsStatus === 'Data Validated' ? green : dsStatus === 'Data Under Validation' ? blueLt : [248,113,113];
+  const dsLabel  = dsStatus === 'Data Validated' ? '✓ VALIDATED' : dsStatus === 'Data Under Validation' ? '~ UNDER REVIEW' : 'DRAFT';
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(6);
+  const dsTw = doc.getTextWidth(dsLabel) + 16;
+  doc.setDrawColor(...dsColor);
+  doc.setLineWidth(0.9);
+  doc.roundedRect(W - PAD - dsTw, 13, dsTw, 13, 3, 3, 'D');
+  doc.setTextColor(...dsColor);
+  doc.text(dsLabel, W - PAD - dsTw / 2, 22, { align: 'center' });
+
+  // ── STATS ROW ────────────────────────────────────────────
+  const statsY = hdrH + 6;
+  const statsH = 50;
+  const statCols = [
+    { label: 'YEAR',           value: String(f.year || '—'), color: blue   },
+    { label: 'REGION',         value: f.region || '—',       color: sky    },
+    { label: 'FUNDING',        value: f.amount || '—',       color: gold   },
+    { label: 'STATUS',         value: f.status || '—',       color: green  },
+    { label: 'CLIMATE MANDATE',value: f.climateMandate || '—', color: purple },
   ];
-
-  statsData.forEach((s, i) => {
+  const statW = CW / statCols.length;
+  statCols.forEach((s, i) => {
     const sx = PAD + i * statW;
-    doc.setFillColor(i % 2 === 0 ? 242 : 248, i % 2 === 0 ? 246 : 251, i % 2 === 0 ? 253 : 255);
-    doc.setDrawColor(...border);
-    doc.rect(sx, statsY, statW, statsH, 'FD');
-
-    // label
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(6);
-    doc.setTextColor(...muted);
-    doc.text(s.label, sx + statW / 2, statsY + 13, { align: 'center' });
-
-    // dividing micro-rule
-    doc.setDrawColor(...border);
-    doc.setLineWidth(0.3);
-    doc.line(sx + 8, statsY + 17, sx + statW - 8, statsY + 17);
-
-    // value
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(9.5);
-    doc.setTextColor(...navy);
-    const vl = doc.splitTextToSize(s.value, statW - 10);
-    doc.text(vl[0], sx + statW / 2, statsY + 32, { align: 'center' });
-  });
-
-  // ─────────────────────────────────────────────────────
-  // FLOWING CONTENT  starts below stats
-  // ─────────────────────────────────────────────────────
-  let y = statsY + statsH + 14;
-
-  // helper: section heading with rule
-  const sec = (label) => {
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(7);
-    doc.setTextColor(...navy);
-    const lw = doc.getTextWidth(label);
-    doc.text(label, PAD, y);
+    doc.setFillColor(...white);
     doc.setDrawColor(...border);
     doc.setLineWidth(0.4);
-    doc.line(PAD + lw + 5, y - 1, W - PAD, y - 1);
-    y += 12;
+    doc.rect(sx, statsY, statW, statsH, 'FD');
+    doc.setFillColor(...s.color);
+    doc.rect(sx, statsY, statW, 3, 'F');
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(5.5);
+    doc.setTextColor(...muted);
+    doc.text(s.label, sx + statW / 2, statsY + 15, { align: 'center' });
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8.5);
+    doc.setTextColor(...text);
+    const vl = doc.splitTextToSize(s.value, statW - 8);
+    doc.text(vl[0], sx + statW / 2, statsY + 32, { align: 'center' });
+    if (vl[1]) { doc.setFontSize(7); doc.text(vl[1], sx + statW / 2, statsY + 42, { align: 'center' }); }
+  });
+
+  let y = statsY + statsH + 14;
+
+  // ── Section helper ────────────────────────────────────────
+  const sec = (label) => {
+    doc.setFillColor(...blue);
+    doc.rect(PAD, y, 3, 10, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7.5);
+    doc.setTextColor(...blue);
+    doc.text(label.toUpperCase(), PAD + 8, y + 8);
+    const lw = doc.getTextWidth(label.toUpperCase());
+    doc.setDrawColor(...border);
+    doc.setLineWidth(0.35);
+    doc.line(PAD + 8 + lw + 6, y + 5, W - PAD, y + 5);
+    y += 18;
   };
 
-  // OVERVIEW
-  sec('OVERVIEW');
+  // ── OVERVIEW ─────────────────────────────────────────────
+  sec('Overview');
+  const descLines = doc.splitTextToSize(f.desc || '', CW - 14);
+  const descH = Math.min(descLines.length, 6) * 11.5 + 14;
+  doc.setFillColor(...white);
+  doc.setDrawColor(...border);
+  doc.setLineWidth(0.3);
+  doc.roundedRect(PAD, y, CW, descH, 4, 4, 'FD');
+  doc.setFillColor(...blue);
+  doc.rect(PAD, y, 3, descH, 'F');
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8.5);
+  doc.setFontSize(8);
   doc.setTextColor(...text);
-  const descLines = doc.splitTextToSize(f.desc || '', CW);
-  doc.text(descLines.slice(0, 5), PAD, y);
-  y += Math.min(descLines.length, 5) * 12 + 10;
+  doc.text(descLines.slice(0, 6), PAD + 10, y + 10, { lineHeightFactor: 1.5 });
+  y += descH + 12;
 
-  // SUPPORT INSTRUMENTS
-  sec('SUPPORT INSTRUMENTS');
+  // ── SUPPORT INSTRUMENTS ───────────────────────────────────
+  sec('Support Instruments');
   const instruments = [
-    { label: 'In-kind Advisory',   val: f.inkind },
-    { label: 'Pure Grant',         val: f.pureGrant },
-    { label: 'Reimbursable Grant', val: f.reimbursable },
-    { label: 'Equity',             val: f.equity },
+    { label: 'In-kind Advisory',   val: f.inkind,       color: blue   },
+    { label: 'Pure Grant',         val: f.pureGrant,    color: green  },
+    { label: 'Reimbursable Grant', val: f.reimbursable, color: sky    },
+    { label: 'Equity',             val: f.equity,       color: purple },
   ];
-  const icolW = CW / 4;
-  const instrH = 28;
+  const iW = (CW - 9) / 4;
+  const instrH = 34;
   instruments.forEach((ins, i) => {
-    const ix     = PAD + i * icolW;
-    const active = ins.val === 'Y';
-    doc.setFillColor(...(active ? [0, 195, 195] : [248, 251, 254]));
-    doc.setDrawColor(...(active ? teal : border));
-    doc.setLineWidth(active ? 1 : 0.4);
-    doc.roundedRect(ix + 2, y, icolW - 4, instrH, 4, 4, 'FD');
-    // icon
-    doc.setFontSize(9);
-    doc.setTextColor(...(active ? white : [200, 215, 228]));
-    doc.text(active ? '✓' : '—', ix + 2 + (icolW - 4) / 2, y + 12, { align: 'center' });
-    // label
+    const ix = PAD + i * (iW + 3);
+    const active = (ins.val || '').toUpperCase() === 'Y';
+    doc.setFillColor(...(active ? ins.color : card));
+    doc.setDrawColor(...(active ? ins.color : border));
+    doc.setLineWidth(active ? 0 : 0.4);
+    doc.roundedRect(ix, y, iW, instrH, 4, 4, 'FD');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.setTextColor(...(active ? white : [203,213,225]));
+    doc.text(active ? '✓' : '—', ix + iW / 2, y + 14, { align: 'center' });
     doc.setFont('helvetica', active ? 'bold' : 'normal');
-    doc.setFontSize(7);
+    doc.setFontSize(6.5);
     doc.setTextColor(...(active ? white : muted));
-    doc.text(ins.label, ix + 2 + (icolW - 4) / 2, y + 23, { align: 'center' });
+    const lbl = doc.splitTextToSize(ins.label, iW - 4);
+    doc.text(lbl[0], ix + iW / 2, y + 25, { align: 'center' });
+    if (lbl[1]) doc.text(lbl[1], ix + iW / 2, y + 32, { align: 'center' });
   });
   y += instrH + 12;
 
-  // ELIGIBILITY
-  sec('ELIGIBILITY CRITERIA');
-  const rowH = 19;
-  (f.eligibility || []).forEach(e => {
-    if (y > H - 210) return;
+  // ── ELIGIBILITY ───────────────────────────────────────────
+  const eligList = f.eligibility || [];
+  if (eligList.length > 0) {
+    sec('Eligibility Criteria');
+    const cols2 = 2;
+    const colW = (CW - 8) / cols2;
+    const rowH2 = 18;
+    eligList.forEach((e, idx) => {
+      if (y > H - 200) return;
+      const col = idx % cols2;
+      const row = Math.floor(idx / cols2);
+      const ex = PAD + col * (colW + 8);
+      const ey = y + row * (rowH2 + 3);
+      doc.setFillColor(...white);
+      doc.setDrawColor(...border);
+      doc.setLineWidth(0.3);
+      doc.roundedRect(ex, ey, colW, rowH2, 2, 2, 'FD');
+      doc.setFillColor(...blue);
+      doc.rect(ex, ey, 3, rowH2, 'F');
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7);
+      doc.setTextColor(...text);
+      doc.text(e, ex + 9, ey + 12);
+    });
+    y += Math.ceil(eligList.length / cols2) * (rowH2 + 3) + 10;
+  }
+
+  // ── PREPARATION STAGES ────────────────────────────────────
+  sec('Preparation Stages');
+  const stageGroups = [
+    { title: 'Stage 2 — Identification', cols: 2, cells: [
+        { val: f.s2,  label: '2. ID & Screening' },
+        { val: f.s21, label: '2.1 Pre-Feasibility' },
+    ]},
+    { title: 'Stage 3 — Appraisal & Design', cols: 5, cells: [
+        { val: f.s3,   label: '3. Appraisal' },
+        { val: f.s31,  label: '3.1 Feasibility' },
+        { val: f.s32,  label: '3.2 Full Design' },
+        { val: f.s321, label: '3.2.1 Early Design' },
+        { val: f.s322, label: '3.2.2 Late Design' },
+    ]},
+    { title: 'Stage 4 — Tendering & Close', cols: 5, cells: [
+        { val: f.s4,  label: '4. Tendering' },
+        { val: f.s41, label: '4.1 Contract Draft' },
+        { val: f.s42, label: '4.2 Tender Process' },
+        { val: f.s43, label: '4.3 Market Sounding' },
+        { val: f.s44, label: '4.4 Commercial Close' },
+    ]},
+  ];
+  const cellH = 36, cellGap = 4;
+  stageGroups.forEach(group => {
+    if (y > H - 130) return;
     doc.setFillColor(...card);
     doc.setDrawColor(...border);
     doc.setLineWidth(0.3);
-    doc.roundedRect(PAD, y, CW, rowH, 2, 2, 'FD');
-    doc.setFontSize(7);
-    doc.setTextColor(...teal);
-    doc.text('✓', PAD + 8, y + 12.5);
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(...text);
-    doc.text(e, PAD + 20, y + 12.5);
-    y += rowH + 3;
-  });
-  y += 8;
-
-  // PREPARATION STAGES
-  sec('PREPARATION STAGES COVERAGE');
-
-  const stageGroups = [
-    {
-      title: 'Stage 2 — Identification',
-      desc:  'Early project identification, pipeline screening and preliminary feasibility assessments.',
-      cols:  2,
-      cells: [
-        { val: f.s2,  label: '2. ID & Screening' },
-        { val: f.s21, label: '2.1 Pre-feasibility' },
-      ]
-    },
-    {
-      title: 'Stage 3 — Appraisal & Design',
-      desc:  'Detailed appraisal, structuring and full design — from feasibility through to early and later-stage design.',
-      cols:  5,
-      cells: [
-        { val: f.s3,   label: '3. Appraisal & Structuring' },
-        { val: f.s31,  label: '3.1 Detailed Feasibility' },
-        { val: f.s32,  label: '3.2 Full Design' },
-        { val: f.s321, label: '3.2.1 Early Stage Design' },
-        { val: f.s322, label: '3.2.2 Later Stage Design' },
-      ]
-    },
-    {
-      title: 'Stage 4 — Tendering & Close',
-      desc:  'Contract drafting, market sounding, competitive tendering and support to commercial and financial close.',
-      cols:  5,
-      cells: [
-        { val: f.s4,  label: '4. Contract & Tendering' },
-        { val: f.s41, label: '4.1 Contract Drafting' },
-        { val: f.s42, label: '4.2 Tendering' },
-        { val: f.s43, label: '4.3 Market Sounding' },
-        { val: f.s44, label: '4.4 Commercial Close' },
-      ]
-    }
-  ];
-
-  const cellH = 34;
-  const cellGap = 4;
-
-  stageGroups.forEach(group => {
-    if (y > H - 100) return;
-
-    // group heading
+    doc.roundedRect(PAD, y, CW, 15, 2, 2, 'FD');
+    doc.setFillColor(...navy);
+    doc.rect(PAD, y, 4, 15, 'F');
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(7.5);
-    doc.setTextColor(...navy);
-    doc.text(group.title, PAD, y);
-
-    // description — right of title, italic, muted
-    doc.setFont('helvetica', 'italic');
     doc.setFontSize(6.5);
-    doc.setTextColor(...muted);
-    const titleW = doc.getStringUnitWidth(group.title) * 7.5 / doc.internal.scaleFactor;
-    const descW  = CW - titleW - 16;
-    // place description right-aligned
-    const descLines2 = doc.splitTextToSize(group.desc, descW);
-    doc.text(descLines2[0], W - PAD, y, { align: 'right' });
-
-    y += 12;
-
-    // cells — evenly spaced across full content width
-    const totalGap = cellGap * (group.cols - 1);
-    const cw = (CW - totalGap) / group.cols;
-    group.cells.forEach((cell, i) => {
-      stageCell(cell.val, cell.label, PAD + i * (cw + cellGap), y, cw, cellH);
-    });
-    y += cellH + 10;
+    doc.setTextColor(...navy);
+    doc.text(group.title, PAD + 8, y + 10);
+    y += 19;
+    const cw2 = (CW - cellGap * (group.cols - 1)) / group.cols;
+    group.cells.forEach((cell, i) => stageCell(cell.val, cell.label, PAD + i * (cw2 + cellGap), y, cw2, cellH));
+    y += cellH + 8;
   });
 
-  if (f.prepStages) {
-    doc.setFont('helvetica', 'italic');
-    doc.setFontSize(6.5);
-    doc.setTextColor(...muted);
-    const ps = doc.splitTextToSize('Note: ' + f.prepStages, CW);
-    doc.text(ps.slice(0, 2), PAD, y);
-    y += 16;
+  // ── PDF FOOTER ────────────────────────────────────────────
+  const footerH = 58;
+  const footerY = H - footerH;
+  doc.setFillColor(...navy);
+  doc.rect(0, footerY, W, footerH, 'F');
+  doc.setFillColor(...blue);
+  doc.rect(0, footerY, W, 3, 'F');
+
+  if (logoData) {
+    doc.setFillColor(...white);
+    doc.roundedRect(PAD - 4, footerY + 10, 78, 28, 4, 4, 'F');
+    doc.addImage(logoData, 'PNG', PAD - 1, footerY + 13, 74, 22);
   }
 
-  // ─────────────────────────────────────────────────────
-  // FOOTER
-  // ─────────────────────────────────────────────────────
-  doc.setFillColor(242, 246, 252);
-  doc.rect(0, H - 32, W, 32, 'F');
-  doc.setDrawColor(...border);
-  doc.setLineWidth(0.4);
-  doc.line(0, H - 32, W, H - 32);
-
+  const ftx = PAD + 86;
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(8);
+  doc.setTextColor(...white);
+  doc.text('GIF Project Preparation Facilities Navigator', ftx, footerY + 18);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(6.5);
-  doc.setTextColor(...muted);
-  const dateStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-  doc.text('Generated by PPF Navigator · Global Infrastructure Facility · ' + dateStr, PAD, H - 14);
-  doc.setFont('helvetica', 'bold');
-  doc.setTextColor(...teal);
-  doc.text('globalinfrafacility.org', W - PAD, H - 14, { align: 'right' });
+  doc.setTextColor(147,197,253);
+  doc.text('A tool of the Global Infrastructure Facility (GIF) — a G20 initiative supporting', ftx, footerY + 29);
+  doc.text('sustainable infrastructure in emerging markets through preparation finance.', ftx, footerY + 38);
 
-  // teal bottom strip
-  doc.setFillColor(...teal);
+  const dateStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(8);
+  doc.setTextColor(...gold);
+  doc.text('globalinfrafacility.org', W - PAD, footerY + 18, { align: 'right' });
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(6.5);
+  doc.setTextColor(148,163,184);
+  doc.text('Generated ' + dateStr, W - PAD, footerY + 29, { align: 'right' });
+  doc.text('Data subject to change — verify directly with the facility.', W - PAD, footerY + 38, { align: 'right' });
+
+  doc.setFillColor(...gold);
   doc.rect(0, H - 4, W, 4, 'F');
 
   if (btn) { btn.textContent = '⬇ PDF'; btn.disabled = false; }
@@ -3550,5 +3508,70 @@ window.addEventListener('DOMContentLoaded', async () => {
   applyTranslations();
 });
 </script>
+
+<!-- FOOTER -->
+<style>
+.ppf-footer{background:#0B1F3A;border-top:1px solid rgba(255,255,255,.08);padding:60px 0 36px;font-family:'Plus Jakarta Sans',system-ui,sans-serif;}
+.ppf-footer-inner{max-width:1200px;margin:0 auto;padding:0 48px;}
+.ppf-footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:56px;}
+.ppf-footer-logo{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.ppf-footer-desc{font-size:0.8rem;color:rgba(255,255,255,.4);line-height:1.75;max-width:270px;}
+.ppf-footer-col-title{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,.55);margin-bottom:16px;}
+.ppf-footer-links{display:flex;flex-direction:column;gap:10px;}
+.ppf-footer-links a{color:rgba(255,255,255,.4);font-size:0.82rem;text-decoration:none;transition:color .2s;}
+.ppf-footer-links a:hover{color:rgba(255,255,255,.85);}
+.ppf-footer-bottom{margin-top:52px;padding-top:22px;border-top:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between;font-size:0.75rem;color:rgba(255,255,255,.3);}
+.ppf-footer-bottom-links{display:flex;gap:20px;}
+.ppf-footer-bottom-links a{color:rgba(255,255,255,.3);text-decoration:none;transition:color .2s;}
+.ppf-footer-bottom-links a:hover{color:rgba(255,255,255,.65);}
+@media(max-width:900px){.ppf-footer-grid{grid-template-columns:1fr 1fr;gap:40px;}.ppf-footer-inner{padding:0 24px;}}
+</style>
+<footer class="ppf-footer">
+  <div class="ppf-footer-inner">
+    <div class="ppf-footer-grid">
+      <div>
+        <div class="ppf-footer-logo">
+          <img src="Images/logo.png" alt="Global Infrastructure Facility" style="height:48px;width:auto;background:#fff;border-radius:6px;padding:3px 10px;display:block;"/>
+        </div>
+        <p class="ppf-footer-desc">A tool of the Global Infrastructure Facility — a G20 initiative supporting sustainable infrastructure in emerging markets through preparation finance and advisory services.</p>
+      </div>
+      <div>
+        <div class="ppf-footer-col-title">Navigate</div>
+        <div class="ppf-footer-links">
+          <a href="index.html">Home</a>
+          <a href="project-support-finder.html">Dashboard</a>
+          <a href="facilities.html">All Facilities</a>
+          <a href="Learning.html">Learning</a>
+        </div>
+      </div>
+      <div>
+        <div class="ppf-footer-col-title">Facilities</div>
+        <div class="ppf-footer-links">
+          <a href="facilities.html">All Facilities</a>
+          <a href="project-support-finder.html">By Region</a>
+          <a href="project-support-finder.html">By Sector</a>
+          <a href="project-support-finder.html">Submit a Fund</a>
+        </div>
+      </div>
+      <div>
+        <div class="ppf-footer-col-title">GIF</div>
+        <div class="ppf-footer-links">
+          <a href="https://www.globalinfrafacility.org/" target="_blank">GIF Website</a>
+          <a href="https://www.globalinfrafacility.org/about-gif" target="_blank">About GIF</a>
+          <a href="https://www.globalinfrafacility.org/partners" target="_blank">Partners</a>
+          <a href="https://www.globalinfrafacility.org/knowledge" target="_blank">Knowledge</a>
+        </div>
+      </div>
+    </div>
+    <div class="ppf-footer-bottom">
+      <span>© 2026 Global Infrastructure Facility · Project Preparation Facilities Navigator</span>
+      <div class="ppf-footer-bottom-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="https://www.globalinfrafacility.org/" target="_blank">GIF.org</a>
+      </div>
+    </div>
+  </div>
+</footer>
 </body>
 </html>
