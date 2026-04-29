@@ -980,6 +980,70 @@ html.dark .faq-item { background: var(--bg-card); border-color: var(--border); }
 html.dark .faq-item:hover { border-color: var(--border-mid); }
 html.dark .faq-q { color: var(--text); }
 html.dark .faq-a { color: var(--text-2); }
+
+/* ── MOBILE (≤600px) ── */
+@media (max-width: 600px) {
+  /* Nav: shrink padding and collapse CTA to icon-only */
+  nav { padding: 0 16px; height: 64px; }
+  .nav-logo img { height: 44px !important; }
+  .nav-cta { font-size: 0; padding: 8px 11px; gap: 0; line-height: 1; }
+  .nav-cta svg { width: 18px; height: 18px; display: block; }
+  .hero { padding-top: 64px; }
+
+  /* CTA bottom section has its own inner padding */
+  .cta-bottom-inner { padding: 0 18px; }
+  .quote-inner { padding: 0 18px; }
+
+  /* Headings: prevent overflow on narrow screens */
+  .hero-title { font-size: clamp(1.7rem, 7.5vw, 2.6rem); }
+  .section-title { font-size: clamp(1.6rem, 7.5vw, 2.5rem); }
+
+  /* Hero: less vertical breathing room */
+  .hero-content { padding: 40px 18px 52px; }
+  .hero-br { display: none; }
+  .hero-sub { font-size: clamp(15px, 4vw, 18px); }
+  .hero-sub-wrap { margin: 20px auto 32px; }
+  .hero-actions { gap: 10px; }
+
+  /* Sections: tighter padding */
+  .section-inner { padding: 0 18px; }
+  .mission, .how, .features, .dashboard-cta, .impact, .regions,
+  .partners, .quote-section, .cta-bottom, .faq { padding: 64px 0; }
+
+  /* Mission visual: shorter when stacked vertically */
+  .mission-visual, .mission-visual-img { min-height: 220px; }
+  .mission-grid { gap: 36px; }
+
+  /* How: single-column steps */
+  .steps-row { grid-template-columns: 1fr; gap: 28px; }
+  .how-header { margin-bottom: 40px; }
+
+  /* Dashboard CTA: show text first, preview below */
+  .dashboard-cta-inner { gap: 32px; }
+  .dashboard-preview { order: 2; }
+  .cta-actions { flex-wrap: wrap; gap: 10px; }
+
+  /* Impact: tighter cells */
+  .impact-item { padding: 28px 12px; }
+  .impact-num { font-size: 2.2rem; }
+
+  /* Regions: stack header */
+  .regions-header { flex-direction: column; align-items: flex-start; gap: 14px; }
+
+  /* Quote section */
+  .quote-mark { font-size: 48px; }
+
+  /* Footer: single column */
+  .footer-grid { grid-template-columns: 1fr !important; gap: 28px; }
+  .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+  .footer-bottom-links { justify-content: center; }
+
+  /* FAQ */
+  .faq-q { padding: 16px 18px; font-size: 0.85rem; }
+
+  /* Scroll-next: hide on mobile to avoid overlap */
+  .scroll-next { display: none; }
+}
 </style>
 </head>
 <body>
